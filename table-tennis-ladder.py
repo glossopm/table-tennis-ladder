@@ -2,6 +2,7 @@ import random
 import sys
 from prettytable import PrettyTable
 
+
 def get_players(filename):
     players_file = open(filename, "r")
     players_str = players_file.read()
@@ -127,7 +128,7 @@ def menu_leaderboard(players, ladder):
             exit()
         else:
             print "Input not recognised. Please try again."
-
+    
 
 def menu_add_players(players, ladder):
     while True:
