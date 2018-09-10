@@ -1,44 +1,62 @@
 import random
 import sys
-# leaderboard ladder
-ladder = []
-#players = ['q','w','e','r','t','y','u','i','o','p','a','s','d','g','h','j','k','l','z','x','c','v','b','n','m']
-players = []
-
-#def create_players():
-    #for i in range(1,2000):
-        #players.append(str(i))
-
+from prettytable import PrettyTable
+ 
+#ladder = []
+# players = ['q','w','e','r','t','y','u','i','o','p','a','s','d','g','h','j','k','l','z','x','c','v','b','n','m']
+ 
 def get_players(filename):
-    players_file = open(filename,"w+")
-    players = list(players_file.read())
+    players_file = open(filename, "r")
+    players_str = players_file.read()
+    players = players_str.split(",")
     players_file.close()
     return players
-
-def write_players(filename):
-    players_file = open(filename,"w+")
-    players_file.write(str(players))
+ 
+ 
+def write_players(filename, players):
+    players_file = open(filename, "w")
+    write_str = ""
+    for i in players:
+        write_str = write_str + i + ","
+    if write_str[0] == ",":
+        write_str = write_str[1:]
+    if write_str[len(write_str)-1] == ",":
+        write_str = write_str[:len(write_str)-1]
+    players_file.write(write_str)
     players_file.close()
-
+    return
+ 
+ 
 def get_ladder(filename):
-    ladder_file = open(filename,"w+")
-    ladder = list(ladder_file.read())
+    ladder_file = open(filename, "r")
+    ladder_str = ladder_file.read()
+    ladder = ladder_str.split(",")
     ladder_file.close()
     return ladder
-
-def write_ladder(filename):
-    ladder_file = open(filename,"w+")
-    ladder_file.write(str(ladder))
+ 
+ 
+def write_ladder(filename, ladder):
+    ladder_file = open(filename, "w")
+    write_str = ""
+    for i in ladder:
+        write_str = write_str + i + ","
+    if write_str[0] == ",":
+        write_str = write_str[1:]
+    if write_str[len(write_str)-1] == ",":
+        write_str = write_str[:len(write_str)-1]
+    ladder_file.write(write_str)
     ladder_file.close()
-
-def match_played(winner,loser):
+    return
+ 
+ 
+def match_played(winner, loser, ladder):
     if winner not in ladder:
         if loser not in ladder:
             ladder.append(winner)
             ladder.append(loser)
         else:
             loser_index = ladder.index(loser)
-            ladder.insert(loser_index,winner)
+            ladder.insert(loser_index, winner)
     else:
         if loser not in ladder:
             ladder.append(loser)
@@ -47,63 +65,94 @@ def match_played(winner,loser):
                 loser_index = ladder.index(loser)
                 winner_index = ladder.index(winner)
                 del ladder[winner_index]
-                ladder.insert(loser_index,winner)
-
-def tournament():
-    count = 0
-    for x in range(1,1000000):
-        p1 = random.choice(players)
-        p2 = random.choice(players)
-        if p1 != p2:
-            match_played(p1,p2)
-            count += 1
-    print count
-
-
+                ladder.insert(loser_index, winner)
+    return ladder
+ 
+ 
+def view_leaderboard(ladder):
+ 
+    print "--- LEADERBOARD ---"
+ 
+    table = PrettyTable()
+ 
+    table.field_names = ["Ranking", "Name"]
+ 
+    for i in ladder:
+        table.add_row([str(ladder.index(i)+1), i])
+    print table
+ 
+ 
+def enter_matches(players, ladder):
+    while True:
+        winner = str(raw_input("Please enter name of winner: "))
+        if winner not in players:
+            print "Name not recognised. Please try again."
+        else:
+            break
+    while True:
+        loser = str(raw_input("Please enter name of loser: "))
+        if loser not in players:
+            print "Name not recognised. Please try again."
+        else:
+            break
+ 
+    new_ladder = match_played(winner, loser, ladder)
+    write_ladder("ladder.txt", new_ladder)
+ 
+    user_choice = str(raw_input('Enter "new" to record another match, or type "menu" to return to main menu: '))
+ 
+    while True:
+        if user_choice == "new":
+            enter_matches(players, ladder)
+        elif user_choice == "menu":
+            main()
+        else:
+            print "Input not recognised. Please try again."
+ 
 def main():
+   
+   
     players = get_players("players.txt")
     ladder = get_ladder("ladder.txt")
+    print ""
     print "-- Menu --"
     print "1) Add players"
     print "2) Record a match"
-    print "3) View Leaderboard"
+    print "3) View leaderboard"
     print "4) Exit"
-    print ""
+ 
     user_choice = str(raw_input("Please select an option: "))
-
+ 
     if user_choice == "1" or user_choice == "1)":
         while True:
             player_name = str(raw_input("Please enter a name: "))
             players.append(player_name)
             user_fin = str(raw_input("Add more players? y/n: "))
             if user_fin == "n":
-                write_players("players.txt")
+                write_players("players.txt", players)
+                print ""
                 main()
+ 
     elif user_choice == "2" or user_choice == "2)":
-        while True:
-            winner = str(raw_input("Please enter name of winner: "))
-            if winner not in players:
-                print "Name not recognised. Please try again."
-            else:
-                break
-        while True:
-            loser = str(raw_input("Please enter name of loser: "))
-            if loser not in players:
-                print "Name not recognised. Please try again."
-            else:
-                break
-        match_played(winner, loser)
+        enter_matches(players, ladder)
+ 
     elif user_choice == "3" or user_choice == "3)":
-        # to do: write a function to print the ladder nicely
-        print ladder
+        view_leaderboard(ladder)
+        user_choice = str(raw_input("Return to main menu? y/n: "))
+ 
+        while True:
+            if user_choice == "y":
+                main()
+            elif user_choice == "n":
+                exit()
+            else:
+                print "Input not recognised. Please try again."
+ 
     elif user_choice == "4" or user_choice == "4)":
-        exit
+        print "Goodbye!"
+        exit()
     else:
         print "Invalid menu option selected."
-
-
+ 
+ 
 main()
-#create_players()
-# tournament() 
-#print(players)
-#print(ladder)
