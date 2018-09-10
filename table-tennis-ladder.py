@@ -105,13 +105,36 @@ def enter_matches(players, ladder):
         if user_choice == "new":
             enter_matches(players, ladder)
         elif user_choice == "menu":
-            main()
+            main_menu(players, ladder)
         else:
             print "Input not recognised. Please try again."
  
-def main():
-   
-   
+ 
+def menu_leaderboard(players, ladder):
+    view_leaderboard(ladder)
+    user_choice = str(raw_input("Return to main menu? y/n: "))
+ 
+    while True:
+        if user_choice == "y":
+            main_menu(players, ladder)
+        elif user_choice == "n":
+            exit()
+        else:
+            print "Input not recognised. Please try again."
+ 
+ 
+def menu_add_players(players, ladder):
+    while True:
+        player_name = str(raw_input("Please enter a name: "))
+        players.append(player_name)
+        user_fin = str(raw_input("Add more players? y/n: "))
+        if user_fin == "n":
+            write_players("players.txt", players)
+            print ""
+            main_menu(players, ladder)
+ 
+ 
+def main_menu(players, ladder):
     players = get_players("players.txt")
     ladder = get_ladder("ladder.txt")
     print ""
@@ -124,29 +147,13 @@ def main():
     user_choice = str(raw_input("Please select an option: "))
  
     if user_choice == "1" or user_choice == "1)":
-        while True:
-            player_name = str(raw_input("Please enter a name: "))
-            players.append(player_name)
-            user_fin = str(raw_input("Add more players? y/n: "))
-            if user_fin == "n":
-                write_players("players.txt", players)
-                print ""
-                main()
+        menu_add_players(players, ladder)
  
     elif user_choice == "2" or user_choice == "2)":
         enter_matches(players, ladder)
  
     elif user_choice == "3" or user_choice == "3)":
-        view_leaderboard(ladder)
-        user_choice = str(raw_input("Return to main menu? y/n: "))
- 
-        while True:
-            if user_choice == "y":
-                main()
-            elif user_choice == "n":
-                exit()
-            else:
-                print "Input not recognised. Please try again."
+        menu_leaderboard(players, ladder)
  
     elif user_choice == "4" or user_choice == "4)":
         print "Goodbye!"
@@ -155,4 +162,28 @@ def main():
         print "Invalid menu option selected."
  
  
-main()
+def main():
+ 
+    args = sys.argv[1:]
+    players = get_players("players.txt")
+    ladder = get_ladder("ladder.txt")
+ 
+    if not args:
+        main_menu(players, ladder)
+ 
+    if args[0] == "--add":
+        menu_add_players(players, ladder)
+ 
+    elif args[0] == "--match":
+        enter_matches(players, ladder)
+ 
+    elif args[0] == "--view":
+        menu_leaderboard(players, ladder)
+ 
+    else:
+        "Invalid argument provided."
+        exit()
+ 
+ 
+if __name__ == "__main__":
+  main()
