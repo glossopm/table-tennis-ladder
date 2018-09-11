@@ -78,6 +78,19 @@ def view_leaderboard(ladder):
     exit()
 
 
+# print players
+def view_players(players):
+
+    table = PrettyTable()
+    table.field_names = ["Name"]
+
+    for i in players:
+        table.add_row([i])
+    print "--- PLAYERS ---"
+    print table
+    exit()
+
+
 # record new match (straight from command line)
 def add_new_matches_list(matches, players, ladder):
     failed_records = []
@@ -188,7 +201,8 @@ def main_menu():
     print "1) Add players"
     print "2) Record a match"
     print "3) View leaderboard"
-    print "4) Exit"
+    print "4) View players"
+    print "5) Exit"
 
     user_choice = str(raw_input("Please select an option: "))
 
@@ -202,6 +216,8 @@ def main_menu():
         view_leaderboard(ladder)
 
     elif user_choice == "4" or user_choice == "4)":
+        view_players(players)
+    elif user_choice == "5" or user_choice == "5)":
         print "Goodbye!"
         exit()
     else:
@@ -215,6 +231,7 @@ def print_help():
           "[--match] \t\t\t Brings up the 'record match' prompt menu.\n" \
           "[--match winner loser...] \t Records matches between two players. Multiple match records can be entered at once. No matches will be recorded if an odd number of players is specified.\n" \
           "[--view] \t\t\t Allows the viewing of the current leaderboard\n" \
+          "[--players] \t\t\t Allows the viewing of the full list of players\n" \
           "[] \t\t\t\t Not specifying an argument will bring up the main menu.\n"
 
 
@@ -259,6 +276,10 @@ def main():
         elif args[0] == "--view":
             # send user to leaderboard view
             view_leaderboard(ladder)
+
+        elif args[0] == "--players":
+            # send user to players view
+            view_players(players)
 
         # "--help" argument specified
         elif args[0] == "--help":
