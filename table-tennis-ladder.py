@@ -79,7 +79,7 @@ def view_leaderboard(ladder):
 
 
 # record new match (straight from command line)
-def add_new_matches_list(matches, ladder, players):
+def add_new_matches_list(matches, players, ladder):
     failed_records = []
     for i in range(0, len(matches)-1, 2):
         winner = matches[i]
