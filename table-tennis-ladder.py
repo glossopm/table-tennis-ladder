@@ -120,7 +120,7 @@ def enter_matches(players, ladder):
             print "Name not recognised. Please try again."
         else:
             break
-            
+
     while True:
         loser = str(raw_input("Please enter name of loser: "))
         if loser not in players or loser.lower() not in [i.lower() for i in players]:
