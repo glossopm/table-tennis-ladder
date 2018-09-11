@@ -2,6 +2,7 @@ import sys
 from prettytable import PrettyTable
 
 
+# read players data from .txt file, store and return "players" list
 def get_players(filename):
     players_file = open(filename, "r")
     players_str = players_file.read()
@@ -10,20 +11,19 @@ def get_players(filename):
     return players
 
 
+# write players data from "players" list to .txt file
 def write_players(filename, players):
     players_file = open(filename, "w")
     write_str = ""
     for i in players:
         write_str = write_str + i + ","
-    if write_str[0] == ",":
-        write_str = write_str[1:]
-    if write_str[len(write_str)-1] == ",":
-        write_str = write_str[:len(write_str)-1]
+    write_str = write_str.rstrip(",").lstrip(",")
     players_file.write(write_str)
     players_file.close()
     return
 
 
+# read ladder data from .txt file, store and return "ladder" list
 def get_ladder(filename):
     ladder_file = open(filename, "r")
     ladder_str = ladder_file.read()
@@ -32,15 +32,13 @@ def get_ladder(filename):
     return ladder
 
 
+# write ladder data from "ladder" list to .txt file
 def write_ladder(filename, ladder):
     ladder_file = open(filename, "w")
     write_str = ""
     for i in ladder:
         write_str = write_str + i + ","
-    if write_str[0] == ",":
-        write_str = write_str[1:]
-    if write_str[len(write_str)-1] == ",":
-        write_str = write_str[:len(write_str)-1]
+    write_str = write_str.rstrip(",").lstrip(",")
     ladder_file.write(write_str)
     ladder_file.close()
     return
@@ -70,31 +68,51 @@ def match_played(winner, loser, ladder):
 # print leaderboard
 def view_leaderboard(ladder):
 
-    print "--- LEADERBOARD ---"
-
     table = PrettyTable()
-
     table.field_names = ["Ranking", "Name"]
 
     for i in ladder:
         table.add_row([str(ladder.index(i)+1), i])
+    print "--- LEADERBOARD ---"
     print table
     exit()
 
 
-# record new match
-def add_new_matches_list(matches, ladder):
+# record new match (straight from command line)
+def add_new_matches_list(matches, ladder, players):
+    failed_records = []
     for i in range(0, len(matches)-1, 2):
         winner = matches[i]
         loser = matches[i+1]
 
-        ladder = match_played(winner, loser, ladder)
-        print "Match: " + str(winner) + " beating " + str(loser) + " has been recorded."
+        if winner not in players or (winner.lower() not in [i.lower() for i in players]):
+            failed_records.append((winner, loser))
+        elif loser not in players or (loser.lower() not in [i.lower() for i in players]):
+            failed_records.append((winner, loser))
+        else:
+            ladder = match_played(winner, loser, ladder)
+            print "Match: " + str(winner) + " beating " + str(loser) + " has been recorded."
     write_ladder("ladder.txt", ladder)
+
+    for i in failed_records:
+        print "Match: " + str(i[0]) + " beating " + str(i[1]) + " not recorded - one or both players missing from players list."
 
     return ladder
 
 
+# print the matches-specific context menu
+def display_record_matches_menu():
+    print ""
+    print "-- Menu: Record matches --"
+    print "1) Record another match"
+    print "2) Return to main menu"
+
+    user_choice = str(raw_input("Please select an option: "))
+
+    return user_choice
+
+
+# record new match (from prompt menu)
 def enter_matches(players, ladder):
     while True:
         winner = str(raw_input("Please enter name of winner: "))
@@ -102,6 +120,7 @@ def enter_matches(players, ladder):
             print "Name not recognised. Please try again."
         else:
             break
+            
     while True:
         loser = str(raw_input("Please enter name of loser: "))
         if loser not in players or loser.lower() not in [i.lower() for i in players]:
@@ -112,12 +131,7 @@ def enter_matches(players, ladder):
     new_ladder = match_played(winner, loser, ladder)
     write_ladder("ladder.txt", new_ladder)
 
-    print ""
-    print "-- Menu: Record matches --"
-    print "1) Record another match"
-    print "2) Return to main menu"
-
-    user_choice = str(raw_input("Please select an option: "))
+    user_choice = display_record_matches_menu()
 
     while True:
         if user_choice == "1":
@@ -194,6 +208,7 @@ def main_menu():
         print "Invalid menu option selected."
 
 
+# print helper function
 def print_help():
     print "[--add] \t\t\t Brings up the 'add player' prompt menu.\n" \
           "[--add name1 name2...] \t\t Adds each specified player to the players list. Players already present in the list will not be added, and an alert will appear.\n" \
@@ -233,7 +248,7 @@ def main():
             if len(new_matches) != 0:
                 # check whether an even number of players have been specified
                 if len(new_matches) % 2 == 0:
-                    add_new_matches_list(new_matches, ladder)
+                    add_new_matches_list(new_matches, players, ladder)
                 else:
                     print "Odd number of players specified. Please try again."
             else:
