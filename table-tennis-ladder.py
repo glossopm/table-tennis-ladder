@@ -191,6 +191,30 @@ def menu_add_players(players):
             main_menu()
 
 
+# search function returns position of player
+def search_players(search_terms, ladder):
+    for i in search_terms:
+        if i in ladder:
+            print i + " is ranked position " + str(ladder.index(i) + 1) + "."
+        else:
+            print i + " is unranked."
+
+
+# search function returns position of player
+def search_players_menu(ladder):
+    while True:
+        search_term = str(raw_input(("Please enter a player to search for: ")))
+
+        if search_term in ladder:
+            print search_term + " is ranked position " + str(ladder.index(search_term) + 1) + "."
+        else:
+            print search_term + " is unranked."
+
+        user_fin = str(raw_input("Search for another player? y/n: "))
+        if user_fin == "n":
+            exit()
+
+
 # print menu, read in and act on user choice from menu
 def main_menu():
     # re-read the players/ladders data - in essence, do a "refresh"
@@ -202,7 +226,8 @@ def main_menu():
     print "2) Record a match"
     print "3) View leaderboard"
     print "4) View players"
-    print "5) Exit"
+    print "5) Search player"
+    print "6) Exit"
 
     user_choice = str(raw_input("Please select an option: "))
 
@@ -217,7 +242,11 @@ def main_menu():
 
     elif user_choice == "4" or user_choice == "4)":
         view_players(players)
+
     elif user_choice == "5" or user_choice == "5)":
+        search_players_menu(ladder)
+
+    elif user_choice == "6" or user_choice == "6)":
         print "Goodbye!"
         exit()
     else:
@@ -285,6 +314,11 @@ def main():
         elif args[0] == "--help":
             # print helper function
             print_help()
+
+        elif args[0] == "--search":
+            search_terms = args[1:]
+            if len(search_terms) != 0:
+                search_players(search_terms, ladder)
 
         else:
             "Invalid argument provided."
