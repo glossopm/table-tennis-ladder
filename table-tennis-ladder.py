@@ -76,6 +76,8 @@ def write_lboards_dict(filename, lboard_dict):
 
 # moves or adds winner/loser to correct positions in ladder
 def match_played(winner, loser, ladder):
+    if ladder == "[]":
+        ladder = []
     if winner not in ladder:
         if loser not in ladder:
             ladder.append(winner)
@@ -139,7 +141,6 @@ def add_new_matches_list(matches, players, ladder):
             else:
                 ladder = match_played(winner, loser, ladder)
                 print "Match: " + str(winner) + " beating " + str(loser) + " has been recorded."
-    write_ladder("ladder.txt", ladder)
 
     for i in failed_records:
         print "Match: " + str(i[0]) + " beating " + str(i[1]) + " not recorded - one or both players missing from players list."
@@ -182,7 +183,7 @@ def enter_matches(players, ladder):
         enter_matches(players, ladder)
 
     new_ladder = match_played(winner, loser, ladder)
-    write_ladder("ladder.txt", new_ladder)
+    #write_lboards_dict("leaderboards.csv", new_ladder)
 
     user_choice = display_record_matches_menu()
 
@@ -379,9 +380,35 @@ def main():
 
         # "--match" argument specified
         elif args[0] == "--match":
+            # checks whether a specific leaderboard has been entered
+            if args[1].startswith("--"):
+                new_matches = args[2:]
+                lb_name = args[1][2:]
+                # checks for winner loser pairs entered as arguments
+                if len(new_matches) !=0:
+                    # checks for pairs of winners and losers or else asks to try again.
+                    if len(new_matches) % 2 == 0:
+                        print lboards_dict[lb_name]
+                        new_list = add_new_matches_list(new_matches, players, lboards_dict[lb_name])
+                        lboards_dict[lb_name] = new_list
+                        write_lboards_dict("leaderboards.csv", lboards_dict)
+                    else:
+                        print "Odd number of players specified. Please try again."
+                
+            else:
+                new_matches = args[1:]
+                if len(new_matches) !=0:
+                    if len(new_matches) % 2 == 0:
+                        add_new_matches_list(new_matches, players, lboards_dict[0])
+                    else:
+                        print "Odd number of players specified. Please try again."
+                else:
+                    # send user to record-matches-specific prompts menu if no names specified
+                    enter_matches(players, lboards_dict[0])
+
             # check whether names of players have been specified
             new_matches = args[1:]
-            if len(new_matches) != 0:
+            '''if len(new_matches) != 0:
                 # check whether an even number of players have been specified
                 if len(new_matches) % 2 == 0:
                     add_new_matches_list(new_matches, players, ladder)
@@ -389,7 +416,7 @@ def main():
                     print "Odd number of players specified. Please try again."
             else:
                 # send user to record-matches-specific prompts menu if no names specified
-                enter_matches(players, ladder)
+                enter_matches(players, ladder)'''
 
         # "--view" argument specified
         elif args[0] == "--view":
