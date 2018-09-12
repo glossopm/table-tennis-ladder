@@ -234,14 +234,14 @@ def change_lboard_menu(lboardsDict, lboardsOrder):
 # ------------------------------------------VIEW LEADERBOARD FUNCTIONS--------------------------------------------------
 
 # print leaderboard
-def view_leaderboard(ladder):
+def view_leaderboard(lboard_name, ladder):
 
     table = PrettyTable()
     table.field_names = ["Ranking", "Name"]
 
     for i in ladder:
         table.add_row([str(ladder.index(i)+1), i])
-    print "--- LEADERBOARD ---"
+    print "--- " + lboard_name.upper() + " ---"
     print table
     exit()
 
@@ -412,10 +412,10 @@ def main():
         elif args[0] == "--view":
             # send user to default leaderboard view
             if len(args) == 1:
-                view_leaderboard(lboards_dict[lboardOrder[0]])
+                view_leaderboard(lboardOrder[0], lboards_dict[lboardOrder[0]])
             else:
                 lboard_name = args[1][2:]
-                view_leaderboard(lboards_dict[lboard_name])
+                view_leaderboard(lboard_name, lboards_dict[lboard_name])
 
         elif args[0] == "--list":
             print "Current existing leaderboards: " + ",".join(lboardOrder).strip("\n")
