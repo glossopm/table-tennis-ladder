@@ -54,6 +54,12 @@ def get_lboards_dict(filename):
     mydict = {}
     for row in reader:
         key, val = row
+        if val == "[]":
+            val = []
+        else:
+            val = val.replace("[", "")
+            val = val.replace("]", "")
+            val = val.split(",")
         mydict[str(key)] = val
 
     #print mydict
@@ -114,6 +120,9 @@ def menu_add_players(players):
 
 # moves or adds winner/loser to correct positions in ladder
 def match_played(winner, loser, ladder):
+    print winner
+    print loser
+    print ladder
     if winner not in ladder:
         if loser not in ladder:
             ladder.append(winner)
@@ -169,6 +178,9 @@ def enter_matches(players, ladder):
 
 # add a match for a leaderboard - "players" and "lboard" both list format
 def enter_lboard_match(players, matches, lboard):
+    #print players
+    #print matches
+    #print lboard
     duplicate_players = []
     failed_records = []
     new_lboard = lboard
@@ -240,7 +252,7 @@ def view_leaderboard(lboard_name, ladder):
     table.field_names = ["Ranking", "Name"]
 
     for i in ladder:
-        table.add_row([str(ladder.index(i)+1), i])
+        table.add_row([str(ladder.index(i)+1), str(i)])
     print "--- " + lboard_name.upper() + " ---"
     print table
     exit()
@@ -392,13 +404,13 @@ def main():
 
             # if leaderboard is specified
             if first_arg.startswith("--"):
-                lboard = first_arg
+                lboard = first_arg[2:]
                 matches = args[2:]
                 # if leaderboard is specified and players are specified, check number of players
                 if matches:
                     # if number of players is even, send user to leaderboard-specific match entry menu
                     if len(matches) % 2 == 0:
-                        new_lboard = enter_lboard_match(players, matches, lboard)
+                        new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
                         lboards_dict[lboard] = new_lboard
                         write_lboards_dict("leaderboards.csv", lboards_dict)
                     # if number of players is odd, provide user with error
