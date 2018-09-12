@@ -3,6 +3,8 @@ from prettytable import PrettyTable
 import csv
 
 
+# ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
+
 # read leaderboards order data from .txt file
 def get_leaderboards(filename):
     leaderboards_file = open(filename, "r")
@@ -58,143 +60,13 @@ def get_lboards_dict(filename):
     return mydict
 
 
-# read ladder data from .txt file, store and return "ladder" list
-def get_ladder(filename):
-    ladder_file = open(filename, "r")
-    ladder_str = ladder_file.read()
-    ladder = ladder_str.split(",")
-    ladder_file.close()
-    return ladder
-
-
 def write_lboards_dict(filename, lboard_dict):
 
     w = csv.writer(open(filename, "w"))
     for key, val in lboard_dict.items():
         w.writerow([key, val])
 
-
-# moves or adds winner/loser to correct positions in ladder
-def match_played(winner, loser, ladder):
-    if ladder == "[]":
-        ladder = []
-    if winner not in ladder:
-        if loser not in ladder:
-            ladder.append(winner)
-            ladder.append(loser)
-        else:
-            loser_index = ladder.index(loser)
-            ladder.insert(loser_index, winner)
-    else:
-        if loser not in ladder:
-            ladder.append(loser)
-        else:
-            if ladder.index(winner) > ladder.index(loser):
-                loser_index = ladder.index(loser)
-                winner_index = ladder.index(winner)
-                del ladder[winner_index]
-                ladder.insert(loser_index, winner)
-    return ladder
-
-
-# print leaderboard
-def view_leaderboard(ladder):
-
-    table = PrettyTable()
-    table.field_names = ["Ranking", "Name"]
-
-    for i in ladder:
-        table.add_row([str(ladder.index(i)+1), i])
-    print "--- LEADERBOARD ---"
-    print table
-    exit()
-
-
-# print players
-def view_players(players):
-
-    table = PrettyTable()
-    table.field_names = ["Name"]
-
-    for i in players:
-        table.add_row([i])
-    print "--- PLAYERS ---"
-    print table
-    exit()
-
-
-# record new match (straight from command line)
-def add_new_matches_list(matches, players, ladder):
-    failed_records = []
-    duplicates = []
-    for i in range(0, len(matches)-1, 2):
-        winner = matches[i].rstrip(",").lstrip(",")
-        loser = matches[i+1].rstrip(",").lstrip(",")
-
-        if winner == loser:
-            duplicates.append(winner)
-        else:
-            if winner not in players or (winner.lower() not in [i.lower() for i in players]):
-                failed_records.append((winner, loser))
-            elif loser not in players or (loser.lower() not in [i.lower() for i in players]):
-                failed_records.append((winner, loser))
-            else:
-                ladder = match_played(winner, loser, ladder)
-                print "Match: " + str(winner) + " beating " + str(loser) + " has been recorded."
-
-    for i in failed_records:
-        print "Match: " + str(i[0]) + " beating " + str(i[1]) + " not recorded - one or both players missing from players list."
-
-    for i in duplicates:
-        print "Match for player " + str(i) + " not recorded - players cannot play against themselves"
-    return ladder
-
-
-# print the matches-specific context menu
-def display_record_matches_menu():
-    print ""
-    print "-- Menu: Record matches --"
-    print "1) Record another match"
-    print "2) Return to main menu"
-
-    user_choice = str(raw_input("Please select an option: "))
-
-    return user_choice
-
-
-# record new match (from prompt menu)
-def enter_matches(players, ladder):
-    while True:
-        winner = str(raw_input("Please enter name of winner: "))
-        if (winner not in players) or (winner.lower() not in [i.lower() for i in players]):
-            print "Name not recognised. Please try again."
-        else:
-            break
-
-    while True:
-        loser = str(raw_input("Please enter name of loser: "))
-        if loser not in players or loser.lower() not in [i.lower() for i in players]:
-            print "Name not recognised. Please try again."
-        else:
-            break
-
-    if winner == loser:
-        print "Players' names must be unique. Please try again."
-        enter_matches(players, ladder)
-
-    new_ladder = match_played(winner, loser, ladder)
-    #write_lboards_dict("leaderboards.csv", new_ladder)
-
-    user_choice = display_record_matches_menu()
-
-    while True:
-        if user_choice == "1":
-            enter_matches(players, ladder)
-        elif user_choice == "2":
-            main_menu()
-        else:
-            print "Input not recognised. Please try again."
-
+# ------------------------------------------ADD PLAYERS FUNCTIONS------------------------------------------------------
 
 # add new players (straight from command line)
 def add_new_players_list(players, new_players):
@@ -238,9 +110,97 @@ def menu_add_players(players):
             main_menu()
 
 
+# ------------------------------------------RECORD MATCH FUNCTIONS-----------------------------------------------------
+
+# moves or adds winner/loser to correct positions in ladder
+def match_played(winner, loser, ladder):
+    if winner not in ladder:
+        if loser not in ladder:
+            ladder.append(winner)
+            ladder.append(loser)
+        else:
+            loser_index = ladder.index(loser)
+            ladder.insert(loser_index, winner)
+    else:
+        if loser not in ladder:
+            ladder.append(loser)
+        else:
+            if ladder.index(winner) > ladder.index(loser):
+                loser_index = ladder.index(loser)
+                winner_index = ladder.index(winner)
+                del ladder[winner_index]
+                ladder.insert(loser_index, winner)
+    return ladder
+
+
+# record new match (from prompt menu)
+def enter_matches(players, ladder):
+    while True:
+        winner = str(raw_input("Please enter name of winner: "))
+        if (winner not in players) or (winner.lower() not in [i.lower() for i in players]):
+            print "Name not recognised. Please try again."
+        else:
+            break
+
+    while True:
+        loser = str(raw_input("Please enter name of loser: "))
+        if loser not in players or loser.lower() not in [i.lower() for i in players]:
+            print "Name not recognised. Please try again."
+        else:
+            break
+
+    if winner == loser:
+        print "Players' names must be unique. Please try again."
+        enter_matches(players, ladder)
+
+    new_ladder = match_played(winner, loser, ladder)
+    write_ladder("ladder.txt", new_ladder)
+
+    user_choice = display_record_matches_menu()
+
+    while True:
+        if user_choice == "1":
+            enter_matches(players, ladder)
+        elif user_choice == "2":
+            main_menu()
+        else:
+            print "Input not recognised. Please try again."
+
+
+# add a match for a leaderboard - "players" and "lboard" both list format
+def enter_lboard_match(players, matches, lboard):
+    duplicate_players = []
+    failed_records = []
+    new_lboard = lboard
+
+    for i in range(0, len(matches)-1, 2):
+        winner = matches[i].rstrip(",").lstrip(",")
+        loser = matches[i+1].rstrip(",").lstrip(",")
+
+        if winner == loser:
+            duplicate_players.append(winner)
+        else:
+            if winner not in players or (winner.lower() not in [i.lower() for i in players]):
+                failed_records.append((winner, loser))
+            elif loser not in players or (loser.lower() not in [i.lower() for i in players]):
+                failed_records.append((winner, loser))
+            else:
+                new_lboard = match_played(winner, loser, new_lboard)
+                print "Match: " + str(winner) + " beating " + str(loser) + " has been recorded."
+
+    for i in failed_records:
+        print "Match: " + str(i[0]) + " beating " + str(i[1]) + " not recorded - one or both players missing from players list."
+
+    for i in duplicate_players:
+        print "Match for player " + str(i) + " not recorded - players cannot play against themselves"
+
+    return new_lboard
+
+
+# ------------------------------------------CHANGE LEADERBOARD FUNCTIONS------------------------------------------------
+
+# change leaderboard from command line
 def change_lboard(lboardsDict, lboardsOrder, new_name):
-    print "change function"
-    print new_name
     if new_name not in lboardsOrder:
         lboardsOrder.insert(0, new_name)
         print "The leaderboard '" + str(new_name) + " has been created, and is now the current leaderboard."
@@ -255,6 +215,7 @@ def change_lboard(lboardsDict, lboardsOrder, new_name):
     write_lboards_dict("leaderboards.csv", lboardsDict)
 
 
+#change leaderboard from menu prompt
 def change_lboard_menu(lboardsDict, lboardsOrder):
     new_name = str(raw_input("Please enter a leaderboard: "))
     if new_name not in lboardsOrder:
@@ -269,6 +230,39 @@ def change_lboard_menu(lboardsDict, lboardsOrder):
     write_lboards("leaderboardsOrder.txt", lboardsOrder)
     write_lboards_dict("leaderboards.csv", lboardsDict)
 
+
+# ------------------------------------------VIEW LEADERBOARD FUNCTIONS--------------------------------------------------
+
+# print leaderboard
+def view_leaderboard(ladder):
+
+    table = PrettyTable()
+    table.field_names = ["Ranking", "Name"]
+
+    for i in ladder:
+        table.add_row([str(ladder.index(i)+1), i])
+    print "--- LEADERBOARD ---"
+    print table
+    exit()
+
+
+# ------------------------------------------VIEW PLAYERS FUNCTIONS------------------------------------------------------
+
+# print players
+def view_players(players):
+
+    table = PrettyTable()
+    table.field_names = ["Name"]
+
+    for i in players:
+        if i.isspace() == False or i.isspace() != "":
+            table.add_row([i])
+    print "--- PLAYERS ---"
+    print table
+    exit()
+
+
+# ------------------------------------------SEARCH PLAYERS FUNCTIONS----------------------------------------------------
 
 # search function returns position of player
 def search_players(lboard_name, search_terms, ladder):
@@ -294,11 +288,21 @@ def search_players_menu(ladder):
             exit()
 
 
-#search function returning ranking of player for each board present in
-#def search_all_lboards(player_name, lboards_dict):
+# ------------------------------------------DISPLAY MENU FUNCTIONS------------------------------------------------------
+
+# print the matches-specific context menu
+def display_record_matches_menu():
+    print ""
+    print "-- Menu: Record matches --"
+    print "1) Record another match"
+    print "2) Return to main menu"
+
+    user_choice = str(raw_input("Please select an option: "))
+
+    return user_choice
 
 
-
+# ------------------------------------------MAIN MENU FUNCTIONS---------------------------------------------------------
 
 # print menu, read in and act on user choice from menu
 def main_menu():
@@ -380,43 +384,29 @@ def main():
 
         # "--match" argument specified
         elif args[0] == "--match":
-            # checks whether a specific leaderboard has been entered
-            if args[1].startswith("--"):
-                new_matches = args[2:]
-                lb_name = args[1][2:]
-                # checks for winner loser pairs entered as arguments
-                if len(new_matches) !=0:
-                    # checks for pairs of winners and losers or else asks to try again.
-                    if len(new_matches) % 2 == 0:
-                        print lboards_dict[lb_name]
-                        new_list = add_new_matches_list(new_matches, players, lboards_dict[lb_name])
-                        lboards_dict[lb_name] = new_list
-                        write_lboards_dict("leaderboards.csv", lboards_dict)
-                    else:
-                        print "Odd number of players specified. Please try again."
-                
-            else:
-                new_matches = args[1:]
-                if len(new_matches) !=0:
-                    if len(new_matches) % 2 == 0:
-                        add_new_matches_list(new_matches, players, lboards_dict[0])
-                    else:
-                        print "Odd number of players specified. Please try again."
-                else:
-                    # send user to record-matches-specific prompts menu if no names specified
-                    enter_matches(players, lboards_dict[0])
+            first_arg = args[1]
 
-            # check whether names of players have been specified
-            new_matches = args[1:]
-            '''if len(new_matches) != 0:
-                # check whether an even number of players have been specified
-                if len(new_matches) % 2 == 0:
-                    add_new_matches_list(new_matches, players, ladder)
+            # if players and leaderboard aren't specified, send user to prompts menu
+            if not first_arg:
+                enter_matches(players, lboards_dict)
+
+            # if leaderboard is specified
+            if first_arg.startswith("--"):
+                lboard = first_arg
+                matches = args[2:]
+                # if leaderboard is specified and players are specified, check number of players
+                if matches:
+                    # if number of players is even, send user to leaderboard-specific match entry menu
+                    if len(matches) % 2 == 0:
+                        new_lboard = enter_lboard_match(players, matches, lboard)
+                        lboards_dict[lboard] = new_lboard
+                        write_lboards_dict("leaderboards.csv", lboards_dict)
+                    # if number of players is odd, provide user with error
+                    else:
+                        print "ERROR: odd number of players provided."
+                # if leaderboard is specified and players aren't, give user an error
                 else:
-                    print "Odd number of players specified. Please try again."
-            else:
-                # send user to record-matches-specific prompts menu if no names specified
-                enter_matches(players, ladder)'''
+                    print "ERROR: please enter player names"
 
         # "--view" argument specified
         elif args[0] == "--view":
@@ -424,11 +414,12 @@ def main():
             if len(args) == 1:
                 view_leaderboard(lboards_dict[lboardOrder[0]])
             else:
-                view_leaderboard(lboards_dict[args[1]])
+                lboard_name = args[1][2:]
+                view_leaderboard(lboards_dict[lboard_name])
 
         elif args[0] == "--list":
-            print "Current existing leaderboards: " + ",".join(lboardOrder) + "."
-            print "The default leaderboard is currently '" + lboardOrder[0] + "."
+            print "Current existing leaderboards: " + ",".join(lboardOrder).strip("\n")
+            print "The active leaderboard is currently '" + lboardOrder[0] + "'"
 
 
         elif args[0] == "--players":
