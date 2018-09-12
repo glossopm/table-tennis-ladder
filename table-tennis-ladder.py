@@ -270,12 +270,12 @@ def change_lboard_menu(lboardsDict, lboardsOrder):
 
 
 # search function returns position of player
-def search_players(search_terms, ladder):
+def search_players(lboard_name, search_terms, ladder):
     for i in search_terms:
         if i in ladder:
-            print i + " is ranked position " + str(ladder.index(i) + 1) + "."
+            print i + " is ranked position " + str(ladder.index(i) + 1) + " in leaderboard '" + str(lboard_name) + "'."
         else:
-            print i + " is unranked."
+            print i + " is unranked in leaderboard '" + str(lboard_name) + "'."
 
 
 # search function returns position of player
@@ -291,6 +291,12 @@ def search_players_menu(ladder):
         user_fin = str(raw_input("Search for another player? y/n: "))
         if user_fin == "n":
             exit()
+
+
+#search function returning ranking of player for each board present in
+#def search_all_lboards(player_name, lboards_dict):
+
+
 
 
 # print menu, read in and act on user choice from menu
@@ -418,7 +424,24 @@ def main():
         elif args[0] == "--search":
             search_terms = args[1:]
             if len(search_terms) != 0:
-                search_players(search_terms, ladder)
+                if args[1].startswith("--"):
+                    # search a specific leaderboard
+                    #print args[1][2:]
+                    #print args[2]
+                    search_terms = args[2:]
+                    lb_name = args[1][2:]
+                    search_players(lb_name, search_terms, lboards_dict[lb_name])
+                else:
+                    # search all leaderboards
+                    for person in search_terms:
+                        flag = 0
+                        for board in lboards_dict:
+                            if person in lboards_dict[board]:
+                                flag = 1
+                                search_players(board, person, lboards_dict[board])
+                        if flag == 0:
+                            print person + " is unranked in all leaderboards."
+
 
         else:
             "Invalid argument provided."
