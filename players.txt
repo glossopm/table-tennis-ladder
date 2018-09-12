@@ -1,1 +1,1 @@
-Alpha,Beta,,Gamma,Omega,Sigma,Nu,Malik,Glossop,Rodger,Dodger,Sigma,Nu,Frank,John,sigma,nu,Chi,Psi,Omicron,Phi
+Alpha,Beta,,Gamma,Omega,Sigma,Nu,Malik,Glossop,Rodger,Dodger,Sigma,Nu,Frank,John,sigma,nu,Chi,Psi,Omicron,Phi,Nemo,Finding,Not,In,Menu
