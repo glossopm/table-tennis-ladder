@@ -361,6 +361,7 @@ def match_choice(args, players, lboardOrder,lboards_dict):
                 new_lboard = enter_lboard_match(players, matches, lboard_param)
                 lboards_dict[lboard] = new_lboard
                 write_lboards_dict(lboards_dict)
+                create_html_file(lboards_dict)
             # if number of players is odd, provide user with error
             else:
                 print "ERROR: odd number of players provided."
@@ -378,6 +379,7 @@ def match_choice(args, players, lboardOrder,lboards_dict):
                 new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
                 lboards_dict[lboard] = new_lboard
                 write_lboards_dict(lboards_dict)
+                create_html_file(lboards_dict)
             # if number of players is odd, provide user with error
             else:
                 print "ERROR: odd number of players provided."
@@ -483,6 +485,7 @@ def main():
         # "--match" argument specified
         elif args[0] == "--match":
             match_choice(args, players, lboardOrder,lboards_dict)
+            
 
         # "--view" argument specified
         elif args[0] == "--view":
