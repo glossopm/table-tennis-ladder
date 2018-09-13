@@ -425,6 +425,22 @@ def main():
                 # if leaderboard is specified and players aren't, give user an error
                 else:
                     print "ERROR: please enter player names"
+            else:
+                lboard = lboardOrder[0]
+                matches = args[1:]
+                # if leaderboard is specified and players are specified, check number of players
+                if matches:
+                    # if number of players is even, send user to leaderboard-specific match entry menu
+                    if len(matches) % 2 == 0:
+                        new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
+                        lboards_dict[lboard] = new_lboard
+                        write_lboards_dict("leaderboards.csv", lboards_dict)
+                    # if number of players is odd, provide user with error
+                    else:
+                        print "ERROR: odd number of players provided."
+                # if leaderboard is specified and players aren't, give user an error
+                else:
+                    print "ERROR: please enter player names"
 
         # "--view" argument specified
         elif args[0] == "--view":
