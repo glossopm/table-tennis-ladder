@@ -148,7 +148,7 @@ def add_new_players_list(players, new_players):
             else:
                 players.append(player_name.strip("\n"))
                 added_players.append(player_name)
-    write_players("players.txt", players)
+    write_players(players)
 
     if len(added_players) != 0:
         print "The following players were added successfully: " + ", ".join(added_players)
@@ -170,7 +170,7 @@ def menu_add_players(players):
             print player_name + " added successfully!"
         user_fin = str(raw_input("Add more players? y/n: "))
         if user_fin == "n":
-            write_players("players.txt", players)
+            write_players(players)
             print ""
             main_menu()
 
@@ -336,6 +336,55 @@ def search_players_menu(ladder):
         if user_fin == "n":
             exit()
 
+# ------------------------------------------PLAY MATCH FUNCTION --------------------------------------------------------
+def match_choice(args, players, lboardOrder,lboards_dict):
+
+    # if players and leaderboard aren't specified, send user to prompts menu
+    if len(args) == 1:
+        print "ERROR: No names specificed. See --help for details.\n"
+        print_help()
+        exit()
+
+    first_arg = args[1]
+    # if leaderboard is specified
+    if first_arg.startswith("--"):
+        lboard = first_arg[2:]
+        matches = args[2:]
+        # if leaderboard is specified and players are specified, check number of players
+        if matches:
+            # if number of players is even, send user to leaderboard-specific match entry menu
+            if len(matches) % 2 == 0:
+                if lboard not in lboards_dict:
+                    lboard_param = []
+                else:
+                    lboard_param = lboards_dict[lboard]
+                new_lboard = enter_lboard_match(players, matches, lboard_param)
+                lboards_dict[lboard] = new_lboard
+                write_lboards_dict(lboards_dict)
+            # if number of players is odd, provide user with error
+            else:
+                print "ERROR: odd number of players provided."
+        # if leaderboard is specified and players aren't, give user an error
+        else:
+            print "ERROR: please enter player names"
+    else:
+        print lboardOrder[0]
+        lboard = lboardOrder[0]
+        matches = args[1:]
+        # if leaderboard is specified and players are specified, check number of players
+        if matches:
+            # if number of players is even, send user to leaderboard-specific match entry menu
+            if len(matches) % 2 == 0:
+                new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
+                lboards_dict[lboard] = new_lboard
+                write_lboards_dict(lboards_dict)
+            # if number of players is odd, provide user with error
+            else:
+                print "ERROR: odd number of players provided."
+        # if leaderboard is specified and players aren't, give user an error
+        else:
+            print "ERROR: please enter player names"
+
 
 # ------------------------------------------DISPLAY MENU FUNCTIONS------------------------------------------------------
 
@@ -424,54 +473,13 @@ def main():
                 # proceed straight to adding players if names have been specified
                 add_new_players_list(players, new_players)
             else:
-                # send user to adding-specific prompts menu if no names specified
-                menu_add_players(players)
+                # send user to help screen.
+                print "ERROR: No names specified. See --help below for details.\n"
+                print_help()
 
         # "--match" argument specified
         elif args[0] == "--match":
-            first_arg = args[1]
-
-            # if players and leaderboard aren't specified, send user to prompts menu
-            if not first_arg:
-                enter_matches(players, lboards_dict)
-
-            # if leaderboard is specified
-            if first_arg.startswith("--"):
-                lboard = first_arg[2:]
-                matches = args[2:]
-                # if leaderboard is specified and players are specified, check number of players
-                if matches:
-                    # if number of players is even, send user to leaderboard-specific match entry menu
-                    if len(matches) % 2 == 0:
-                        if lboard not in lboards_dict:
-                            lboard_param = []
-                        else:
-                            lboard_param = lboards_dict[lboard]
-                        new_lboard = enter_lboard_match(players, matches, lboard_param)
-                        lboards_dict[lboard] = new_lboard
-                        write_lboards_dict("leaderboards.csv", lboards_dict)
-                    # if number of players is odd, provide user with error
-                    else:
-                        print "ERROR: odd number of players provided."
-                # if leaderboard is specified and players aren't, give user an error
-                else:
-                    print "ERROR: please enter player names"
-            else:
-                lboard = lboardOrder[0]
-                matches = args[1:]
-                # if leaderboard is specified and players are specified, check number of players
-                if matches:
-                    # if number of players is even, send user to leaderboard-specific match entry menu
-                    if len(matches) % 2 == 0:
-                        new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
-                        lboards_dict[lboard] = new_lboard
-                        write_lboards_dict("leaderboards.csv", lboards_dict)
-                    # if number of players is odd, provide user with error
-                    else:
-                        print "ERROR: odd number of players provided."
-                # if leaderboard is specified and players aren't, give user an error
-                else:
-                    print "ERROR: please enter player names"
+            match_choice(args, players, lboardOrder,lboards_dict)
 
         # "--view" argument specified
         elif args[0] == "--view":
