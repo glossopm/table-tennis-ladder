@@ -268,15 +268,15 @@ def enter_lboard_match(players, matches, lboard):
 # ------------------------------------------CHANGE LEADERBOARD FUNCTIONS------------------------------------------------
 
 # change leaderboard from command line
-def change_lboard(lboardsDict, lboardsOrder, new_name):
-    if new_name not in lboardsDict or new_name == "":
-        print "Error: leaderboards cannot be created empty. Record a match to create a new leaderboard."
+def change_lboard(lboardsDict, args):
+    if not args[1] or args[1] not in lboardsDict:
+        print "Error: leaderboards does not exist. Record a match to create a new leaderboard."
     else:
         # removes new_name from list wherever it is then adds it to the front to become the default leaderboard
-        lboardsOrder[0] = new_name
+        new_name = args[1]
         print "The current leaderboard is now '" + new_name + "'."
 
-    write_lboards(lboardsOrder)
+    write_lboards(new_name)
     write_lboards_dict(lboardsDict)
 
 
@@ -496,26 +496,21 @@ def main():
                 lboard_name = args[1][2:]
                 view_leaderboard(lboard_name, lboards_dict[lboard_name])
 
+        # print all leaderboards, and specify current/active leaderboard
         elif args[0] == "--list":
-            print "Current existing leaderboards: " + ",".join(lboardOrder).strip("\n")
-            print "The active leaderboard is currently '" + lboardOrder[0] + "'"
+            print "The existing leaderboards are: " + ", ".join(str(x) for x in lboards_dict.keys())
+            print "The active leaderboard is currently: '" + lboardOrder[0] + "'"
 
-
+        # send user to view players function
         elif args[0] == "--players":
-            # send user to players view
             view_players(players)
-
+        
+        # send user to change leaderboard function
         elif args[0] == "--change":
-            lboard_name = args[1:]
-            if len(lboard_name) != 0:
-                lboard_name = str(args[1])[2:]
-            else:
-                lboard_name = ""
-            change_lboard(lboards_dict, lboardOrder, lboard_name)
+            change_lboard(lboards_dict, args)
 
-        # "--help" argument specified
+        # print help function
         elif args[0] == "--help":
-            # print helper function
             print_help()
 
         elif args[0] == "--search":
