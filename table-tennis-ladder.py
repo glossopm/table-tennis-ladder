@@ -360,7 +360,7 @@ def match_choice(args, players, lboardOrder,lboards_dict):
                     lboard_param = lboards_dict[lboard]
                 new_lboard = enter_lboard_match(players, matches, lboard_param)
                 lboards_dict[lboard] = new_lboard
-                write_lboards_dict("leaderboards.csv", lboards_dict)
+                write_lboards_dict(lboards_dict)
             # if number of players is odd, provide user with error
             else:
                 print "ERROR: odd number of players provided."
@@ -377,7 +377,7 @@ def match_choice(args, players, lboardOrder,lboards_dict):
             if len(matches) % 2 == 0:
                 new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
                 lboards_dict[lboard] = new_lboard
-                write_lboards_dict("leaderboards.csv", lboards_dict)
+                write_lboards_dict(lboards_dict)
             # if number of players is odd, provide user with error
             else:
                 print "ERROR: odd number of players provided."
