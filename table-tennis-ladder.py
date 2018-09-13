@@ -217,7 +217,7 @@ def enter_matches(players, default_lboard, lboards_dict):
 
     if winner == loser:
         print "Players' names must be unique. Please try again."
-        enter_matches(players, ladder)
+        main_menu()
 
     new_ladder = match_played(winner, loser, ladder)
     lboards_dict[default_lboard] = new_ladder
@@ -227,7 +227,7 @@ def enter_matches(players, default_lboard, lboards_dict):
 
     while True:
         if user_choice == "1":
-            enter_matches(players, ladder)
+            enter_matches(players, ladder, lboards_dict)
         elif user_choice == "2":
             main_menu()
         else:
@@ -421,22 +421,25 @@ def main_menu():
 
     user_choice = str(raw_input("Please select an option: "))
 
-    if user_choice == "1" or user_choice == "1)":
+    # strips off the ")" character if a user types e.g. "3)" instead of "3" for view leaderboard
+    user_choice = user_choice.replace(")","")
+
+    if user_choice == "1":
         menu_add_players(players)
 
-    elif user_choice == "2" or user_choice == "2)":
+    elif user_choice == "2":
         enter_matches(players, default_lb_name, lboards_dict)
 
-    elif user_choice == "3" or user_choice == "3)":
+    elif user_choice == "3":
         view_leaderboard(default_lb_name, lboards_dict[default_lb_name])
 
-    elif user_choice == "4" or user_choice == "4)":
+    elif user_choice == "4":
         view_players(players)
 
-    elif user_choice == "5" or user_choice == "5)":
+    elif user_choice == "5":
         search_players_menu(default_lb_name)
 
-    elif user_choice == "6" or user_choice == "6)":
+    elif user_choice == "6":
         print "Goodbye!"
         exit()
     else:
