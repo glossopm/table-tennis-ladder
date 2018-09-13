@@ -1,6 +1,7 @@
 import sys
 from prettytable import PrettyTable
 import csv
+import string
 
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
@@ -57,12 +58,18 @@ def get_lboards_dict(filename):
         if val == "[]":
             val = []
         else:
-            val = val.replace("[", "")
-            val = val.replace("]", "")
-            val = val.split(",")
+            val.translate(None, string.punctuation)
         mydict[str(key)] = val
 
-    #print mydict
+    for i in mydict:
+        if isinstance(mydict[i], basestring):
+            strList = mydict[i]
+            strList = strList.replace("[","")
+            strList = strList.replace("]","")
+            strList = strList.replace("'","")
+            strList = strList.replace(" ","")
+            strList = strList.split(",")
+            mydict[i] = strList
     return mydict
 
 
@@ -87,7 +94,7 @@ def add_new_players_list(players, new_players):
             if not player_name.isalpha():
                 failed_players.append(player_name)
             else:
-                players.append(player_name)
+                players.append(player_name.strip("\n"))
                 added_players.append(player_name)
     write_players("players.txt", players)
 
@@ -120,9 +127,6 @@ def menu_add_players(players):
 
 # moves or adds winner/loser to correct positions in ladder
 def match_played(winner, loser, ladder):
-    print winner
-    print loser
-    print ladder
     if winner not in ladder:
         if loser not in ladder:
             ladder.append(winner)
@@ -143,7 +147,8 @@ def match_played(winner, loser, ladder):
 
 
 # record new match (from prompt menu)
-def enter_matches(players, ladder):
+def enter_matches(players, default_lboard, lboards_dict):
+    ladder = lboards_dict[default_lboard]
     while True:
         winner = str(raw_input("Please enter name of winner: "))
         if (winner not in players) or (winner.lower() not in [i.lower() for i in players]):
@@ -163,7 +168,8 @@ def enter_matches(players, ladder):
         enter_matches(players, ladder)
 
     new_ladder = match_played(winner, loser, ladder)
-    write_ladder("ladder.txt", new_ladder)
+    lboards_dict[default_lboard] = new_ladder
+    write_lboards_dict("leaderboards.csv", lboards_dict)
 
     user_choice = display_record_matches_menu()
 
@@ -215,7 +221,7 @@ def enter_lboard_match(players, matches, lboard):
 def change_lboard(lboardsDict, lboardsOrder, new_name):
     if new_name not in lboardsOrder:
         lboardsOrder.insert(0, new_name)
-        print "The leaderboard '" + str(new_name) + " has been created, and is now the current leaderboard."
+        print "The leaderboard '" + str(new_name) + "' has been created, and is now the current leaderboard."
         lboardsDict[new_name] = []
     else:
         # removes new_name from list wherever it is then adds it to the front to become the default leaderboard
@@ -323,7 +329,7 @@ def main_menu():
     lboards_order = get_leaderboards("leaderboardsOrder.txt")
     lboards_dict = get_lboards_dict(("leaderboards.csv"))
 
-    ladder = lboards_dict[lboards_order[0]]
+    default_lb_name = lboards_order[0]
 
     print ""
     print "-- Menu --"
@@ -340,16 +346,16 @@ def main_menu():
         menu_add_players(players)
 
     elif user_choice == "2" or user_choice == "2)":
-        enter_matches(players, ladder)
+        enter_matches(players, default_lb_name, lboards_dict)
 
     elif user_choice == "3" or user_choice == "3)":
-        view_leaderboard(ladder)
+        view_leaderboard(default_lb_name, lboards_dict[default_lb_name])
 
     elif user_choice == "4" or user_choice == "4)":
         view_players(players)
 
     elif user_choice == "5" or user_choice == "5)":
-        search_players_menu(ladder)
+        search_players_menu(default_lb_name)
 
     elif user_choice == "6" or user_choice == "6)":
         print "Goodbye!"
@@ -441,7 +447,7 @@ def main():
         elif args[0] == "--change":
             lboard_name = args[1:]
             if len(lboard_name) != 0:
-                lboard_name = str(args[1])
+                lboard_name = str(args[1])[2:]
                 change_lboard(lboards_dict, lboardOrder, lboard_name)
             else:
                 change_lboard_menu(lboards_dict, lboardOrder)
@@ -456,8 +462,6 @@ def main():
             if len(search_terms) != 0:
                 if args[1].startswith("--"):
                     # search a specific leaderboard
-                    #print args[1][2:]
-                    #print args[2]
                     search_terms = args[2:]
                     lb_name = args[1][2:]
                     search_players(lb_name, search_terms, lboards_dict[lb_name])
