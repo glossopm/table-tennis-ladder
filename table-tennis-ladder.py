@@ -444,16 +444,20 @@ def main():
                 # proceed straight to adding players if names have been specified
                 add_new_players_list(players, new_players)
             else:
-                # send user to adding-specific prompts menu if no names specified
-                menu_add_players(players)
+                # send user to help screen.
+                print "ERROR: No names specified. See --help below for details.\n"
+                print_help()
 
         # "--match" argument specified
         elif args[0] == "--match":
-            first_arg = args[1]
-
+            
             # if players and leaderboard aren't specified, send user to prompts menu
-            if not first_arg:
-                enter_matches(players, lboards_dict)
+            if len(args) == 1:
+                print "ERROR: No names specificed. See --help for details.\n"
+                print_help()
+                exit()
+
+            first_arg = args[1]
 
             # if leaderboard is specified
             if first_arg.startswith("--"):
