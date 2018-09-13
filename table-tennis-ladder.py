@@ -6,13 +6,14 @@ import string
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
 
-# function to get a list from a .txt file 
+# function to get a list from a .txt file
 def get_list_file(filename):
     list_file = open(filename, "r")
     list_str = list_file.read()
     list_name = list_str.split(",")
     list_file.close()
     return list_name
+
 
 # function to write a list to a .txt file
 def write_list_file(filename, data):
@@ -23,10 +24,12 @@ def write_list_file(filename, data):
     write_str = write_str.rstrip(",").lstrip(",")
     list_file.write(write_str)
     list_file.close()
-    return
+
+
 # read leaderboards order data from .txt file
 def get_leaderboards():
     return get_list_file("default_lboard.txt")
+
 
 # read players data from .txt file, store and return "players" list
 def get_players():
@@ -37,48 +40,42 @@ def get_players():
 def write_lboards(data):
     return write_list_file("default_lboard.txt", data)
 
+
 # write leaderboards order data to .txt file
 def write_players(data):
     return write_list_file("players.txt", data)
 
 
 # read leaderboards data from .csv file and store and return "leaderboards" dictionary
-def get_lboards_dict(filename):
+def get_lboards_dict():
 
-    reader = csv.reader(open(filename, "r"))
+    reader = csv.reader(open("leaderboards.csv", "r"))
     mydict = {}
     for row in reader:
         key, val = row
-        if val == "[]":
-            val = []
+        if key not in mydict:
+            temp = []
+            temp.append(val)
+            mydict[key] = temp
         else:
-            val.translate(None, string.punctuation)
-        mydict[str(key)] = val
+            temp = mydict[key]
+            temp.append(val)
+            mydict[key] = temp
 
-    for i in mydict:
-        if isinstance(mydict[i], basestring):
-            strList = mydict[i]
-            strList = strList.replace("[","")
-            strList = strList.replace("]","")
-            strList = strList.replace("'","")
-            strList = strList.replace(" ","")
-            strList = strList.split(",")
-            mydict[i] = strList
     return mydict
 
 
 def write_lboards_dict(filename, lboard_dict):
 
     w = csv.writer(open(filename, "w"))
-    for key, val in lboard_dict.items():
-        w.writerow([key, val])
 
-    create_html_file(lboard_dict)
+    for key in lboard_dict:
+        for i in lboard_dict[key]:
+            w.writerow([key, i])
 
 
-# get data outputs default_lboard, player.txt, and leaderboards.csv files content
 def get_data():
-    return get_leaderboards(), get_players(), get_lboards_dict("leaderboards.csv")
+    return get_leaderboards(), get_players(), get_lboards_dict()
 
 # ------------------------------------------WRITE HTML FILE OPERATIONS--------------------------------------------------
 
@@ -151,7 +148,7 @@ def add_new_players_list(players, new_players):
             else:
                 players.append(player_name.strip("\n"))
                 added_players.append(player_name)
-    write_players(players)
+    write_players("players.txt", players)
 
     if len(added_players) != 0:
         print "The following players were added successfully: " + ", ".join(added_players)
@@ -173,7 +170,7 @@ def menu_add_players(players):
             print player_name + " added successfully!"
         user_fin = str(raw_input("Add more players? y/n: "))
         if user_fin == "n":
-            write_players(players)
+            write_players("players.txt", players)
             print ""
             main_menu()
 
@@ -202,8 +199,8 @@ def match_played(winner, loser, ladder):
 
 
 # record new match (from prompt menu)
-def enter_matches(players, d_lboard, lboards_dict):
-    ladder = lboards_dict[d_lboard]
+def enter_matches(players, default_lboard, lboards_dict):
+    ladder = lboards_dict[default_lboard]
     while True:
         winner = str(raw_input("Please enter name of winner: "))
         if (winner not in players) or (winner.lower() not in [i.lower() for i in players]):
@@ -223,7 +220,7 @@ def enter_matches(players, d_lboard, lboards_dict):
         enter_matches(players, ladder)
 
     new_ladder = match_played(winner, loser, ladder)
-    lboards_dict[d_lboard] = new_ladder
+    lboards_dict[default_lboard] = new_ladder
     write_lboards_dict("leaderboards.csv", lboards_dict)
 
     user_choice = display_record_matches_menu()
@@ -245,8 +242,8 @@ def enter_lboard_match(players, matches, lboard):
     new_lboard = lboard
 
     for i in range(0, len(matches)-1, 2):
-        winner = matches[i].rstrip(",").lstrip(",")
-        loser = matches[i+1].rstrip(",").lstrip(",")
+        winner = matches[i]
+        loser = matches[i+1]
 
         if winner == loser:
             duplicate_players.append(winner)
@@ -282,7 +279,8 @@ def change_lboard(lboardsDict, lboardsOrder, new_name):
         lboardsOrder.insert(0, new_name)
         print "The current leaderboard is now '" + new_name + "'."
 
-    write_lboards(lboardsOrder)
+    print lboardsDict
+    write_lboards("leaderboardsOrder.txt", lboardsOrder)
     write_lboards_dict("leaderboards.csv", lboardsDict)
 
 
@@ -298,7 +296,7 @@ def change_lboard_menu(lboardsDict, lboardsOrder):
         lboardsOrder.insert(0, new_name)
         print "The current leaderboard is now '" + new_name + "'."
 
-    write_lboards(lboardsOrder)
+    write_lboards("leaderboardsOrder.txt", lboardsOrder)
     write_lboards_dict("leaderboards.csv", lboardsDict)
 
 
@@ -378,6 +376,7 @@ def display_record_matches_menu():
 # print menu, read in and act on user choice from menu
 def main_menu():
     # re-read the players/ladders data - in essence, do a "refresh"
+
     lboards_order, players, lboards_dict = get_data()
 
     default_lb_name = lboards_order[0]
@@ -419,7 +418,7 @@ def main_menu():
 def print_help():
     print "[--add] \t\t\t Brings up the 'add player' prompt menu.\n" \
           "[--add name1 name2...] \t\t Adds each specified player to the players list. Players already present in the list will not be added, and an alert will appear.\n" \
-          "[--match] \t\t\t Error, please specify a winner or loser\n" \
+          "[--match] \t\t\t Error: please specify a winner and loser.\n" \
           "[--match winner loser...] \t Records matches between two players. Multiple match records can be entered at once. No matches will be recorded if an odd number of players is specified.\n" \
           "[--view] \t\t\t Allows the viewing of the current leaderboard\n" \
           "[--players] \t\t\t Allows the viewing of the full list of players\n" \
@@ -436,10 +435,7 @@ def main():
     if not args:
         main_menu()
     else:
-        # get data outputs default_lboard, player.txt, and leaderboards.csv files content
         lboardOrder, players, lboards_dict = get_data()
-
-
         # "--add" argument specified
         if args[0] == "--add":
             # check whether names of players have been specified
@@ -453,13 +449,11 @@ def main():
 
         # "--match" argument specified
         elif args[0] == "--match":
-            
-            # if players and leaderboard aren't specified, send user to prompts menu
-            if len(args) == 1:
-                print_help()
-                exit()
-
             first_arg = args[1]
+
+            # if players and leaderboard aren't specified, send user to prompts menu
+            if not first_arg:
+                enter_matches(players, lboards_dict)
 
             # if leaderboard is specified
             if first_arg.startswith("--"):
@@ -469,7 +463,11 @@ def main():
                 if matches:
                     # if number of players is even, send user to leaderboard-specific match entry menu
                     if len(matches) % 2 == 0:
-                        new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
+                        if lboard not in lboards_dict:
+                            lboard_param = []
+                        else:
+                            lboard_param = lboards_dict[lboard]
+                        new_lboard = enter_lboard_match(players, matches, lboard_param)
                         lboards_dict[lboard] = new_lboard
                         write_lboards_dict("leaderboards.csv", lboards_dict)
                     # if number of players is odd, provide user with error
