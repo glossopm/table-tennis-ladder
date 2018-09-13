@@ -148,7 +148,7 @@ def add_new_players_list(players, new_players):
             else:
                 players.append(player_name.strip("\n"))
                 added_players.append(player_name)
-    write_players("players.txt", players)
+    write_players(players)
 
     if len(added_players) != 0:
         print "The following players were added successfully: " + ", ".join(added_players)
@@ -170,7 +170,7 @@ def menu_add_players(players):
             print player_name + " added successfully!"
         user_fin = str(raw_input("Add more players? y/n: "))
         if user_fin == "n":
-            write_players("players.txt", players)
+            write_players(players)
             print ""
             main_menu()
 
@@ -280,7 +280,7 @@ def change_lboard(lboardsDict, lboardsOrder, new_name):
         print "The current leaderboard is now '" + new_name + "'."
 
     print lboardsDict
-    write_lboards("leaderboardsOrder.txt", lboardsOrder)
+    write_lboards(lboardsOrder)
     write_lboards_dict("leaderboards.csv", lboardsDict)
 
 
@@ -296,7 +296,7 @@ def change_lboard_menu(lboardsDict, lboardsOrder):
         lboardsOrder.insert(0, new_name)
         print "The current leaderboard is now '" + new_name + "'."
 
-    write_lboards("leaderboardsOrder.txt", lboardsOrder)
+    write_lboards(lboardsOrder)
     write_lboards_dict("leaderboards.csv", lboardsDict)
 
 
