@@ -1,7 +1,6 @@
 import sys
 from prettytable import PrettyTable
 import csv
-import string
 
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
@@ -180,21 +179,16 @@ def menu_add_players(players):
 # moves or adds winner/loser to correct positions in ladder
 def match_played(winner, loser, ladder):
     if winner not in ladder:
-        if loser not in ladder:
-            ladder.append(winner)
-            ladder.append(loser)
-        else:
-            loser_index = ladder.index(loser)
-            ladder.insert(loser_index, winner)
-    else:
-        if loser not in ladder:
-            ladder.append(loser)
-        else:
-            if ladder.index(winner) > ladder.index(loser):
-                loser_index = ladder.index(loser)
-                winner_index = ladder.index(winner)
-                del ladder[winner_index]
-                ladder.insert(loser_index, winner)
+        ladder.append(winner)
+
+    if loser not in ladder:
+        ladder.append(loser)
+
+    if ladder.index(winner) > ladder.index(loser):
+        loser_index = ladder.index(loser)
+        winner_index = ladder.index(winner)
+        del ladder[winner_index]
+        ladder.insert(loser_index, winner)
     return ladder
 
 
@@ -496,7 +490,7 @@ def main():
         # print all leaderboards, and specify current/active leaderboard
         elif args[0] == "--list":
             print "The existing leaderboards are: " + ", ".join(str(x) for x in lboards_dict.keys())
-            print "The active leaderboard is currently: '" + lboardOrder[0] + "'"
+            print "The active leaderboard is currently: '" + lboardOrder[0] + "'."
 
         # send user to view players function
         elif args[0] == "--players":
