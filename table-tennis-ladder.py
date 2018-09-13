@@ -6,46 +6,40 @@ import string
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
 
+# function to get a list from a .txt file 
+def get_list_file(filename):
+    list_file = open(filename, "r")
+    list_str = list_file.read()
+    list_name = list_str.split(",")
+    list_file.close()
+    return list_name
+
+# function to write a list to a .txt file
+def write_list_file(filename, data):
+    list_file = open(filename, "w")
+    write_str = ""
+    for i in data:
+        write_str = write_str + i + ","
+    write_str = write_str.rstrip(",").lstrip(",")
+    list_file.write(write_str)
+    list_file.close()
+    return
 # read leaderboards order data from .txt file
-def get_leaderboards(filename):
-    leaderboards_file = open(filename, "r")
-    lboards_str = leaderboards_file.read()
-    lboards = lboards_str.split(",")
-    leaderboards_file.close()
-    return lboards
+def get_leaderboards():
+    return get_list_file("default_lboard.txt")
+
+# read players data from .txt file, store and return "players" list
+def get_players():
+    return get_list_file("players.txt")
 
 
 # write leaderboards order data to .txt file
-def write_lboards(filename, lboardsOrder):
-    lboards_file = open(filename, "w")
-    write_str = ""
-    for i in lboardsOrder:
-        write_str = write_str + i + ","
-    write_str = write_str.rstrip(",").lstrip(",")
-    lboards_file.write(write_str)
-    lboards_file.close()
-    return
+def write_lboards(data):
+    return write_list_file("default_lboard.txt", data)
 
-
-# read players data from .txt file, store and return "players" list
-def get_players(filename):
-    players_file = open(filename, "r")
-    players_str = players_file.read()
-    players = players_str.split(",")
-    players_file.close()
-    return players
-
-
-# write players data from "players" list to .txt file
-def write_players(filename, players):
-    players_file = open(filename, "w")
-    write_str = ""
-    for i in players:
-        write_str = write_str + i + ","
-    write_str = write_str.rstrip(",").lstrip(",")
-    players_file.write(write_str)
-    players_file.close()
-    return
+# write leaderboards order data to .txt file
+def write_players(data):
+    return write_list_file("players.txt", data)
 
 
 # read leaderboards data from .csv file and store and return "leaderboards" dictionary
@@ -90,10 +84,18 @@ def create_html_file(lboards_dict):
     html_string = "<!DOCTYPE html><br>"
     html_string = html_string + """<html>\n<head>\n<style>
     body {
-      background-color: powderblue;
+      background-color: ivory;
+      allign: center;
+      display: block;
+      margin-left: auto;
+      margin-right: auto; 
     }
     h1  {
       color: blue;
+    }
+    #wrapper { 
+       width: 1000px; 
+       margin: 0 auto; 
     }
     table, th, td {
     border: 1px solid black;
@@ -104,8 +106,8 @@ def create_html_file(lboards_dict):
       color: red;
     }
    </style>"""
-    html_string = html_string + "<title>---VIEW LEADERBOARDS---</title>\n</head>\n <h1> Table-Tennis Leaderboard </h1>"
-    html_string = html_string + "<body>\n"
+    html_string = html_string + "<title> Table-Tennis Leaderboards</title>\n</head>\n <h1> Table-Tennis Leaderboards </h1>"
+    html_string = html_string + "<body id=\"wrapper\">\n"
 
     for i in lboards_dict:
         table = PrettyTable()
@@ -144,7 +146,7 @@ def add_new_players_list(players, new_players):
             else:
                 players.append(player_name.strip("\n"))
                 added_players.append(player_name)
-    write_players("players.txt", players)
+    write_players(players)
 
     if len(added_players) != 0:
         print "The following players were added successfully: " + ", ".join(added_players)
@@ -166,7 +168,7 @@ def menu_add_players(players):
             print player_name + " added successfully!"
         user_fin = str(raw_input("Add more players? y/n: "))
         if user_fin == "n":
-            write_players("players.txt", players)
+            write_players(players)
             print ""
             main_menu()
 
@@ -195,8 +197,8 @@ def match_played(winner, loser, ladder):
 
 
 # record new match (from prompt menu)
-def enter_matches(players, default_lboard, lboards_dict):
-    ladder = lboards_dict[default_lboard]
+def enter_matches(players, d_lboard, lboards_dict):
+    ladder = lboards_dict[d_lboard]
     while True:
         winner = str(raw_input("Please enter name of winner: "))
         if (winner not in players) or (winner.lower() not in [i.lower() for i in players]):
@@ -216,7 +218,7 @@ def enter_matches(players, default_lboard, lboards_dict):
         enter_matches(players, ladder)
 
     new_ladder = match_played(winner, loser, ladder)
-    lboards_dict[default_lboard] = new_ladder
+    lboards_dict[d_lboard] = new_ladder
     write_lboards_dict("leaderboards.csv", lboards_dict)
 
     user_choice = display_record_matches_menu()
@@ -267,7 +269,7 @@ def enter_lboard_match(players, matches, lboard):
 
 # change leaderboard from command line
 def change_lboard(lboardsDict, lboardsOrder, new_name):
-    if new_name not in lboardsOrder:
+    if new_name not in lboards:
         lboardsOrder.insert(0, new_name)
         print "The leaderboard '" + str(new_name) + "' has been created, and is now the current leaderboard."
         lboardsDict[new_name] = []
@@ -277,7 +279,7 @@ def change_lboard(lboardsDict, lboardsOrder, new_name):
         lboardsOrder.insert(0, new_name)
         print "The current leaderboard is now '" + new_name + "'."
 
-    write_lboards("leaderboardsOrder.txt", lboardsOrder)
+    write_lboards(lboardsOrder)
     write_lboards_dict("leaderboards.csv", lboardsDict)
 
 
@@ -293,7 +295,7 @@ def change_lboard_menu(lboardsDict, lboardsOrder):
         lboardsOrder.insert(0, new_name)
         print "The current leaderboard is now '" + new_name + "'."
 
-    write_lboards("leaderboardsOrder.txt", lboardsOrder)
+    write_lboards(lboardsOrder)
     write_lboards_dict("leaderboards.csv", lboardsDict)
 
 
@@ -373,8 +375,8 @@ def display_record_matches_menu():
 # print menu, read in and act on user choice from menu
 def main_menu():
     # re-read the players/ladders data - in essence, do a "refresh"
-    players = get_players("players.txt")
-    lboards_order = get_leaderboards("leaderboardsOrder.txt")
+    players = get_players()
+    lboards_order = get_leaderboards()
     lboards_dict = get_lboards_dict(("leaderboards.csv"))
 
     default_lb_name = lboards_order[0]
@@ -433,8 +435,8 @@ def main():
     if not args:
         main_menu()
     else:
-        lboardOrder = get_leaderboards("leaderboardsOrder.txt")
-        players = get_players("players.txt")
+        lboardOrder = get_leaderboards()
+        players = get_players()
         lboards_dict = get_lboards_dict("leaderboards.csv")
 
         # "--add" argument specified
