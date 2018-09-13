@@ -65,9 +65,9 @@ def get_lboards_dict():
     return mydict
 
 
-def write_lboards_dict(filename, lboard_dict):
+def write_lboards_dict(lboard_dict):
 
-    w = csv.writer(open(filename, "w"))
+    w = csv.writer(open("leaderboards.csv", "w"))
 
     for key in lboard_dict:
         for i in lboard_dict[key]:
@@ -148,7 +148,7 @@ def add_new_players_list(players, new_players):
             else:
                 players.append(player_name.strip("\n"))
                 added_players.append(player_name)
-    write_players(players)
+    write_players("players.txt", players)
 
     if len(added_players) != 0:
         print "The following players were added successfully: " + ", ".join(added_players)
@@ -170,7 +170,7 @@ def menu_add_players(players):
             print player_name + " added successfully!"
         user_fin = str(raw_input("Add more players? y/n: "))
         if user_fin == "n":
-            write_players(players)
+            write_players("players.txt", players)
             print ""
             main_menu()
 
@@ -221,7 +221,7 @@ def enter_matches(players, default_lboard, lboards_dict):
 
     new_ladder = match_played(winner, loser, ladder)
     lboards_dict[default_lboard] = new_ladder
-    write_lboards_dict("leaderboards.csv", lboards_dict)
+    write_lboards_dict(lboards_dict)
 
     user_choice = display_record_matches_menu()
 
@@ -269,35 +269,15 @@ def enter_lboard_match(players, matches, lboard):
 
 # change leaderboard from command line
 def change_lboard(lboardsDict, lboardsOrder, new_name):
-    if new_name not in lboardsOrder:
-        lboardsOrder.insert(0, new_name)
-        print "The leaderboard '" + str(new_name) + "' has been created, and is now the current leaderboard."
-        lboardsDict[new_name] = []
+    if new_name not in lboardsDict or new_name == "":
+        print "Error: leaderboards cannot be created empty. Record a match to create a new leaderboard."
     else:
         # removes new_name from list wherever it is then adds it to the front to become the default leaderboard
-        del lboardsOrder[lboardsOrder.index(new_name)]
-        lboardsOrder.insert(0, new_name)
-        print "The current leaderboard is now '" + new_name + "'."
-
-    print lboardsDict
-    write_lboards(lboardsOrder)
-    write_lboards_dict("leaderboards.csv", lboardsDict)
-
-
-#change leaderboard from menu prompt
-def change_lboard_menu(lboardsDict, lboardsOrder):
-    new_name = str(raw_input("Please enter a leaderboard: "))
-    if new_name not in lboardsOrder:
-        lboardsOrder.insert(0, new_name)
-        print "The leaderboard '" + new_name + "' has been created, and is now the current leaderboard."
-        lboardsDict[new_name] = []
-    else:
-        del lboardsOrder[lboardsOrder.index(new_name)]
-        lboardsOrder.insert(0, new_name)
+        lboardsOrder[0] = new_name
         print "The current leaderboard is now '" + new_name + "'."
 
     write_lboards(lboardsOrder)
-    write_lboards_dict("leaderboards.csv", lboardsDict)
+    write_lboards_dict(lboardsDict)
 
 
 # ------------------------------------------VIEW LEADERBOARD FUNCTIONS--------------------------------------------------
@@ -515,9 +495,9 @@ def main():
             lboard_name = args[1:]
             if len(lboard_name) != 0:
                 lboard_name = str(args[1])[2:]
-                change_lboard(lboards_dict, lboardOrder, lboard_name)
             else:
-                change_lboard_menu(lboards_dict, lboardOrder)
+                lboard_name = ""
+            change_lboard(lboards_dict, lboardOrder, lboard_name)
 
         # "--help" argument specified
         elif args[0] == "--help":
