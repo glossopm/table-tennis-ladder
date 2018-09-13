@@ -75,6 +75,11 @@ def write_lboards_dict(filename, lboard_dict):
 
     create_html_file(lboard_dict)
 
+
+# get data outputs default_lboard, player.txt, and leaderboards.csv files content
+def get_data():
+    return get_leaderboards(), get_players(), get_lboards_dict("leaderboards.csv")
+
 # ------------------------------------------WRITE HTML FILE OPERATIONS--------------------------------------------------
 
 def create_html_file(lboards_dict):
@@ -234,9 +239,7 @@ def enter_matches(players, d_lboard, lboards_dict):
 
 # add a match for a leaderboard - "players" and "lboard" both list format
 def enter_lboard_match(players, matches, lboard):
-    #print players
-    #print matches
-    #print lboard
+
     duplicate_players = []
     failed_records = []
     new_lboard = lboard
@@ -269,7 +272,7 @@ def enter_lboard_match(players, matches, lboard):
 
 # change leaderboard from command line
 def change_lboard(lboardsDict, lboardsOrder, new_name):
-    if new_name not in lboards:
+    if new_name not in lboardsOrder:
         lboardsOrder.insert(0, new_name)
         print "The leaderboard '" + str(new_name) + "' has been created, and is now the current leaderboard."
         lboardsDict[new_name] = []
@@ -375,9 +378,7 @@ def display_record_matches_menu():
 # print menu, read in and act on user choice from menu
 def main_menu():
     # re-read the players/ladders data - in essence, do a "refresh"
-    players = get_players()
-    lboards_order = get_leaderboards()
-    lboards_dict = get_lboards_dict(("leaderboards.csv"))
+    lboards_order, players, lboards_dict = get_data()
 
     default_lb_name = lboards_order[0]
 
@@ -418,7 +419,7 @@ def main_menu():
 def print_help():
     print "[--add] \t\t\t Brings up the 'add player' prompt menu.\n" \
           "[--add name1 name2...] \t\t Adds each specified player to the players list. Players already present in the list will not be added, and an alert will appear.\n" \
-          "[--match] \t\t\t Brings up the 'record match' prompt menu.\n" \
+          "[--match] \t\t\t Error, please specify a winner or loser\n" \
           "[--match winner loser...] \t Records matches between two players. Multiple match records can be entered at once. No matches will be recorded if an odd number of players is specified.\n" \
           "[--view] \t\t\t Allows the viewing of the current leaderboard\n" \
           "[--players] \t\t\t Allows the viewing of the full list of players\n" \
@@ -435,9 +436,9 @@ def main():
     if not args:
         main_menu()
     else:
-        lboardOrder = get_leaderboards()
-        players = get_players()
-        lboards_dict = get_lboards_dict("leaderboards.csv")
+        # get data outputs default_lboard, player.txt, and leaderboards.csv files content
+        lboardOrder, players, lboards_dict = get_data()
+
 
         # "--add" argument specified
         if args[0] == "--add":
@@ -452,11 +453,13 @@ def main():
 
         # "--match" argument specified
         elif args[0] == "--match":
-            first_arg = args[1]
-
+            
             # if players and leaderboard aren't specified, send user to prompts menu
-            if not first_arg:
-                enter_matches(players, lboards_dict)
+            if len(args) == 1:
+                print_help()
+                exit()
+
+            first_arg = args[1]
 
             # if leaderboard is specified
             if first_arg.startswith("--"):
