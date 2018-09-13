@@ -79,6 +79,39 @@ def write_lboards_dict(filename, lboard_dict):
     for key, val in lboard_dict.items():
         w.writerow([key, val])
 
+    create_html_file(lboard_dict)
+
+# ------------------------------------------WRITE HTML FILE OPERATIONS--------------------------------------------------
+
+def create_html_file(lboards_dict):
+
+    html_string = ""
+
+    html_string = "<!DOCTYPE html>\n"
+    html_string = html_string + "<html>\n<head>\n"
+    html_string = html_string + "<title>---VIEW LEADERBOARDS---</title>\n</head>\n"
+    html_string = html_string + "<body>\n"
+
+    for i in lboards_dict:
+        table = PrettyTable()
+        table.field_names = ["Ranking", "Name"]
+        #print i
+        html_string = html_string + i + "\n"
+
+        for j in lboards_dict[i]:
+            #print j
+            table.add_row([str(lboards_dict[i].index(j)+1), str(j)])
+
+        html_string = html_string + str(table)
+        html_string = html_string + "\n\n"
+
+    html_string = html_string + "</body>\n"
+    html_string = html_string + "</html>"
+    html_file = open("lboards_html.index", "w+")
+
+    html_file.write(html_string)
+    html_file.close()
+
 # ------------------------------------------ADD PLAYERS FUNCTIONS------------------------------------------------------
 
 # add new players (straight from command line)
