@@ -1,1 +1,1 @@
-leaderboard1,aderboard1,leaderboard2
+leaderboard2,leaderboard1
