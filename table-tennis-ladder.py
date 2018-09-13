@@ -138,6 +138,10 @@ def add_new_players_list(players, new_players):
     added_players = []
     failed_players = []
 
+    if len(new_players) == 0:
+        print "Error: player names not specified."
+        print_help()
+
     for player_name in new_players:
         if player_name in players or player_name.lower() in [i.lower() for i in players]:
             duplicate_players.append(player_name)
@@ -259,7 +263,14 @@ def enter_lboard_match(players, matches, lboard):
     return new_lboard
 
 
-# ------------------------------------------CHANGE LEADERBOARD FUNCTIONS------------------------------------------------
+# ------------------------------------------DISPLAY LEADERBOARD FUNCTION------------------------------------------------
+
+def print_lboard_info(lboards_dict, default_lb_name):
+    print "The existing leaderboards are: " + ", ".join(str(x) for x in lboards_dict.keys())
+    print "The active leaderboard is currently: '" + default_lb_name + "'."
+
+
+# ------------------------------------------CHANGE LEADERBOARD FUNCTION-------------------------------------------------
 
 # change leaderboard from command line
 def change_lboard(lboardsDict, args):
@@ -274,7 +285,7 @@ def change_lboard(lboardsDict, args):
     write_lboards_dict(lboardsDict)
 
 
-# ------------------------------------------VIEW LEADERBOARD FUNCTIONS--------------------------------------------------
+# ------------------------------------------VIEW LEADERBOARD FUNCTION---------------------------------------------------
 
 # print leaderboard
 def view_leaderboard(lb_dict, default_lb_name, args):
@@ -297,7 +308,7 @@ def view_leaderboard(lb_dict, default_lb_name, args):
     exit()
 
 
-# ------------------------------------------VIEW PLAYERS FUNCTIONS------------------------------------------------------
+# ------------------------------------------VIEW PLAYERS FUNCTION-------------------------------------------------------
 
 # print players
 def view_players(players):
@@ -405,9 +416,8 @@ def display_record_matches_menu():
 # ------------------------------------------MAIN MENU FUNCTIONS---------------------------------------------------------
 
 # print menu, read in and act on user choice from menu
-def main_menu():
+def main_menu(default_lb_name, players, lboards_dict):
     # re-read the players/ladders data - in essence, do a "refresh"
-    default_lb_name, players, lboards_dict = get_data()
 
     print ""
     print "-- Menu --"
@@ -461,68 +471,60 @@ def main():
 
     # retrieve non-script arguments
     args = sys.argv[1:]
+    default_lb, players, lboards_dict = get_data()
+    default_lb_name = default_lb[0]
 
     # if no arguments have been given, send user to prompts menu
-    if not args:
-        main_menu()
-    else:
-        default_lb, players, lboards_dict = get_data()
-        default_lb_name = default_lb[0]
-        # "--add" argument specified
-        if args[0] == "--add":
-            # check whether names of players have been specified
-            new_players = args[1:]
-            if len(new_players) != 0:
-                # proceed straight to adding players if names have been specified
-                add_new_players_list(players, new_players)
+    if args[0] == "--interactive":
+        main_menu(default_lb_name, players, lboards_dict)
+
+    # "--add" argument specified
+    elif args[0] == "--add":
+        # check whether names of players have been specified
+        add_new_players_list(players, args[1:])
+
+    # "--match" argument specified
+    elif args[0] == "--match":
+        match_choice(args, players, default_lb_name, lboards_dict)
+
+    # "--view" argument specified
+    elif args[0] == "--view":
+        view_leaderboard(lboards_dict, default_lb_name, args)
+
+    # print all leaderboards, and specify current/active leaderboard
+    elif args[0] == "--list":
+        print_lboard_info(lboards_dict, default_lb_name)
+
+    # send user to view players function
+    elif args[0] == "--players":
+        view_players(players)
+
+    # send user to change leaderboard function
+    elif args[0] == "--change":
+        change_lboard(lboards_dict, args)
+
+    # print help function
+    elif args[0] == "--help":
+        print_help()
+
+    elif args[0] == "--search":
+        search_terms = args[1:]
+        if len(search_terms) != 0:
+            if args[1].startswith("--"):
+                # search a specific leaderboard
+                search_terms = args[2:]
+                lb_name = args[1][2:]
+                search_players(lb_name, search_terms, lboards_dict[lb_name])
             else:
-                # send user to help screen.
-                print "ERROR: No names specified. See --help below for details.\n"
-                print_help()
-
-        # "--match" argument specified
-        elif args[0] == "--match":
-            match_choice(args, players, default_lb_name, lboards_dict)
-
-        # "--view" argument specified
-        elif args[0] == "--view":
-            view_leaderboard(lboards_dict, default_lb_name, args)
-
-        # print all leaderboards, and specify current/active leaderboard
-        elif args[0] == "--list":
-            print "The existing leaderboards are: " + ", ".join(str(x) for x in lboards_dict.keys())
-            print "The active leaderboard is currently: '" + default_lb_name + "'."
-
-        # send user to view players function
-        elif args[0] == "--players":
-            view_players(players)
-        
-        # send user to change leaderboard function
-        elif args[0] == "--change":
-            change_lboard(lboards_dict, args)
-
-        # print help function
-        elif args[0] == "--help":
-            print_help()
-
-        elif args[0] == "--search":
-            search_terms = args[1:]
-            if len(search_terms) != 0:
-                if args[1].startswith("--"):
-                    # search a specific leaderboard
-                    search_terms = args[2:]
-                    lb_name = args[1][2:]
-                    search_players(lb_name, search_terms, lboards_dict[lb_name])
-                else:
-                    # search all leaderboards
-                    for person in search_terms:
-                        flag = 0
-                        for board in lboards_dict:
-                            if person in lboards_dict[board]:
-                                flag = 1
-                                search_players(board, person, lboards_dict[board])
-                        if flag == 0:
-                            print person + " is unranked in all leaderboards."
+                # search all leaderboards
+                for person in search_terms:
+                    flag = 0
+                    for board in lboards_dict:
+                        if person in lboards_dict[board]:
+                            flag = 1
+                            search_players(board, person, lboards_dict[board])
+                    if flag == 0:
+                        print person + " is unranked in all leaderboards."
 
 
         else:
