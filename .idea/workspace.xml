@@ -2,7 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98ff781e-5094-475d-978a-ab4e0e7844bf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/default_lboard.txt" beforeDir="false" afterPath="$PROJECT_DIR$/default_lboard.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/lboards_html.html" beforeDir="false" afterPath="$PROJECT_DIR$/lboards_html.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/leaderboards.csv" beforeDir="false" afterPath="$PROJECT_DIR$/leaderboards.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/players.txt" beforeDir="false" afterPath="$PROJECT_DIR$/players.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/table-tennis-ladder.py" beforeDir="false" afterPath="$PROJECT_DIR$/table-tennis-ladder.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -22,52 +26,48 @@
       <usages-collector id="statistics.file.extensions.open">
         <counts>
           <entry key="csv" value="1" />
+          <entry key="gitignore" value="1" />
           <entry key="py" value="1" />
-          <entry key="txt" value="2" />
+          <entry key="txt" value="3" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="3" />
+          <entry key="PLAIN_TEXT" value="5" />
           <entry key="Python" value="1" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="822" />
-          <entry key="txt" value="33" />
+          <entry key="py" value="1215" />
+          <entry key="txt" value="35" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="PLAIN_TEXT" value="33" />
-          <entry key="Python" value="822" />
+          <entry key="PLAIN_TEXT" value="35" />
+          <entry key="Python" value="1215" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/table-tennis-ladder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="230">
-              <caret line="495" lean-forward="true" selection-start-line="488" selection-start-column="8" selection-end-line="529" selection-end-column="78" />
+            <state relative-caret-position="984">
+              <caret line="518" column="37" lean-forward="true" selection-start-line="518" selection-start-column="37" selection-end-line="518" selection-end-column="37" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <marker date="1536856484527" expanded="true" signature="8269:8274" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/default_lboard.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret column="12" lean-forward="true" selection-start-column="12" selection-end-column="12" />
-            </state>
-          </provider>
+          <provider selected="true" editor-type-id="text-editor" />
         </entry>
       </file>
     </leaf>
@@ -78,8 +78,8 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/default_lboard.txt" />
         <option value="$PROJECT_DIR$/table-tennis-ladder.py" />
+        <option value="$PROJECT_DIR$/default_lboard.txt" />
       </list>
     </option>
   </component>
@@ -142,11 +142,11 @@
     <editor active="true" />
     <layout>
       <window_info id="Favorites" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13517204" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13517204" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
-      <window_info anchor="bottom" id="Version Control" />
+      <window_info anchor="bottom" id="Version Control" weight="0.32956383" />
       <window_info anchor="bottom" id="Python Console" />
-      <window_info active="true" anchor="bottom" id="Terminal" visible="true" weight="0.17178245" />
+      <window_info anchor="bottom" id="Terminal" visible="true" weight="0.4194938" />
       <window_info anchor="bottom" id="Event Log" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
@@ -167,23 +167,21 @@
     <entry file="file://$PROJECT_DIR$/leaderboards.csv">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/default_lboard.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" lean-forward="true" selection-start-column="12" selection-end-column="12" />
-        </state>
-      </provider>
+    <entry file="file://$PROJECT_DIR$/.gitignore">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
     <entry file="file://$PROJECT_DIR$/table-tennis-ladder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="230">
-          <caret line="495" lean-forward="true" selection-start-line="488" selection-start-column="8" selection-end-line="529" selection-end-column="78" />
+        <state relative-caret-position="984">
+          <caret line="518" column="37" lean-forward="true" selection-start-line="518" selection-start-column="37" selection-end-line="518" selection-end-column="37" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1536856484527" expanded="true" signature="8269:8274" ph="..." />
           </folding>
         </state>
       </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/default_lboard.txt">
+      <provider selected="true" editor-type-id="text-editor" />
     </entry>
   </component>
 </project>

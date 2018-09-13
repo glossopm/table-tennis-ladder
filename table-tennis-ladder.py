@@ -107,7 +107,8 @@ def create_html_file(lboards_dict):
       color: red;
     }
    </style>"""
-    html_string = html_string + "<title> Table-Tennis Leaderboards</title>\n</head>\n <h1> Table-Tennis Leaderboards </h1>"
+    html_string = html_string + """<title> Table Tennis Leaderboard 
+    </title>\n</head>\n <h1> Table-Tennis Leaderboards </h1>"""
     html_string = html_string + "<body id=\"wrapper\">\n"
 
     for i in lboards_dict:
@@ -374,6 +375,7 @@ def match_choice(args, players, lboardOrder,lboards_dict):
                 new_lboard = enter_lboard_match(players, matches, lboard_param)
                 lboards_dict[lboard] = new_lboard
                 write_lboards_dict(lboards_dict)
+                create_html_file(lboards_dict)
             # if number of players is odd, provide user with error
             else:
                 print "ERROR: odd number of players provided."
@@ -391,6 +393,7 @@ def match_choice(args, players, lboardOrder,lboards_dict):
                 new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
                 lboards_dict[lboard] = new_lboard
                 write_lboards_dict(lboards_dict)
+                create_html_file(lboards_dict)
             # if number of players is odd, provide user with error
             else:
                 print "ERROR: odd number of players provided."
