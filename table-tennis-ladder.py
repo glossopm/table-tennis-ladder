@@ -1,7 +1,6 @@
 import sys
 from prettytable import PrettyTable
 import csv
-import string
 
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
@@ -181,21 +180,16 @@ def menu_add_players(players):
 # moves or adds winner/loser to correct positions in ladder
 def match_played(winner, loser, ladder):
     if winner not in ladder:
-        if loser not in ladder:
-            ladder.append(winner)
-            ladder.append(loser)
-        else:
-            loser_index = ladder.index(loser)
-            ladder.insert(loser_index, winner)
-    else:
-        if loser not in ladder:
-            ladder.append(loser)
-        else:
-            if ladder.index(winner) > ladder.index(loser):
-                loser_index = ladder.index(loser)
-                winner_index = ladder.index(winner)
-                del ladder[winner_index]
-                ladder.insert(loser_index, winner)
+        ladder.append(winner)
+
+    if loser not in ladder:
+        ladder.append(loser)
+
+    if ladder.index(winner) > ladder.index(loser):
+        loser_index = ladder.index(loser)
+        winner_index = ladder.index(winner)
+        del ladder[winner_index]
+        ladder.insert(loser_index, winner)
     return ladder
 
 
@@ -284,14 +278,22 @@ def change_lboard(lboardsDict, args):
 # ------------------------------------------VIEW LEADERBOARD FUNCTIONS--------------------------------------------------
 
 # print leaderboard
-def view_leaderboard(lboard_name, ladder):
+def view_leaderboard(lb_dict, default_lb_name, args):
+
+
+    if len(args[1:]) != 0:
+        lboard_param = args[1]
+    else:
+        lboard_param = default_lb_name
 
     table = PrettyTable()
     table.field_names = ["Ranking", "Name"]
 
+    ladder = lb_dict[lboard_param]
+
     for i in ladder:
         table.add_row([str(ladder.index(i)+1), str(i)])
-    print "--- " + lboard_name.upper() + " ---"
+    print "--- " + lboard_param.upper() + " ---"
     print table
     exit()
 
@@ -408,10 +410,7 @@ def display_record_matches_menu():
 # print menu, read in and act on user choice from menu
 def main_menu():
     # re-read the players/ladders data - in essence, do a "refresh"
-
-    lboards_order, players, lboards_dict = get_data()
-
-    default_lb_name = lboards_order[0]
+    default_lb_name, players, lboards_dict = get_data()
 
     print ""
     print "-- Menu --"
@@ -470,7 +469,8 @@ def main():
     if not args:
         main_menu()
     else:
-        lboardOrder, players, lboards_dict = get_data()
+        default_lb, players, lboards_dict = get_data()
+        default_lb_name = default_lb[0]
         # "--add" argument specified
         if args[0] == "--add":
             # check whether names of players have been specified
@@ -485,22 +485,16 @@ def main():
 
         # "--match" argument specified
         elif args[0] == "--match":
-            match_choice(args, players, lboardOrder,lboards_dict)
-            
+            match_choice(args, players, default_lb_name, lboards_dict)
 
         # "--view" argument specified
         elif args[0] == "--view":
-            # send user to default leaderboard view
-            if len(args) == 1:
-                view_leaderboard(lboardOrder[0], lboards_dict[lboardOrder[0]])
-            else:
-                lboard_name = args[1][2:]
-                view_leaderboard(lboard_name, lboards_dict[lboard_name])
+            view_leaderboard(lboards_dict, default_lb_name, args)
 
         # print all leaderboards, and specify current/active leaderboard
         elif args[0] == "--list":
             print "The existing leaderboards are: " + ", ".join(str(x) for x in lboards_dict.keys())
-            print "The active leaderboard is currently: '" + lboardOrder[0] + "'"
+            print "The active leaderboard is currently: '" + default_lb_name + "'."
 
         # send user to view players function
         elif args[0] == "--players":
