@@ -348,16 +348,11 @@ def search_players(args, default_lboard, lboard_dict):
             lboard_name = default_lboard
             players = args[0:]
 
-    if len(players) == 0:
-        print "No players specified."
-        print_help()
-
-    else:
-        for player in players:
-            if player in lboard_dict[lboard_name]:
-                print player + " is ranked position " + str(lboard_dict[lboard_name].index(player) + 1) + " in leaderboard '" + str(lboard_name) + "'."
-            else:
-                print player + " is unranked in leaderboard '" + str(lboard_name) + "'."
+    for player in players:
+        if player in lboard_dict[lboard_name]:
+            print player + " is ranked position " + str(lboard_dict[lboard_name].index(player) + 1) + " in leaderboard '" + str(lboard_name) + "'."
+        else:
+            print player + " is unranked in leaderboard '" + str(lboard_name) + "'."
 
 
 # search function returns position of player
