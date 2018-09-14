@@ -328,12 +328,36 @@ def view_players(players):
 # ------------------------------------------SEARCH PLAYERS FUNCTIONS----------------------------------------------------
 
 # search function returns position of player
-def search_players(lboard_name, search_terms, ladder):
-    for i in search_terms:
-        if i in ladder:
-            print i + " is ranked position " + str(ladder.index(i) + 1) + " in leaderboard '" + str(lboard_name) + "'."
+def search_players(args, default_lboard, lboard_dict):
+
+    #print args
+    print default_lboard
+
+    lboard_name = ""
+
+    if len(args) == 0:
+        print "No players specified."
+        print_help()
+
+    else:
+        if args[0].startswith("--"):
+            lboard_name = args[0][2:]
+            players = args[1:]
+
         else:
-            print i + " is unranked in leaderboard '" + str(lboard_name) + "'."
+            lboard_name = default_lboard
+            players = args[0:]
+
+    if len(players) == 0:
+        print "No players specified."
+        print_help()
+
+    else:
+        for player in players:
+            if player in lboard_dict[lboard_name]:
+                print player + " is ranked position " + str(lboard_dict[lboard_name].index(player) + 1) + " in leaderboard '" + str(lboard_name) + "'."
+            else:
+                print player + " is unranked in leaderboard '" + str(lboard_name) + "'."
 
 
 # search function returns position of player
@@ -349,6 +373,7 @@ def search_players_menu(ladder):
         user_fin = str(raw_input("Search for another player? y/n: "))
         if user_fin == "n":
             exit()
+
 
 # ------------------------------------------PLAY MATCH FUNCTION --------------------------------------------------------
 def match_choice(args, players, lboardOrder,lboards_dict):
@@ -511,28 +536,11 @@ def main():
         print_help()
 
     elif args[0] == "--search":
-        search_terms = args[1:]
-        if len(search_terms) != 0:
-            if args[1].startswith("--"):
-                # search a specific leaderboard
-                search_terms = args[2:]
-                lb_name = args[1][2:]
-                search_players(lb_name, search_terms, lboards_dict[lb_name])
-            else:
-                # search all leaderboards
-                for person in search_terms:
-                    flag = 0
-                    for board in lboards_dict:
-                        if person in lboards_dict[board]:
-                            flag = 1
-                            search_players(board, person, lboards_dict[board])
-                    if flag == 0:
-                        print person + " is unranked in all leaderboards."
+        search_players(args[1:], default_lb_name, lboards_dict)
 
-
-        else:
-            "Invalid argument provided."
-            exit()
+    else:
+        "Invalid argument provided."
+        exit()
 
 
 if __name__ == "__main__":
