@@ -36,9 +36,8 @@ class TestMatchPlayed(unittest.TestCase):
     def test_match_both_not_listed(self):
         winner = "Alpha"
         loser = "Beta"
-        ladder = ["Gamma", "Sigma" "Delta"]
-        new_ladder = match_played(winner, loser, ladder)
-        print new_ladder
+        ladder = ["Gamma", "Sigma", "Delta"]
+        new_ladder = match_played(winner, loser, ladder)       
         self.assertEqual("Alpha", new_ladder[3])
         self.assertEqual("Beta", new_ladder[4])
 
