@@ -203,6 +203,7 @@ def match_played(winner, loser, ladder):
         winner_index = ladder.index(winner)
         del ladder[winner_index]
         ladder.insert(loser_index, winner)
+
     return ladder
 
 
@@ -298,23 +299,28 @@ def change_lboard(lboardsDict, args):
 
 # ------------------------------------------VIEW LEADERBOARD FUNCTION---------------------------------------------------
 
-# print leaderboard
-def view_leaderboard(lb_dict, default_lb_name, args):
-
+def find_leaderboard_name(default_lb_name, args):
 
     if len(args[1:]) != 0:
         lboard_param = args[1]
     else:
         lboard_param = default_lb_name
 
+    return lboard_param
+
+
+# print leaderboard
+def view_leaderboard(lb_dict, default_lb_name, args):
+
+    lboard_name = find_leaderboard_name(default_lb_name, args)
+    ladder = lb_dict[lboard_name]
+
     table = PrettyTable()
     table.field_names = ["Ranking", "Name"]
 
-    ladder = lb_dict[lboard_param]
-
     for i in ladder:
         table.add_row([str(ladder.index(i)+1), str(i)])
-    print "--- " + lboard_param.upper() + " ---"
+    print "--- " + lboard_name.upper() + " ---"
     print table
     exit()
 
@@ -337,13 +343,8 @@ def view_players(players):
 
 # ------------------------------------------SEARCH PLAYERS FUNCTIONS----------------------------------------------------
 
-# search function returns position of player
-def search_players(args, default_lboard, lboard_dict):
-
-    #print args
-    print default_lboard
-
-    lboard_name = ""
+# get list of players to be searched for
+def get_players_for_search(args, default_lboard):
 
     if len(args) == 0:
         print "No players specified."
@@ -358,6 +359,14 @@ def search_players(args, default_lboard, lboard_dict):
             lboard_name = default_lboard
             players = args[0:]
 
+    return players, lboard_name
+
+
+# search function prints position of player
+def search_players(args, default_lboard, lboard_dict):
+
+    players, lboard_name = get_players_for_search(args, default_lboard)
+
     for player in players:
         if player in lboard_dict[lboard_name]:
             print player + " is ranked position " + str(lboard_dict[lboard_name].index(player) + 1) + " in leaderboard '" + str(lboard_name) + "'."
@@ -365,7 +374,7 @@ def search_players(args, default_lboard, lboard_dict):
             print player + " is unranked in leaderboard '" + str(lboard_name) + "'."
 
 
-# search function returns position of player
+# search function prints position of player
 def search_players_menu(ladder):
     while True:
         search_term = str(raw_input(("Please enter a player to search for: ")))
@@ -381,53 +390,48 @@ def search_players_menu(ladder):
 
 
 # ------------------------------------------PLAY MATCH FUNCTION --------------------------------------------------------
-def match_choice(args, players, lboardOrder,lboards_dict):
+
+# find leaderboard name and player matches from user-specified arguments
+def find_lboard_and_players(args, lboard_order):
+    first_arg = args[1]
+
+    if first_arg.startswith("--"):
+        lboard = first_arg[2:]
+        matches = args[2:]
+    else:
+        lboard = lboard_order
+        matches = args[1:]
+
+    return lboard, matches
+
+
+# play match
+def match_choice(args, players, lboard_order, lboards_dict):
 
     # if players and leaderboard aren't specified, send user to prompts menu
     if len(args) == 1:
         print "ERROR: No names specified. See --help for details.\n"
         print_help()
-        exit()
 
-    first_arg = args[1]
-    # if leaderboard is specified
-    if first_arg.startswith("--"):
-        lboard = first_arg[2:]
-        matches = args[2:]
-        # if leaderboard is specified and players are specified, check number of players
-        if matches:
-            # if number of players is even, send user to leaderboard-specific match entry menu
-            if len(matches) % 2 == 0:
-                if lboard not in lboards_dict:
-                    lboard_param = []
-                else:
-                    lboard_param = lboards_dict[lboard]
-                new_lboard = enter_lboard_match(players, matches, lboard_param)
-                lboards_dict[lboard] = new_lboard
-                write_lboards_dict(lboards_dict)
-                create_html_file(lboards_dict)
-            # if number of players is odd, provide user with error
+    lboard, matches = find_lboard_and_players(args, lboard_order)
+
+    # if leaderboard is specified and players are specified, check number of players
+    if matches:
+        # if number of players is even, send user to leaderboard-specific match entry menu
+        if len(matches) % 2 == 0:
+            if lboard not in lboards_dict:
+                lboard_param = []
             else:
-                print "ERROR: odd number of players provided."
-        # if leaderboard is specified and players aren't, give user an error
+                lboard_param = lboards_dict[lboard]
+            new_lboard = enter_lboard_match(players, matches, lboard_param)
+            lboards_dict[lboard] = new_lboard
+            write_lboards_dict(lboards_dict)
+            create_html_file(lboards_dict)
+        # if number of players is odd, provide user with error
         else:
-            print "ERROR: please enter player names"
+            print "ERROR: odd number of players provided."
+    # if leaderboard is specified and players aren't, give user an error
     else:
-        lboard = lboardOrder
-        matches = args[1:]
-        # if leaderboard is specified and players are specified, check number of players
-        if matches:
-            # if number of players is even, send user to leaderboard-specific match entry menu
-            if len(matches) % 2 == 0:
-                new_lboard = enter_lboard_match(players, matches, lboards_dict[lboard])
-                lboards_dict[lboard] = new_lboard
-                write_lboards_dict(lboards_dict)
-                create_html_file(lboards_dict)
-            # if number of players is odd, provide user with error
-            else:
-                print "ERROR: odd number of players provided."
-        # if leaderboard is specified and players aren't, give user an error
-        else:
             print "ERROR: please enter player names"
 
 
@@ -477,7 +481,7 @@ def main_menu():
     elif user_choice == "2":
         enter_matches(players, default_lb_name, lboards_dict)
 
-    #send user to change active leaderboard menu
+    # send user to change active leaderboard menu
     elif user_choice == "3":
         change_lboard(lboards_dict, args)
 
