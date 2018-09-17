@@ -42,5 +42,5 @@ class TestMatchPlayed(unittest.TestCase):
         self.assertEqual("Alpha", new_ladder[3])
         self.assertEqual("Beta", new_ladder[4])
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     unittest.main()

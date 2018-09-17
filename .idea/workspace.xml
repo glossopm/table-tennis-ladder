@@ -2,9 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98ff781e-5094-475d-978a-ab4e0e7844bf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MainCode/table_tennis_ladder.py" beforeDir="false" afterPath="$PROJECT_DIR$/MainCode/table_tennis_ladder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Tests/test_match_played.py" beforeDir="false" afterPath="$PROJECT_DIR$/Tests/test_match_played.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test_match_played.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_match_played.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -58,24 +56,25 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
         <counts>
-          <entry key="py" value="5" />
-          <entry key="txt" value="1" />
+          <entry key="csv" value="1" />
+          <entry key="py" value="8" />
+          <entry key="txt" value="2" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
-          <entry key="PLAIN_TEXT" value="1" />
-          <entry key="Python" value="5" />
+          <entry key="PLAIN_TEXT" value="3" />
+          <entry key="Python" value="8" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="64" />
+          <entry key="py" value="115" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="64" />
+          <entry key="Python" value="115" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -84,22 +83,22 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/Tests/test_match_played.py">
+        <entry file="file://$PROJECT_DIR$/table_tennis_ladder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="290">
-              <caret line="10" selection-start-line="10" selection-end-line="10" />
+            <state relative-caret-position="551">
+              <caret line="193" column="40" selection-start-line="193" selection-start-column="40" selection-end-line="193" selection-end-column="40" />
               <folding>
-                <element signature="e#0#15#0" expanded="true" />
+                <element signature="e#0#10#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/Tests/test_add_player.py">
+        <entry file="file://$PROJECT_DIR$/test_add_player.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="319">
-              <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+            <state relative-caret-position="145">
+              <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -108,12 +107,12 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MainCode/table_tennis_ladder.py">
+        <entry file="file://$PROJECT_DIR$/test_match_played.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="580">
-              <caret line="29" column="26" lean-forward="true" selection-start-line="29" selection-start-column="26" selection-end-line="29" selection-end-column="26" />
+            <state relative-caret-position="551">
+              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
               <folding>
-                <element signature="e#0#10#0" expanded="true" />
+                <element signature="e#0#15#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -137,11 +136,12 @@
         <option value="$PROJECT_DIR$/default_lboard.txt" />
         <option value="$PROJECT_DIR$/table-tennis-ladder.py" />
         <option value="$PROJECT_DIR$/add_new_players.py" />
-        <option value="$PROJECT_DIR$/test_add_player.py" />
-        <option value="$PROJECT_DIR$/table_tennis_ladder.py" />
         <option value="$PROJECT_DIR$/Tests/test_add_player.py" />
         <option value="$PROJECT_DIR$/Tests/test_match_played.py" />
         <option value="$PROJECT_DIR$/MainCode/table_tennis_ladder.py" />
+        <option value="$PROJECT_DIR$/test_add_player.py" />
+        <option value="$PROJECT_DIR$/table_tennis_ladder.py" />
+        <option value="$PROJECT_DIR$/test_match_played.py" />
       </list>
     </option>
   </component>
@@ -163,16 +163,6 @@
             <path>
               <item name="table_tennis_ladder" type="b2602c69:ProjectViewProjectNode" />
               <item name="table_tennis_ladder" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="table_tennis_ladder" type="b2602c69:ProjectViewProjectNode" />
-              <item name="table_tennis_ladder" type="462c0819:PsiDirectoryNode" />
-              <item name="MainCode" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="table_tennis_ladder" type="b2602c69:ProjectViewProjectNode" />
-              <item name="table_tennis_ladder" type="462c0819:PsiDirectoryNode" />
-              <item name="Tests" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -236,35 +226,14 @@
     <option name="myLimit" value="2678400000" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/leaderboards.csv">
-      <provider selected="true" editor-type-id="text-editor" />
-    </entry>
     <entry file="file://$PROJECT_DIR$/.gitignore">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/default_lboard.txt">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret column="12" selection-start-column="12" selection-end-column="12" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/table-tennis-ladder.py" />
-    <entry file="file://$PROJECT_DIR$/test_add_player.py" />
     <entry file="file://$PROJECT_DIR$/add_new_players.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="522">
           <caret line="18" column="68" selection-start-line="18" selection-start-column="68" selection-end-line="18" selection-end-column="68" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/table_tennis_ladder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4814">
-          <caret line="166" column="55" lean-forward="true" selection-start-line="166" selection-start-column="55" selection-end-line="166" selection-end-column="55" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -293,8 +262,48 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/Tests/test_add_player.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="319">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        <state relative-caret-position="870">
+          <caret line="30" column="34" lean-forward="true" selection-start-line="30" selection-start-column="34" selection-end-line="30" selection-end-column="34" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/default_lboard.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="12" selection-start-column="12" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/leaderboards.csv">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/table_tennis_ladder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="193" column="40" selection-start-line="193" selection-start-column="40" selection-end-line="193" selection-end-column="40" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_match_played.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="551">
+          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_add_player.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="145">
+          <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
           </folding>
