@@ -133,6 +133,7 @@ def create_html_file(lboards_dict):
 
 # ------------------------------------------ADD PLAYERS FUNCTIONS------------------------------------------------------
 
+
 def print_add_players_info(players, new_players):
 
     players, added_players, duplicate_players, failed_players = add_new_players_list(players, new_players)
@@ -168,6 +169,7 @@ def add_new_players_list(players, new_players):
                 added_players.append(player_name)
 
     return players, added_players, duplicate_players, failed_players
+
 
 # add new players (from menu option)
 def menu_add_players(players):
@@ -283,7 +285,6 @@ def print_lboard_info(lboards_dict, default_lb_name):
 # change leaderboard from command line
 def change_lboard(lboardsDict, args):
 
-    
     if not args[1] or args[1] not in lboardsDict:
         print "Error: leaderboards does not exist. Record a match to create a new leaderboard."
     else:
@@ -291,8 +292,8 @@ def change_lboard(lboardsDict, args):
         new_name = args[1]
         print "The current leaderboard is now '" + new_name + "'."
 
-    write_lboards(new_name)
-    write_lboards_dict(lboardsDict)
+        write_lboards(new_name)
+        write_lboards_dict(lboardsDict)
 
 
 # ------------------------------------------VIEW LEADERBOARD FUNCTION---------------------------------------------------
@@ -384,7 +385,7 @@ def match_choice(args, players, lboardOrder,lboards_dict):
 
     # if players and leaderboard aren't specified, send user to prompts menu
     if len(args) == 1:
-        print "ERROR: No names specificed. See --help for details.\n"
+        print "ERROR: No names specified. See --help for details.\n"
         print_help()
         exit()
 
@@ -412,8 +413,7 @@ def match_choice(args, players, lboardOrder,lboards_dict):
         else:
             print "ERROR: please enter player names"
     else:
-        print lboardOrder[0]
-        lboard = lboardOrder[0]
+        lboard = lboardOrder
         matches = args[1:]
         # if leaderboard is specified and players are specified, check number of players
         if matches:

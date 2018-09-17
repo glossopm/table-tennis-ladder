@@ -1,5 +1,5 @@
 import unittest
-from MainCode.table_tennis_ladder import *
+from table_tennis_ladder import *
 
 
 class TestAddNewPlayer(unittest.TestCase):
