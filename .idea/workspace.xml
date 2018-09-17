@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98ff781e-5094-475d-978a-ab4e0e7844bf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/table_tennis_ladder.py" beforeDir="false" afterPath="$PROJECT_DIR$/table_tennis_ladder.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test_match_played.py" beforeDir="false" afterPath="$PROJECT_DIR$/test_match_played.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -69,12 +70,12 @@
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
-          <entry key="py" value="115" />
+          <entry key="py" value="1887" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.edit">
         <counts>
-          <entry key="Python" value="115" />
+          <entry key="Python" value="1887" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.vcs.git.usages" />
@@ -82,19 +83,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="600">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/table_tennis_ladder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="193" column="40" selection-start-line="193" selection-start-column="40" selection-end-line="193" selection-end-column="40" />
+            <state relative-caret-position="-77">
+              <caret line="407" column="8" selection-start-line="407" selection-start-column="8" selection-end-line="407" selection-end-column="8" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
+                <marker date="1537197781348" expanded="true" signature="9594:9729" ph="..." />
+                <marker date="1537197781348" expanded="true" signature="10729:11074" ph="..." />
+                <marker date="1537197781348" expanded="true" signature="12285:12509" ph="..." />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_add_player.py">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="145">
@@ -109,8 +113,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test_match_played.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="551">
-              <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
+            <state relative-caret-position="1028">
+              <caret line="53" column="49" selection-start-line="53" selection-start-column="49" selection-end-line="53" selection-end-column="49" />
               <folding>
                 <element signature="e#0#15#0" expanded="true" />
               </folding>
@@ -140,8 +144,8 @@
         <option value="$PROJECT_DIR$/Tests/test_match_played.py" />
         <option value="$PROJECT_DIR$/MainCode/table_tennis_ladder.py" />
         <option value="$PROJECT_DIR$/test_add_player.py" />
-        <option value="$PROJECT_DIR$/table_tennis_ladder.py" />
         <option value="$PROJECT_DIR$/test_match_played.py" />
+        <option value="$PROJECT_DIR$/table_tennis_ladder.py" />
       </list>
     </option>
   </component>
@@ -280,32 +284,35 @@
     <entry file="file://$PROJECT_DIR$/leaderboards.csv">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/table_tennis_ladder.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="193" column="40" selection-start-line="193" selection-start-column="40" selection-end-line="193" selection-end-column="40" />
-          <folding>
-            <element signature="e#0#10#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test_match_played.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="551">
-          <caret line="19" lean-forward="true" selection-start-line="19" selection-end-line="19" />
-          <folding>
-            <element signature="e#0#15#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/test_add_player.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="145">
           <caret line="5" lean-forward="true" selection-start-line="5" selection-end-line="5" />
           <folding>
             <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/test_match_played.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1028">
+          <caret line="53" column="49" selection-start-line="53" selection-start-column="49" selection-end-line="53" selection-end-column="49" />
+          <folding>
+            <element signature="e#0#15#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/table_tennis_ladder.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-77">
+          <caret line="407" column="8" selection-start-line="407" selection-start-column="8" selection-end-line="407" selection-end-column="8" />
+          <folding>
+            <element signature="e#0#10#0" expanded="true" />
+            <marker date="1537197781348" expanded="true" signature="9594:9729" ph="..." />
+            <marker date="1537197781348" expanded="true" signature="10729:11074" ph="..." />
+            <marker date="1537197781348" expanded="true" signature="12285:12509" ph="..." />
           </folding>
         </state>
       </provider>
