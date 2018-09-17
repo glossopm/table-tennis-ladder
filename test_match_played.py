@@ -46,6 +46,12 @@ class TestMatchPlayed(unittest.TestCase):
     def test_match_played_winner_in_leaderboard_loser_not_in_leaderboard(self):
         winner = "Alpha"
         loser = "Beta"
+<<<<<<< HEAD
+        ladder = ["Gamma", "Sigma", "Delta"]
+        new_ladder = match_played(winner, loser, ladder)       
+        self.assertEqual("Alpha", new_ladder[3])
+        self.assertEqual("Beta", new_ladder[4])
+=======
         ladder = ["Gamma", "Alpha", "Delta"]
         expected = ["Gamma", "Alpha", "Delta", "Beta"]
 
@@ -70,6 +76,7 @@ class TestMatchPlayed(unittest.TestCase):
         new_ladder = match_played(winner, loser, ladder)
         self.assertListEqual(expected, new_ladder)
 '''
+>>>>>>> 9b0d9093b07217b7579e3615d00c1a4f9b044c67
 
 if __name__ == "__main__":
     unittest.main()
