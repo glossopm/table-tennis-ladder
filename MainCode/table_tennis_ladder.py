@@ -133,6 +133,20 @@ def create_html_file(lboards_dict):
 
 # ------------------------------------------ADD PLAYERS FUNCTIONS------------------------------------------------------
 
+def print_add_players_info(players, new_players):
+
+    players, added_players, duplicate_players, failed_players = add_new_players_list(players, new_players)
+
+    if len(added_players) != 0:
+        print "The following players were added successfully: " + ", ".join(added_players)
+    if len(duplicate_players) != 0:
+        print "The following players are already in the players list: " + ", ".join(duplicate_players)
+    if len(failed_players) != 0:
+        print "Adding the following players failed - please check names and try again: " + ", ".join(failed_players)
+
+    write_players(players)
+
+
 # add new players (straight from command line)
 def add_new_players_list(players, new_players):
     duplicate_players = []
@@ -152,15 +166,8 @@ def add_new_players_list(players, new_players):
             else:
                 players.append(player_name.strip("\n"))
                 added_players.append(player_name)
-    write_players(players)
 
-    if len(added_players) != 0:
-        print "The following players were added successfully: " + ", ".join(added_players)
-    if len(duplicate_players) != 0:
-        print "The following players are already in the players list: " + ", ".join(duplicate_players)
-    if len(failed_players) != 0:
-        print "Adding the following players failed - please check names and try again: " + ", ".join(failed_players)
-
+    return players, added_players, duplicate_players, failed_players
 
 # add new players (from menu option)
 def menu_add_players(players):
@@ -275,6 +282,8 @@ def print_lboard_info(lboards_dict, default_lb_name):
 
 # change leaderboard from command line
 def change_lboard(lboardsDict, args):
+
+    
     if not args[1] or args[1] not in lboardsDict:
         print "Error: leaderboards does not exist. Record a match to create a new leaderboard."
     else:
@@ -439,8 +448,12 @@ def display_record_matches_menu():
 # ------------------------------------------MAIN MENU FUNCTIONS---------------------------------------------------------
 
 # print menu, read in and act on user choice from menu
-def main_menu(default_lb_name, players, lboards_dict):
+def main_menu():
+
     # re-read the players/ladders data - in essence, do a "refresh"
+    args = sys.argv[1:]
+    default_lb, players, lboards_dict = get_data()
+    default_lb_name = default_lb[0]
 
     print ""
     print "-- Menu --"
@@ -456,22 +469,32 @@ def main_menu(default_lb_name, players, lboards_dict):
     # strips off the ")" character if a user types e.g. "3)" instead of "3" for view leaderboard
     user_choice = user_choice.replace(")","")
 
+    # send user to add players menu
     if user_choice == "1":
         menu_add_players(players)
 
+    # send user to enter matches menu
     elif user_choice == "2":
         enter_matches(players, default_lb_name, lboards_dict)
 
+    #send user to change active leaderboard menu
     elif user_choice == "3":
-        view_leaderboard(default_lb_name, lboards_dict[default_lb_name])
+        change_lboard(lboards_dict, args)
 
+    # send user to view current leaderboard menu
     elif user_choice == "4":
+        view_leaderboard(lboards_dict, default_lb_name, args)
+
+    # send user to view players menu
+    elif user_choice == "5":
         view_players(players)
 
-    elif user_choice == "5":
+    # send user to search players menu
+    elif user_choice == "6":
         search_players_menu(default_lb_name)
 
-    elif user_choice == "6":
+    # exit the program
+    elif user_choice == "7":
         print "Goodbye!"
         exit()
     else:
@@ -487,6 +510,7 @@ def print_help():
           "[--view] \t\t\t Allows the viewing of the current leaderboard\n" \
           "[--players] \t\t\t Allows the viewing of the full list of players\n" \
           "[] \t\t\t\t Not specifying an argument will bring up the main menu.\n"
+    exit()
 
 
 # main - entry point of program
@@ -499,7 +523,7 @@ def main():
 
     # if no arguments have been given, send user to prompts menu
     if args[0] == "--interactive":
-        main_menu(default_lb_name, players, lboards_dict)
+        main_menu()
 
     # "--add" argument specified
     elif args[0] == "--add":
