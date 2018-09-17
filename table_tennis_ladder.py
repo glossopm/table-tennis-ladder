@@ -2,38 +2,26 @@ import sys
 from prettytable import PrettyTable
 import csv
 
+from io.file import File
+from io.file_list import FileList
+from io.printer import Printer
+
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
-
-# function to get a list from a .txt file
-def get_list_file(filename):
-    list_file = open(filename, "r")
-    list_str = list_file.read()
-    list_name = list_str.split(",")
-    list_file.close()
-    return list_name
-
-
-# function to write a list to a .txt file
-def write_list_file(filename, data):
-    list_file = open(filename, "w")
-    write_str = ""
-    for i in data:
-        write_str = write_str + i + ","
-    write_str = write_str.rstrip(",").lstrip(",")
-    list_file.write(write_str)
-    list_file.close()
 
 
 # read leaderboards order data from .txt file
 def get_leaderboards():
-    return get_list_file("default_lboard.txt")
+    file = File("default_lboard.txt")
+    file_list = FileList(file)
+    return file_list.read()
 
 
 # read players data from .txt file, store and return "players" list
 def get_players():
-    return get_list_file("players.txt")
-
+    file = File("players.txt")
+    file_list = FileList(file)
+    return file_list.read()
 
 # write leaderboards order data to .txt file
 def write_lboards(data):
@@ -289,8 +277,7 @@ def change_lboard(lboardsDict, args):
 # ------------------------------------------VIEW LEADERBOARD FUNCTION---------------------------------------------------
 
 # print leaderboard
-def view_leaderboard(lb_dict, default_lb_name, args):
-
+def view_leaderboard(lb_dict, default_lb_name, args, printer):
 
     if len(args[1:]) != 0:
         lboard_param = args[1]
@@ -304,9 +291,8 @@ def view_leaderboard(lb_dict, default_lb_name, args):
 
     for i in ladder:
         table.add_row([str(ladder.index(i)+1), str(i)])
-    print "--- " + lboard_param.upper() + " ---"
-    print table
-    exit()
+    printer.display("--- " + lboard_param.upper() + " ---")
+    printer.display(table)
 
 
 # ------------------------------------------VIEW PLAYERS FUNCTION-------------------------------------------------------
@@ -441,6 +427,7 @@ def display_record_matches_menu():
 # print menu, read in and act on user choice from menu
 def main_menu(default_lb_name, players, lboards_dict):
     # re-read the players/ladders data - in essence, do a "refresh"
+    printer = Printer()
 
     print ""
     print "-- Menu --"
@@ -463,7 +450,7 @@ def main_menu(default_lb_name, players, lboards_dict):
         enter_matches(players, default_lb_name, lboards_dict)
 
     elif user_choice == "3":
-        view_leaderboard(default_lb_name, lboards_dict[default_lb_name])
+        view_leaderboard(default_lb_name, lboards_dict[default_lb_name], printer)
 
     elif user_choice == "4":
         view_players(players)
@@ -492,6 +479,7 @@ def print_help():
 # main - entry point of program
 def main():
 
+    printer = Printer()
     # retrieve non-script arguments
     args = sys.argv[1:]
     default_lb, players, lboards_dict = get_data()
@@ -512,7 +500,7 @@ def main():
 
     # "--view" argument specified
     elif args[0] == "--view":
-        view_leaderboard(lboards_dict, default_lb_name, args)
+        view_leaderboard(lboards_dict, default_lb_name, args, printer)
 
     # print all leaderboards, and specify current/active leaderboard
     elif args[0] == "--list":
