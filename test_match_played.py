@@ -1,11 +1,6 @@
 import unittest
 from table_tennis_ladder import *
 
-#       - winner in leaderboard, loser in leaderboard, winner ranked higher
-#       - winner in leaderboard, loser in leaderboard, loser ranked higher
-#       - winner in leaderboard, loser not in leaderboard
-#       - winner not in leaderboard, loser in leaderboard
-#       - winner not in leaderboard, loser not in leaderboard
 
 class TestMatchPlayed(unittest.TestCase):
     
@@ -13,10 +8,32 @@ class TestMatchPlayed(unittest.TestCase):
         winner = "Alpha"
         loser = "Beta"
         ladder = ["Gamma", "Alpha", "Beta", "Delta"]
-
         new_ladder = match_played(winner, loser, ladder)
         self.assertEqual("Alpha", new_ladder[1])
 
+    def test_match_loser_higher(self):
+        winner = "Beta"
+        loser = "Alpha"
+        ladder = ["Gamma", "Alpha", "Beta", "Delta"]
+        new_ladder = match_played(winner, loser, ladder)
+        self.assertEqual("Beta", new_ladder[1])
+
+    def test_match_loser_not_listed(self):
+        winner = "Beta"
+        loser = "Alpha"
+        ladder = ["Gamma", "Beta", "Delta"]
+        new_ladder = match_played(winner, loser, ladder)
+        self.assertEqual("Alpha", new_ladder[3])
+
+    def test_match_winner_not_listed(self):
+        winner = "Alpha"
+        loser = "Beta"
+        ladder = ["Gamma", "Beta", "Delta"]
+        new_ladder = match_played(winner, loser, ladder)
+        self.assertEqual("Alpha", new_ladder[1])
+        self.assertEqual("Beta", new_ladder[2])
+
+'''
     def test_match_played_both_in_leaderboard_loser_higher(self):
         winner = "Beta"
         loser = "Alpha"
@@ -52,6 +69,7 @@ class TestMatchPlayed(unittest.TestCase):
 
         new_ladder = match_played(winner, loser, ladder)
         self.assertListEqual(expected, new_ladder)
+'''
 
 if __name__ == "__main__":
     unittest.main()

@@ -24,6 +24,11 @@ def write_list_file(filename, data):
     list_file.write(write_str)
     list_file.close()
 
+def write_string_file(filename, data):
+    string_file = open(filename, "w+")
+    string_file.write(data)
+    string_file.close()
+
 
 # read leaderboards order data from .txt file
 def get_leaderboards():
@@ -37,7 +42,7 @@ def get_players():
 
 # write leaderboards order data to .txt file
 def write_lboards(data):
-    return write_list_file("default_lboard.txt", data)
+    return write_string_file("default_lboard.txt", data)
 
 
 # write leaderboards order data to .txt file
@@ -198,7 +203,7 @@ def match_played(winner, loser, ladder):
     if loser not in ladder:
         ladder.append(loser)
 
-    if ladder.index(winner) > ladder.index(loser):
+    elif ladder.index(winner) > ladder.index(loser):
         loser_index = ladder.index(loser)
         winner_index = ladder.index(winner)
         del ladder[winner_index]
@@ -457,7 +462,7 @@ def main_menu():
     # re-read the players/ladders data - in essence, do a "refresh"
     args = sys.argv[1:]
     default_lb, players, lboards_dict = get_data()
-    default_lb_name = default_lb[0]
+    default_lb_name = default_lb
 
     print ""
     print "-- Menu --"
