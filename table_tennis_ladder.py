@@ -2,6 +2,9 @@ import sys
 from prettytable import PrettyTable
 import csv
 from jinja2 import Template
+from flask import Flask, render_template
+
+
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
 
@@ -84,12 +87,12 @@ def get_data():
 # ------------------------------------------WRITE HTML FILE OPERATIONS--------------------------------------------------
 
 def get_html_file(lboards_dict):
-    template = Template('/templates/leaderboard.html')
+    # template = Template(open('templates/leaderboard.html', "rU"))
+    lboard_name = get_leaderboards()[0]
     players_list = []
-    for i in lboards_dict:
-        for j in lboards_dict[i]:
-            players_list.append([str(lboards_dict[i].index(j)+1), str(j)])
-    return template.render(players=players_list)
+    for idx, player in enumerate(lboards_dict):
+        players_list.append([str(idx+1), str(player)])
+    return render_template("leaderboard.html", players=players_list, leaderboard_name=lboard_name)
 
 # ------------------------------------------ADD PLAYERS FUNCTIONS------------------------------------------------------
 
@@ -408,6 +411,24 @@ def display_record_matches_menu():
     return user_choice
 
 
+# ------------------------------------------------ FLASK ---------------------------------------------------------------
+
+app = Flask(__name__)
+
+
+@app.route("/")
+def html_leaderboard():
+
+    default_lb, _, lboards_dict = get_data()
+
+    site = get_html_file(lboards_dict[default_lb[0]])
+
+    return site
+
+
+
+
+
 # ------------------------------------------MAIN MENU FUNCTIONS---------------------------------------------------------
 
 # print menu, read in and act on user choice from menu
@@ -526,4 +547,5 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    #html_leaderboard()
+    app.run(debug=True)
