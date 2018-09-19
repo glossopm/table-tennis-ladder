@@ -1,45 +1,44 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <style>
-            body {
-                background-color: ivory;
-                display: block;
-                margin-left: auto;
-                margin-right: auto; 
-            }
-            h1  {
-                color: blue;
-            }
-            #wrapper { 
-                width: 1000px; 
-                margin: 0 auto; 
-            }
-            table, th, td {
-                border: 1px solid black;
-                text-align: center;
-                border-spacing: 5px;
-            }
-            p  {
-                color: red;
-            }
-        </style>
-        <title>Team Gold - {{ leaderboard.name }}</title>
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+         <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+        <title>Team Gold - {{ leaderboard_name }}</title>
     </head>
     <body>
+    {% include "navbar.html" %}
+
         <div id="wrapper">
-            <h1>Table-Tennis Leaderboards</h1>
-            <h3>{{ leaderboard.name }}</h3>
-            <table>
+
+            <div class="jumbotron jumbotron-fluid">
+              <div class="container">
+                <h1 class="display-4">Leaderboards</h1>
+                <p class="lead">Below is the leaderboard that has previously been set. If this isn't the leaderboard you want, please select a new one below</p>
+                  <span class="sr-only">Toggle Dropdown</span>
+                  <div class="dropdown-menu">
+                  <a class="dropdown-item" href="#">Add all leaderboards</a>
+                 </div>
+              </div>
+            </div>
+            <center>
+            <h3>Selected leaderboard: {{ leaderboard_name }}</h3>
+
+            <table class="table" style="width:33%">
                 <tr>
                     <th>Rank</th>
                     <th>Player</th>
                 </tr>
                 {% for player in players %}
-                    <td>{{ player.rank }}</td>
-                    <td>{{ player.name }}</td>
+                <tr>
+                    <td>{{ player[0] }}</td>
+                    <td>{{ player[1] }}</td>
+                </tr>
                 {% endfor %}
             </table>
+            </center>
         </div>
     </body>
 </html>
