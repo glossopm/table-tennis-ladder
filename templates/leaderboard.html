@@ -9,35 +9,24 @@
         <title>Team Gold - {{ leaderboard_name }}</title>
     </head>
     <body>
-    {% include "navbar.html" %}
+        {% include "navbar.html" %}
 
         <div id="wrapper">
-
-            <div class="jumbotron jumbotron-fluid">
-              <div class="container">
-                <h1 class="display-4">Leaderboards</h1>
-                <p class="lead">Below is the leaderboard that has previously been set. If this isn't the leaderboard you want, please select a new one below</p>
-                  <span class="sr-only">Toggle Dropdown</span>
-                  <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Add all leaderboards</a>
-                 </div>
-              </div>
-            </div>
             <center>
-            <h3>Selected leaderboard: {{ leaderboard_name }}</h3>
+                <h3>Selected leaderboard: {{ leaderboard_name }}</h3>
 
-            <table class="table" style="width:33%">
-                <tr>
-                    <th>Rank</th>
-                    <th>Player</th>
-                </tr>
-                {% for player in players %}
-                <tr>
-                    <td>{{ player[0] }}</td>
-                    <td>{{ player[1] }}</td>
-                </tr>
-                {% endfor %}
-            </table>
+                <table class="table" style="width:33%">
+                    <tr>
+                        <th>Rank</th>
+                        <th>Player</th>
+                    </tr>
+                    {% for player in players %}
+                    <tr>
+                        <td>{{ player[0] }}</td>
+                        <td>{{ player[1] }}</td>
+                    </tr>
+                    {% endfor %}
+                </table>
             </center>
         </div>
     </body>
