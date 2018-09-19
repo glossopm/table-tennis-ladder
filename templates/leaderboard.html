@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <style>
+            body {
+                background-color: ivory;
+                display: block;
+                margin-left: auto;
+                margin-right: auto; 
+            }
+            h1  {
+                color: blue;
+            }
+            #wrapper { 
+                width: 1000px; 
+                margin: 0 auto; 
+            }
+            table, th, td {
+                border: 1px solid black;
+                text-align: center;
+                border-spacing: 5px;
+            }
+            p  {
+                color: red;
+            }
+        </style>
+        <title>Team Gold - {{ leaderboard.name }}</title>
+    </head>
+    <body>
+        <div id="wrapper">
+            <h1>Table-Tennis Leaderboards</h1>
+            <h3>{{ leaderboard.name }}</h3>
+            <table>
+                <tr>
+                    <th>Rank</th>
+                    <th>Player</th>
+                </tr>
+                {% for player in players %}
+                    <td>{{ player.rank }}</td>
+                    <td>{{ player.name }}</td>
+                {% endfor %}
+            </table>
+        </div>
+    </body>
+</html>

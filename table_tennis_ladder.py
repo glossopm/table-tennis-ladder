@@ -1,7 +1,7 @@
 import sys
 from prettytable import PrettyTable
 import csv
-
+from jinja2 import Template
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
 
@@ -83,58 +83,13 @@ def get_data():
 
 # ------------------------------------------WRITE HTML FILE OPERATIONS--------------------------------------------------
 
-def create_html_file(lboards_dict):
-
-    html_string = ""
-
-    html_string = "<!DOCTYPE html><br>"
-    html_string = html_string + """<html>\n<head>\n<style>
-    body {
-      background-color: ivory;
-      allign: center;
-      display: block;
-      margin-left: auto;
-      margin-right: auto; 
-    }
-    h1  {
-      color: blue;
-    }
-    #wrapper { 
-       width: 1000px; 
-       margin: 0 auto; 
-    }
-    table, th, td {
-    border: 1px solid black;
-    text-align: center;
-    border-spacing: 5px;
-    }
-    p  {
-      color: red;
-    }
-   </style>"""
-    html_string = html_string + """<title> Table Tennis Leaderboard 
-    </title>\n</head>\n <h1> Table-Tennis Leaderboards </h1>"""
-    html_string = html_string + "<body id=\"wrapper\">\n"
-
+def get_html_file(lboards_dict):
+    template = Template('/templates/leasderboard.html')
+    players_list = []
     for i in lboards_dict:
-        table = PrettyTable()
-        table.field_names = ["Ranking", "Name"]
-        #print i
-        html_string = html_string + i + "<br>"
-
         for j in lboards_dict[i]:
-            #print j
-            table.add_row([str(lboards_dict[i].index(j)+1), str(j)])
-
-        html_string = html_string + "<table border: 1px solid black>" +table.get_html_string() +"</table>"
-        html_string = html_string + "<br><br>"
-
-    html_string = html_string + "</body>\n"
-    html_string = html_string + "</html>"
-    html_file = open("lboards_html.html", "w+")
-
-    html_file.write(html_string)
-    html_file.close()
+            players_list.append([str(lboards_dict[i].index(j)+1), str(j)])
+    return template.render(players=players_list)
 
 # ------------------------------------------ADD PLAYERS FUNCTIONS------------------------------------------------------
 
