@@ -84,7 +84,7 @@ def get_data():
 # ------------------------------------------WRITE HTML FILE OPERATIONS--------------------------------------------------
 
 def get_html_file(lboards_dict):
-    template = Template('/templates/leasderboard.html')
+    template = Template('/templates/leaderboard.html')
     players_list = []
     for i in lboards_dict:
         for j in lboards_dict[i]:
@@ -386,7 +386,6 @@ def match_choice(args, players, lboard_order, lboards_dict):
             new_lboard = enter_lboard_match(players, matches, lboard_param)
             lboards_dict[lboard] = new_lboard
             write_lboards_dict(lboards_dict)
-            create_html_file(lboards_dict)
         # if number of players is odd, provide user with error
         else:
             print "ERROR: odd number of players provided."
