@@ -57,13 +57,13 @@
             <div class="col-sm-10" style="width: 100%">
                 <div class="col-sm-10">
                     <div id="left-button-wrapper" class="col-sm-2">
-                        <button><<</button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="changeleaderboard(-1)"><<</button>
                     </div>
                     <div style="align-content: center" id="leaderboard-title-wrapper" class="col-sm-8">
                         <h3 id="leaderboard_title">{{ leaderboard_name }}</h3>
                     </div>
                     <div id="right-button-wrapper" class="col-sm-2">
-                        <button>>></button>
+                        <button type="button" class="btn btn-outline-secondary" onclick="changeleaderboard(+1)">>></button>
                     </div>
                 </div>
                 <div class="col-sm-10">
@@ -146,7 +146,18 @@
     }
 
 
-    function submit_player() {
+       $.ajax({
+       type: 'POST',
+       url: '/change-ladder',
+       data: {move : next},
+       success(data) {
+       var newData = JSON.parse(data)
+       redraw_table(newData[0]);
+       document.getElementById("leaderboard_name").value = newData[1]
+        }
+      });
+
+      function submit_player() {
         var player_name = document.getElementById('player_name').value;
 
         if (player_name.length > 0) {

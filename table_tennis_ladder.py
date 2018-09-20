@@ -441,6 +441,34 @@ def get_leaderboard_players():
 
     return json.dumps(players)
 
+@app.route("/change-ladder", methods=["POST"])
+def change_leaderboard():
+    pos = request.form.get("move")
+
+    lboards_dict = get_lboards_dict()
+    lname = get_leaderboards()[0]
+
+    lboards_name_list = lboards_dict.keys()
+    print str(lname + " | " + pos)
+    lboard_index = lboards_name_list.index(lname)
+
+    new_lboard_index = None
+
+    if lboard_index == 0 and pos == -1:
+        new_lboard_index = (len(lboards_name_list) - 1)
+    elif lboard_index == (len(lboards_name_list) - 1) and pos == +1:
+        new_lboard_index = 0
+    elif pos == -1:
+        new_lboard_index = lboard_index - 1
+    elif pos == +1:
+        new_lboard_index = lboard_index + 1
+
+    new_lboard_name = lboards_name_list[new_lboard_index]
+
+    players = lboards_dict[new_lboard_name]
+
+    return [json.dumps(players), new_lboard_name]
+
 
 @app.route("/submit-match", methods=["POST"])
 def submit_match():
