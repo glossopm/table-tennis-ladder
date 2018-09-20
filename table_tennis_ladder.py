@@ -3,6 +3,7 @@ from prettytable import PrettyTable
 import csv
 from jinja2 import Template
 from flask import Flask, render_template, request
+import json
 
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
@@ -415,6 +416,22 @@ def html_leaderboard():
     site = get_html_file(lboards_dict[default_lb[0]])
 
     return site
+
+
+@app.route("/submit-match", methods=["POST"])
+def submit_match():
+    winner_name = request.form.get("winner_name")
+    loser_name = request.form.get("loser_name")
+
+    lboards_dict = get_lboards_dict()
+    default_lboard = get_leaderboards()[0]
+
+    new_ladder = match_played(winner_name, loser_name, lboards_dict[default_lboard])
+    lboards_dict[default_lboard] = new_ladder
+    write_lboards_dict(lboards_dict)
+
+    return json.dumps(new_ladder)
+
 
 
 # ------------------------------------------MAIN MENU FUNCTIONS---------------------------------------------------------

@@ -16,6 +16,8 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
     <title>Team Gold - {{ leaderboard_name }}</title>
 </head>
 <body>
@@ -27,11 +29,11 @@
     <div id="wrapper-leaderboard-all" class="col-sm-12">
         <div id="wrapper-controls" class="col-sm-5">
             <h4>Leaderboard Controls:</h4>
-            <form action="/submit-score">
-                <input type="text" name="winner_name"/><br/>
-                <input type="text" name="loser_name"/><br/>
-                <input type="submit" value="Submit"/><br/>
-            </form>
+            <div id="submit-match-control">
+                <input type="text" placeholder="Winner Name" id="winner_name" /><br />
+                <input style="margin-top: 0.5em; margin-right: 1.5em" type="text" placeholder="Loser Name" id="loser_name"/>
+                <button class="btn" onclick="submit_score()">Submit Match</button>
+            </div>
         </div>
         <div id="wrapper-leaderboard" class="col-sm-7">
             <table class="table" style="width:33%">
@@ -51,3 +53,23 @@
 </div>
 </body>
 </html>
+
+<script type="application/javascript">
+    function submit_score() {
+        var winner_name = document.getElementById('winner_name').value;
+        var loser_name = document.getElementById('loser_name').value;
+
+        if (winner_name.length > 0 && loser_name.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/submit-match',
+                data: { winner_name : winner_name, loser_name : loser_name},
+                success(data) {
+                    console.log(data);
+                }
+            });
+        } else {
+            alert("Enter names you bell")
+        }
+    }
+</script>
