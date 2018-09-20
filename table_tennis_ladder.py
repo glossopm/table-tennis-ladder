@@ -417,6 +417,15 @@ def html_leaderboard():
 
     return site
 
+@app.route("/get-leaderboard-players", methods=["GET"])
+def get_leaderboard_players():
+    lboards_dict = get_lboards_dict()
+    default_lboard = get_leaderboards()[0]
+
+    players = lboards_dict[default_lboard]
+
+    return json.dumps(players)
+
 
 @app.route("/submit-match", methods=["POST"])
 def submit_match():

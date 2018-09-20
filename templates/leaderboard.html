@@ -16,7 +16,10 @@
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <title>Team Gold - {{ leaderboard_name }}</title>
 </head>
@@ -24,10 +27,10 @@
 {% include "navbar.html" %}
 <div id="wrapper-body" class="row">
     <div id="wrapper-header" class="col-sm-12">
-        <h3>Selected leaderboard: {{ leaderboard_name }}</h3>
+        <h4><i>why use many words when few words does job</i></h4>
     </div>
-    <div id="wrapper-leaderboard-all" class="col-sm-12">
-        <div id="wrapper-controls" class="col-sm-5">
+    <div id="wrapper-leaderboard-all" class="col-sm-12" style="text-align: center">
+        <div id="wrapper-controls" class="col-sm-4">
             <h4>Leaderboard Controls:</h4>
             <div id="submit-match-control">
                 <input type="text" placeholder="Winner Name" id="winner_name" /><br />
@@ -35,19 +38,38 @@
                 <button class="btn" onclick="submit_score()">Submit Match</button>
             </div>
         </div>
-        <div id="wrapper-leaderboard" class="col-sm-7">
-            <table class="table" style="width:33%">
-                <tr>
-                    <th>Rank</th>
-                    <th>Player</th>
-                </tr>
-                {% for player in players %}
-                <tr>
-                    <td>{{ player[0] }}</td>
-                    <td>{{ player[1] }}</td>
-                </tr>
-                {% endfor %}
-            </table>
+        <div id="wrapper-leaderboard" class="col-sm-8" style="text-align: center">
+            <div class="col-sm-10" style="width: 100%">
+                <div class="col-sm-10">
+                    <div id="left-button-wrapper" class="col-sm-2">
+                        <button><<</button>
+                    </div>
+                    <div style="align-content: center" id="leaderboard-title-wrapper" class="col-sm-8">
+                        <h3>{{ leaderboard_name }}</h3>
+                    </div>
+                    <div id="right-button-wrapper" class="col-sm-2">
+                        <button>>></button>
+                    </div>
+                </div>
+                <div class="col-sm-10">
+                    <table class="table" id="leaderboard" style="width:100%">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Player</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in players %}
+                            <tr>
+                                <td>{{ player[0] }}</td>
+                                <td>{{ player[1] }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -55,6 +77,14 @@
 </html>
 
 <script type="application/javascript">
+
+    $(document).ready( function () {
+        $('#leaderboard').DataTable({
+            paging: false,
+            searching: false
+        });
+    } );
+
     function submit_score() {
         var winner_name = document.getElementById('winner_name').value;
         var loser_name = document.getElementById('loser_name').value;
@@ -65,11 +95,32 @@
                 url: '/submit-match',
                 data: { winner_name : winner_name, loser_name : loser_name},
                 success(data) {
-                    console.log(data);
+                    redraw_table(data);
                 }
             });
         } else {
             alert("Enter names you bell")
+        }
+    }
+
+    function redraw_table(data) {
+        var players = JSON.parse(data);
+        var leaderboard = $("#leaderboard");
+        $("#leaderboard tbody").remove();
+        var tbody = $("<tbody></tbody>");
+        leaderboard.append(tbody);
+        for (var i = 0; i < players.length; i++) {
+            console.log(i);
+            var tr = $("<tr></tr>");
+            leaderboard.append(tr);
+
+            var td = $("<td>" + (i+1) + "</td>");
+            tr.append(td);
+
+            td = $("<td>" + players[i] + "</td>");
+            tr.append(td);
+
+            tbody.append(tr)
         }
     }
 </script>
