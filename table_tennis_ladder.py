@@ -134,20 +134,15 @@ def add_new_players_list(players, new_players):
     return players, added_players, duplicate_players, failed_players
 
 
-# add new players (from menu option)
-def menu_add_players(players):
-    while True:
-        player_name = str(raw_input("Please enter a name: "))
-        if player_name in players or player_name.lower() in [i.lower() for i in players]:
-            print "Player name already in use."
-        else:
-            players.append(player_name)
-            print player_name + " added successfully!"
-        user_fin = str(raw_input("Add more players? y/n: "))
-        if user_fin == "n":
-            write_players(players)
-            print ""
-            main_menu()
+#modified for website
+def menu_add_players(players, player_name):
+
+    if player_name in players or player_name.lower() in [i.lower() for i in players]:
+        print "Player name already in use."
+    else:
+        players.append(player_name)
+        print player_name + " added successfully!"
+        write_players(players)
 
 
 # ------------------------------------------RECORD MATCH FUNCTIONS-----------------------------------------------------
@@ -416,6 +411,24 @@ def html_leaderboard():
     site = get_html_file(lboards_dict[default_lb[0]])
 
     return site
+
+@app.route('/add-player', methods=['POST'])
+def add_player():
+
+    default_lb, players, lboards_dict = get_data()
+    current_players = lboards_dict[default_lb[0]]
+
+    # print(request.form)  # prints ImmutableMultiDict([])
+    player_name = request.form.get("player_name")
+
+    # current_players.append[player_name]
+
+    lboards_dict[default_lb[0]] = current_players
+
+    write_lboards_dict(lboards_dict)
+
+    return player_name
+
 
 @app.route("/get-leaderboard-players", methods=["GET"])
 def get_leaderboard_players():

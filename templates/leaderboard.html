@@ -32,6 +32,11 @@
     <div id="wrapper-leaderboard-all" class="col-sm-12" style="text-align: center">
         <div id="wrapper-controls" class="col-sm-4">
             <h4>Leaderboard Controls:</h4>
+            <div id="submit-add-player">
+                <input type="text" placeholder="Player Name" id="player_name" /><br />
+                <button class="btn" onclick="submit_player();">Submit Match</button>
+            </div>
+
             <div id="submit-match-control">
                 <input type="text" placeholder="Winner Name" class="form-control" id="winner_name" /><br />
                 <input style="margin-top: 0.5em; margin-right: 1.5em" class="form-control" type="text" placeholder="Loser Name" id="loser_name"/><br>
@@ -103,6 +108,7 @@
         }
     }
 
+<<<<<<< HEAD
     function changeleaderboard(next) {
 
 
@@ -116,6 +122,24 @@
        document.getElementById("leaderboard_name").value = newData[1]
         }
       });
+=======
+
+      function submit_player() {
+        var player_name = document.getElementById('player_name').value;
+
+        if (player_name.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/add-player',
+                data: { player_name : player_name},
+                success(data) {
+                    add_player_table(player_name);
+                }
+            });
+        } else {
+            alert("Enter names you bell")
+        }
+>>>>>>> d27c656a92af25d6d861547e9166c02b2c628ade
     }
 
     function redraw_table(data) {
@@ -137,5 +161,18 @@
 
             tbody.append(tr)
         }
-    }
+        }
+
+
+    function add_player_table(player) {
+        var leaderboard = $("#leaderboard tbody");
+        leaderboard.append("<tr>");
+        leaderboard.append("<td></td>");
+
+            td = $("<td>" + player + "</td>");
+
+            leaderboard.append(td);
+            tr.append("</tr>");
+        }
+
 </script>
