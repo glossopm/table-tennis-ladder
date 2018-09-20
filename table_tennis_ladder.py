@@ -2,8 +2,7 @@ import sys
 from prettytable import PrettyTable
 import csv
 from jinja2 import Template
-from flask import Flask, render_template
-
+from flask import Flask, render_template, request
 
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
@@ -26,6 +25,7 @@ def write_list_file(filename, data):
     write_str = write_str.rstrip(",").lstrip(",")
     list_file.write(write_str)
     list_file.close()
+
 
 def write_string_file(filename, data):
     string_file = open(filename, "w+")
@@ -55,7 +55,6 @@ def write_players(data):
 
 # read leaderboards data from .csv file and store and return "leaderboards" dictionary
 def get_lboards_dict():
-
     reader = csv.reader(open("leaderboards.csv", "r"))
     mydict = {}
     for row in reader:
@@ -73,7 +72,6 @@ def get_lboards_dict():
 
 
 def write_lboards_dict(lboard_dict):
-
     w = csv.writer(open("leaderboards.csv", "w"))
 
     for key in lboard_dict:
@@ -84,6 +82,7 @@ def write_lboards_dict(lboard_dict):
 def get_data():
     return get_leaderboards(), get_players(), get_lboards_dict()
 
+
 # ------------------------------------------WRITE HTML FILE OPERATIONS--------------------------------------------------
 
 def get_html_file(lboards_dict):
@@ -91,14 +90,14 @@ def get_html_file(lboards_dict):
     lboard_name = get_leaderboards()[0]
     players_list = []
     for idx, player in enumerate(lboards_dict):
-        players_list.append([str(idx+1), str(player)])
+        players_list.append([str(idx + 1), str(player)])
     return render_template("leaderboard.html", players=players_list, leaderboard_name=lboard_name)
+
 
 # ------------------------------------------ADD PLAYERS FUNCTIONS------------------------------------------------------
 
 
 def print_add_players_info(players, new_players):
-
     players, added_players, duplicate_players, failed_players = add_new_players_list(players, new_players)
 
     if len(added_players) != 0:
@@ -136,7 +135,6 @@ def add_new_players_list(players, new_players):
 
 # add new players (from menu option)
 def menu_add_players(players):
-
     while True:
         player_name = str(raw_input("Please enter a name: "))
         if player_name in players or player_name.lower() in [i.lower() for i in players]:
@@ -208,14 +206,13 @@ def enter_matches(players, default_lboard, lboards_dict):
 
 # add a match for a leaderboard - "players" and "lboard" both list format
 def enter_lboard_match(players, matches, lboard):
-
     duplicate_players = []
     failed_records = []
     new_lboard = lboard
 
-    for i in range(0, len(matches)-1, 2):
+    for i in range(0, len(matches) - 1, 2):
         winner = matches[i]
-        loser = matches[i+1]
+        loser = matches[i + 1]
 
         if winner == loser:
             duplicate_players.append(winner)
@@ -229,7 +226,8 @@ def enter_lboard_match(players, matches, lboard):
                 print "Match: " + str(winner) + " beating " + str(loser) + " has been recorded."
 
     for i in failed_records:
-        print "Match: " + str(i[0]) + " beating " + str(i[1]) + " not recorded - one or both players missing from players list."
+        print "Match: " + str(i[0]) + " beating " + str(
+            i[1]) + " not recorded - one or both players missing from players list."
 
     for i in duplicate_players:
         print "Match for player " + str(i) + " not recorded - players cannot play against themselves"
@@ -248,7 +246,6 @@ def print_lboard_info(lboards_dict, default_lb_name):
 
 # change leaderboard from command line
 def change_lboard(lboardsDict, args):
-
     if not args[1] or args[1] not in lboardsDict:
         print "Error: leaderboards does not exist. Record a match to create a new leaderboard."
     else:
@@ -263,7 +260,6 @@ def change_lboard(lboardsDict, args):
 # ------------------------------------------VIEW LEADERBOARD FUNCTION---------------------------------------------------
 
 def find_leaderboard_name(default_lb_name, args):
-
     if len(args[1:]) != 0:
         lboard_param = args[1]
     else:
@@ -274,7 +270,6 @@ def find_leaderboard_name(default_lb_name, args):
 
 # print leaderboard
 def view_leaderboard(lb_dict, default_lb_name, args):
-
     lboard_name = find_leaderboard_name(default_lb_name, args)
     ladder = lb_dict[lboard_name]
 
@@ -282,7 +277,7 @@ def view_leaderboard(lb_dict, default_lb_name, args):
     table.field_names = ["Ranking", "Name"]
 
     for i in ladder:
-        table.add_row([str(ladder.index(i)+1), str(i)])
+        table.add_row([str(ladder.index(i) + 1), str(i)])
     print "--- " + lboard_name.upper() + " ---"
     print table
     exit()
@@ -292,7 +287,6 @@ def view_leaderboard(lb_dict, default_lb_name, args):
 
 # print players
 def view_players(players):
-
     table = PrettyTable()
     table.field_names = ["Name"]
 
@@ -308,7 +302,6 @@ def view_players(players):
 
 # get list of players to be searched for
 def get_players_for_search(args, default_lboard):
-
     if len(args) == 0:
         print "No players specified."
         print_help()
@@ -327,12 +320,12 @@ def get_players_for_search(args, default_lboard):
 
 # search function prints position of player
 def search_players(args, default_lboard, lboard_dict):
-
     players, lboard_name = get_players_for_search(args, default_lboard)
 
     for player in players:
         if player in lboard_dict[lboard_name]:
-            print player + " is ranked position " + str(lboard_dict[lboard_name].index(player) + 1) + " in leaderboard '" + str(lboard_name) + "'."
+            print player + " is ranked position " + str(
+                lboard_dict[lboard_name].index(player) + 1) + " in leaderboard '" + str(lboard_name) + "'."
         else:
             print player + " is unranked in leaderboard '" + str(lboard_name) + "'."
 
@@ -370,7 +363,6 @@ def find_lboard_and_players(args, lboard_order):
 
 # play match
 def match_choice(args, players, lboard_order, lboards_dict):
-
     # if players and leaderboard aren't specified, send user to prompts menu
     if len(args) == 1:
         print "ERROR: No names specified. See --help for details.\n"
@@ -394,7 +386,7 @@ def match_choice(args, players, lboard_order, lboards_dict):
             print "ERROR: odd number of players provided."
     # if leaderboard is specified and players aren't, give user an error
     else:
-            print "ERROR: please enter player names"
+        print "ERROR: please enter player names"
 
 
 # ------------------------------------------DISPLAY MENU FUNCTIONS------------------------------------------------------
@@ -418,7 +410,6 @@ app = Flask(__name__)
 
 @app.route("/")
 def html_leaderboard():
-
     default_lb, _, lboards_dict = get_data()
 
     site = get_html_file(lboards_dict[default_lb[0]])
@@ -426,14 +417,10 @@ def html_leaderboard():
     return site
 
 
-
-
-
 # ------------------------------------------MAIN MENU FUNCTIONS---------------------------------------------------------
 
 # print menu, read in and act on user choice from menu
 def main_menu():
-
     # re-read the players/ladders data - in essence, do a "refresh"
     args = sys.argv[1:]
     default_lb, players, lboards_dict = get_data()
@@ -451,7 +438,7 @@ def main_menu():
     user_choice = str(raw_input("Please select an option: "))
 
     # strips off the ")" character if a user types e.g. "3)" instead of "3" for view leaderboard
-    user_choice = user_choice.replace(")","")
+    user_choice = user_choice.replace(")", "")
 
     # send user to add players menu
     if user_choice == "1":
@@ -499,7 +486,6 @@ def print_help():
 
 # main - entry point of program
 def main():
-
     # retrieve non-script arguments
     args = sys.argv[1:]
     default_lb, players, lboards_dict = get_data()
@@ -547,5 +533,4 @@ def main():
 
 
 if __name__ == "__main__":
-    #html_leaderboard()
     app.run(debug=True)

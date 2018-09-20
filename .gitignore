@@ -1,1 +1,5 @@
 *.txt
+/venv
+*.pyc
+*.xml
+*.iml
