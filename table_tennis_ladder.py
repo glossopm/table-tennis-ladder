@@ -421,11 +421,13 @@ def add_player():
     # print(request.form)  # prints ImmutableMultiDict([])
     player_name = request.form.get("player_name")
 
-    # current_players.append[player_name]
+    current_players.append(player_name)
 
     lboards_dict[default_lb[0]] = current_players
 
     write_lboards_dict(lboards_dict)
+
+    print lboards_dict
 
     return player_name
 
