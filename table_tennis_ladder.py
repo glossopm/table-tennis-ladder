@@ -441,6 +441,18 @@ def submit_match():
 
     return json.dumps(new_ladder)
 
+@app.route("/create-leaderboard", methods=["POST"])
+def create_leaderboard():
+    leaderboard_name = request.form.get("leaderboard_name")
+    leaderboards = get_lboards_dict()
+
+    leaderboards[leaderboard_name] = []
+
+    write_lboards_dict(leaderboards)
+
+    print leaderboard_name
+
+    return leaderboard_name
 
 
 # ------------------------------------------MAIN MENU FUNCTIONS---------------------------------------------------------
