@@ -1,0 +1,23 @@
+<div id="logo"><img src="{{ url_for('static', filename='images/team-gold-logo-brunton.png') }}"
+                    style="width: 130px; margin: 0 auto;"/></div>
+
+<div class="control-div" id="submit-add-player">
+    <h3 class="control-header">Add Player</h3>
+    <input type="text" placeholder="Player Name" id="player_name"/><br/>
+    <button class="btn" onclick="submit_player();">Add Player</button>
+</div>
+
+<div class="control-div" id="submit-match-control">
+    <h3 class="control-header">Add Match</h3>
+    <div>
+        <input type="text" placeholder="Winner Name" id="winner_name"/>
+        <input style="margin-top: 0.5em;" type="text" placeholder="Loser Name" id="loser_name"/>
+    </div>
+    <button class="btn" onclick="submit_score()">Submit Match</button>
+</div>
+
+<div class="control-div col-sm-12" id="create-leaderboard-control">
+    <h3 class="control-header">Add Leaderboard</h3>
+    <input type="text" placeholder="Leaderboard Name" id="leaderboard_name"/><br/>
+    <button class="btn-primary" onclick="create_leaderboard()">Create Leaderboard</button>
+</div>
