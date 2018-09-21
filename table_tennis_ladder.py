@@ -427,8 +427,6 @@ def add_player():
 
     write_lboards_dict(lboards_dict)
 
-    print lboards_dict
-
     return player_name
 
 
@@ -449,25 +447,35 @@ def change_leaderboard():
     lname = get_leaderboards()[0]
 
     lboards_name_list = lboards_dict.keys()
-    print str(lname + " | " + pos)
+
     lboard_index = lboards_name_list.index(lname)
 
     new_lboard_index = None
 
-    if lboard_index == 0 and pos == -1:
+    print 'index: ' + str(lboard_index)
+    print 'pos: ' + str(pos)
+    print 'lname: ' + lname
+
+    if lboard_index == 0 and pos == "-1":
         new_lboard_index = (len(lboards_name_list) - 1)
-    elif lboard_index == (len(lboards_name_list) - 1) and pos == +1:
+    elif lboard_index == (len(lboards_name_list) - 1) and pos == "1":
         new_lboard_index = 0
-    elif pos == -1:
+    elif pos == "-1":
         new_lboard_index = lboard_index - 1
-    elif pos == +1:
+    elif pos == "1":
         new_lboard_index = lboard_index + 1
+    else:
+        print ": " + pos
+
+    print lboards_name_list
 
     new_lboard_name = lboards_name_list[new_lboard_index]
 
     players = lboards_dict[new_lboard_name]
 
-    return [json.dumps(players), new_lboard_name]
+    write_lboards(new_lboard_name)
+
+    return json.dumps([players, new_lboard_name])
 
 
 @app.route("/submit-match", methods=["POST"])

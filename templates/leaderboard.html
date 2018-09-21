@@ -17,9 +17,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script type="text/javascript" language="javascript"
+            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
     <title>Team Gold - {{ leaderboard_name }}</title>
 </head>
@@ -35,19 +36,20 @@
             <div>
                 <h5>Player:</h5>
                 <div id="submit-match-control" class="col-sm-12">
-                    <input type="text" placeholder="Winner Name" id="winner_name" /><br />
-                    <input style="margin-top: 0.5em; margin-right: 1.5em" type="text" placeholder="Loser Name" id="loser_name"/>
+                    <input type="text" placeholder="Winner Name" id="winner_name"/><br/>
+                    <input style="margin-top: 0.5em; margin-right: 1.5em" type="text" placeholder="Loser Name"
+                           id="loser_name"/>
                     <button class="btn-primary" onclick="submit_score()">Submit Match</button>
                 </div>
-            <div id="submit-add-player" class="col-sm-12">
-                <input type="text" placeholder="Player Name" id="player_name" /><br />
-                <button class="btn-primary" onclick="submit_player()">Add Player</button>
-            </div>
+                <div id="submit-add-player" class="col-sm-12">
+                    <input type="text" placeholder="Player Name" id="player_name"/><br/>
+                    <button class="btn-primary" onclick="submit_player()">Add Player</button>
+                </div>
             </div>
             <div>
                 <h5>Leaderboard:</h5>
                 <div id="create-leaderboard-control" class="col-sm-12">
-                    <input type="text" placeholder="Leaderboard Name" id="leaderboard_name" /><br />
+                    <input type="text" placeholder="Leaderboard Name" id="leaderboard_name"/><br/>
                     <button class="btn-primary" onclick="create_leaderboard()">Create Leaderboard</button>
                 </div>
             </div>
@@ -57,29 +59,31 @@
             <div class="col-sm-10" style="width: 100%">
                 <div class="col-sm-10">
                     <div id="left-button-wrapper" class="col-sm-2">
-                        <button type="button" class="btn btn-outline-secondary" onclick="changeleaderboard(-1)"><<</button>
+                        <button type="button" class="btn btn-success" onclick="change_leaderboard(-1)"><<
+                        </button>
                     </div>
                     <div style="align-content: center" id="leaderboard-title-wrapper" class="col-sm-8">
                         <h3 id="leaderboard_title">{{ leaderboard_name }}</h3>
                     </div>
                     <div id="right-button-wrapper" class="col-sm-2">
-                        <button type="button" class="btn btn-outline-secondary" onclick="changeleaderboard(+1)">>></button>
+                        <button type="button" class="btn btn-success" onclick="change_leaderboard(1)">>>
+                        </button>
                     </div>
                 </div>
                 <div class="col-sm-10">
                     <table class="table" id="leaderboard" style="width:100%">
                         <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Player</th>
-                            </tr>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Player</th>
+                        </tr>
                         </thead>
                         <tbody>
                         {% for player in players %}
-                            <tr>
-                                <td>{{ player[0] }}</td>
-                                <td>{{ player[1] }}</td>
-                            </tr>
+                        <tr>
+                            <td>{{ player[0] }}</td>
+                            <td>{{ player[1] }}</td>
+                        </tr>
                         {% endfor %}
                         </tbody>
                     </table>
@@ -93,22 +97,22 @@
 
 <script type="application/javascript">
 
-    $(document).ready( function () {
+    $(document).ready(function () {
         $('#leaderboard').DataTable({
             paging: false,
             searching: false
         });
-    } );
+    });
 
     function create_leaderboard() {
         var leaderboard_name = document.getElementById('leaderboard_name').value;
         if (leaderboard_name.length > 0) {
 
-                    console.log(leaderboard_name)
+            console.log(leaderboard_name)
             $.ajax({
                 type: 'POST',
                 url: '/create-leaderboard',
-                data: { leaderboard_name : leaderboard_name },
+                data: {leaderboard_name: leaderboard_name},
                 success(data) {
                     set_active_leaderboard_to_new(data);
                 },
@@ -129,9 +133,10 @@
             $.ajax({
                 type: 'POST',
                 url: '/submit-match',
-                data: { winner_name : winner_name, loser_name : loser_name},
+                data: {winner_name: winner_name, loser_name: loser_name},
                 success(data) {
-                    redraw_table(data);
+                    var players = JSON.parse(data);
+                    redraw_table(players);
                 }
             });
         } else {
@@ -140,31 +145,35 @@
     }
 
     function set_active_leaderboard_to_new(leaderboard_name) {
-        console.log(leaderboard_name);
         document.getElementById('leaderboard_title').innerText = leaderboard_name;
         $("#leaderboard tbody").remove();
     }
 
+    function change_leaderboard(move) {
+        $.ajax({
+            type: 'POST',
+            url: '/change-ladder',
+            data: {move: move},
+            success(data) {
+                console.log(data);
+                var newData = JSON.parse(data);
+                // console.log(newData)
+                var players = newData[0];
+                var leaderboard_name = newData[1];
+                redraw_table(players);
+                document.getElementById('leaderboard_title').innerText = leaderboard_name;
+            }
+        });
+    }
 
-       $.ajax({
-       type: 'POST',
-       url: '/change-ladder',
-       data: {move : next},
-       success(data) {
-       var newData = JSON.parse(data)
-       redraw_table(newData[0]);
-       document.getElementById("leaderboard_name").value = newData[1]
-        }
-      });
-
-      function submit_player() {
+    function submit_player() {
         var player_name = document.getElementById('player_name').value;
 
         if (player_name.length > 0) {
             $.ajax({
                 type: 'POST',
                 url: '/add-player',
-                data: { player_name : player_name},
+                data: {player_name: player_name},
                 success(data) {
                     add_player_table(data);
                 }
@@ -174,8 +183,7 @@
         }
     }
 
-    function redraw_table(data) {
-        var players = JSON.parse(data);
+    function redraw_table(players) {
         var leaderboard = $("#leaderboard");
         $("#leaderboard tbody").remove();
         var tbody = $("<tbody></tbody>");
@@ -185,7 +193,7 @@
             var tr = $("<tr></tr>");
             leaderboard.append(tr);
 
-            var td = $("<td>" + (i+1) + "</td>");
+            var td = $("<td>" + (i + 1) + "</td>");
             tr.append(td);
 
             td = $("<td>" + players[i] + "</td>");
@@ -193,7 +201,7 @@
 
             tbody.append(tr)
         }
-        }
+    }
 
 
     function add_player_table(player) {
