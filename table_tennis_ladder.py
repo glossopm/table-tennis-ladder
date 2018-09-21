@@ -134,9 +134,8 @@ def add_new_players_list(players, new_players):
     return players, added_players, duplicate_players, failed_players
 
 
-#modified for website
+# modified for website
 def menu_add_players(players, player_name):
-
     if player_name in players or player_name.lower() in [i.lower() for i in players]:
         print "Player name already in use."
     else:
@@ -412,9 +411,9 @@ def html_leaderboard():
 
     return site
 
+
 @app.route('/add-player', methods=['POST'])
 def add_player():
-
     default_lb, players, lboards_dict = get_data()
     current_players = lboards_dict[default_lb[0]]
 
@@ -426,7 +425,24 @@ def add_player():
 
     write_lboards_dict(lboards_dict)
 
-    return player_name
+    return player_name \
+
+
+@app.route("/remove-player", methods=["POST"])
+def remove_player():
+    remove_name = request.form.get("remove_name")
+    lboards_dict = get_lboards_dict()
+    default_lboard = get_leaderboards()[0]
+
+    players = lboards_dict[default_lboard]
+
+    players.remove(remove_name)
+
+    lboards_dict[default_lboard] = players
+
+    write_lboards_dict(lboard_dict)
+
+    return lboards_dict[default_lboard]
 
 
 @app.route("/get-leaderboard-players", methods=["GET"])
