@@ -25,16 +25,15 @@
         }
         #main {
         display:flex;
-        	height: 100%;
-  min-height: 100%;
+        	min-height: 100%;
         }
 
         #sidebar {
-        flex: 1;
+        flex: 4;
         background-image: linear-gradient(rgb(255, 183, 0), rgb(255, 233, 145));
         padding: 15px;
         text-align: center;
-        height: 100%;
+        min-height: 100%;
 
         }
 
@@ -46,7 +45,7 @@
         }
 
         #main-leaderboard {
-        flex:4;
+        flex:8;
         padding: 15px;
         }
 
@@ -108,20 +107,24 @@
                 <input type="text" placeholder="Winner Name" id="winner_name" />
                 <input style="margin-top: 0.5em;" type="text" placeholder="Loser Name" id="loser_name"/>
                 <button class="btn" onclick="submit_score()">Submit Match</button>
-
-
             </div>
+
+    <div id="create-leaderboard-control" style="border: 1px solid grey; margin-bottom: 15px; padding: 10px;" class="col-sm-12">
+        <h3>Add Leaderboard</h3>
+                    <input type="text" placeholder="Leaderboard Name" id="leaderboard_name"/><br/>
+                    <button class="btn-primary" onclick="create_leaderboard()">Create Leaderboard</button>
+                </div>
         </div>
 
 
         <div id="main-leaderboard" class="" style="text-align: center">
             <center>
-            <div class="leaderboard-content" style="width: 60%">
-                    <div style="align-content: center"  class="">
-                        <p style="font-family: 'Monoton', cursive; font-size: 50px; color: goldenrod"><img style="width:70px; margin-right: 20px" src="{{ url_for('static', filename='images/trophy.png') }}" /> {{ leaderboard_name }}</p>
+            <div class="leaderboard-content" style="width: 80%">
+                    <div style="display: flex; align-content: center"  class="">
+                       <div style="flex: 1; font-size: 25px; cursor: pointer; vertical-align: middle; padding: 50px" onclick="change_leaderboard(-1)">&larr;</div> <p style="flex:1; font-family: 'Monoton', cursive; font-size: 38px; color: goldenrod" id="leaderboard_title">{{ leaderboard_name }}</p><div style="flex: 1; padding: 50px; font-size: 25px; cursor: pointer;" onclick="change_leaderboard(1)">&rarr;</div>
                     </div>
                 <div class="">
-                    <div style="font-size: 25px; cursor: pointer;" onclick="change_leaderboard(-1)">&larr;</div> <div style="font-size: 25px; cursor: pointer;" onclick="change_leaderboard(1)">&rarr;</div>
+
                     <table class="table" id="leaderboard" style="width:100%">
                         <thead>
                             <tr class="hrow">
