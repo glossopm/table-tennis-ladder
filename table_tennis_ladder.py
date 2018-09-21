@@ -440,7 +440,7 @@ def remove_player():
 
     lboards_dict[default_lboard] = players
 
-    write_lboards_dict(lboard_dict)
+    write_lboards_dict(lboards_dict)
 
     return lboards_dict[default_lboard]
 
