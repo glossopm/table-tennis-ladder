@@ -8,12 +8,14 @@
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
 
     <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
 
 
-	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+
+
 	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
 	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
 
@@ -70,21 +72,25 @@
     margin: 9px;
         }
 
-        thead {
-            border-color: white;
-        }
-
         table {
+        font-family: 'Montserrat', sans-serif;
             text-align: center;
-            font-size: 18px;
+            font-size: 22px;
+            border-collapse: collapse;
+            white-space: nowrap;
         }
 
-        .odd{
-            background-color: grey;
+
+        tr {
+            height: 45px;
         }
 
-        .row {
-            padding: 15px;
+
+
+                thead {
+        background-color: white;
+            border-color: white;
+            height: 45px;
         }
     </style>
 
@@ -95,7 +101,6 @@
 <div id="main">
 <div id="sidebar">
      <center><div id="logo"><img src="{{ url_for('static', filename='images/team-gold-logo-brunton.png') }}" style="width: 130px; margin: 0 auto;"/></div></center>
-    <i>why use many words when few words does job</i>
             <div id="submit-add-player" style="border: 1px solid grey; margin-bottom: 15px; padding: 10px; radius: 8px;">
                 <h3>Add Player</h3>
                 <input type="text" placeholder="Player Name" id="player_name" />
@@ -119,7 +124,7 @@
 
         <div id="main-leaderboard" class="" style="text-align: center">
             <center>
-            <div class="leaderboard-content" style="width: 80%">
+            <div class="leaderboard-content" style="width: 90%">
                     <div style="display: flex; align-content: center"  class="">
                        <div style="flex: 1; font-size: 25px; cursor: pointer; vertical-align: middle; padding: 50px" onclick="change_leaderboard(-1)">&larr;</div> <p style="flex:1; font-family: 'Monoton', cursive; font-size: 38px; color: goldenrod" id="leaderboard_title">{{ leaderboard_name }}</p><div style="flex: 1; padding: 50px; font-size: 25px; cursor: pointer;" onclick="change_leaderboard(1)">&rarr;</div>
                     </div>
