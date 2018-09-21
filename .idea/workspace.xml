@@ -2,10 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="98ff781e-5094-475d-978a-ab4e0e7844bf" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/table_tennis_ladder.py" beforeDir="false" afterPath="$PROJECT_DIR$/table_tennis_ladder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/templates/leaderboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/templates/leaderboard.html" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -14,7 +11,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="CoverageDataManager">
-    <SUITE FILE_PATH="coverage/table_tennis_ladder_emalik$table_tennis_ladder.coverage" NAME="table_tennis_ladder Coverage Results" MODIFIED="1537462116418" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/table_tennis_ladder_emalik$table_tennis_ladder.coverage" NAME="table_tennis_ladder Coverage Results" MODIFIED="1537520280381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
   <component name="FUSProjectUsageTrigger">
     <session id="601415678">
@@ -114,7 +111,7 @@
         <counts>
           <entry key="gitignore" value="43" />
           <entry key="html" value="3060" />
-          <entry key="py" value="1056" />
+          <entry key="py" value="1058" />
           <entry key="txt" value="36" />
         </counts>
       </usages-collector>
@@ -122,7 +119,7 @@
         <counts>
           <entry key="HTML" value="3060" />
           <entry key="PLAIN_TEXT" value="79" />
-          <entry key="Python" value="1056" />
+          <entry key="Python" value="1058" />
         </counts>
       </usages-collector>
     </session>
@@ -156,12 +153,12 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/table_tennis_ladder.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="408">
-              <caret line="475" column="33" selection-start-line="475" selection-start-column="33" selection-end-line="475" selection-end-column="33" />
+            <state relative-caret-position="270">
+              <caret line="440" lean-forward="true" selection-start-line="440" selection-end-line="440" />
               <folding>
                 <element signature="e#0#10#0" expanded="true" />
-                <marker date="1537463030616" expanded="true" signature="14019:15011" ph="..." />
-                <marker date="1537463030616" expanded="true" signature="15638:15776" ph="..." />
+                <marker date="1537519258556" expanded="true" signature="14019:15012" ph="..." />
+                <marker date="1537519258556" expanded="true" signature="15640:15778" ph="..." />
               </folding>
             </state>
           </provider>
@@ -378,14 +375,13 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="22" width="1680" height="971" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13797314" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.13797314" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info anchor="bottom" id="Run" order="2" visible="true" weight="0.32992035" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" visible="true" weight="0.32992035" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -511,12 +507,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/table_tennis_ladder.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="475" column="33" selection-start-line="475" selection-start-column="33" selection-end-line="475" selection-end-column="33" />
+        <state relative-caret-position="270">
+          <caret line="440" lean-forward="true" selection-start-line="440" selection-end-line="440" />
           <folding>
             <element signature="e#0#10#0" expanded="true" />
-            <marker date="1537463030616" expanded="true" signature="14019:15011" ph="..." />
-            <marker date="1537463030616" expanded="true" signature="15638:15776" ph="..." />
+            <marker date="1537519258556" expanded="true" signature="14019:15012" ph="..." />
+            <marker date="1537519258556" expanded="true" signature="15640:15778" ph="..." />
           </folding>
         </state>
       </provider>

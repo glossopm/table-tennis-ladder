@@ -418,7 +418,6 @@ def add_player():
     default_lb, players, lboards_dict = get_data()
     current_players = lboards_dict[default_lb[0]]
 
-    # print(request.form)  # prints ImmutableMultiDict([])
     player_name = request.form.get("player_name")
 
     current_players.append(player_name)
@@ -439,6 +438,7 @@ def get_leaderboard_players():
 
     return json.dumps(players)
 
+
 @app.route("/change-ladder", methods=["POST"])
 def change_leaderboard():
     pos = request.form.get("move")
@@ -452,10 +452,6 @@ def change_leaderboard():
 
     new_lboard_index = None
 
-    print 'index: ' + str(lboard_index)
-    print 'pos: ' + str(pos)
-    print 'lname: ' + lname
-
     if lboard_index == 0 and pos == "-1":
         new_lboard_index = (len(lboards_name_list) - 1)
     elif lboard_index == (len(lboards_name_list) - 1) and pos == "1":
@@ -464,10 +460,6 @@ def change_leaderboard():
         new_lboard_index = lboard_index - 1
     elif pos == "1":
         new_lboard_index = lboard_index + 1
-    else:
-        print ": " + pos
-
-    print lboards_name_list
 
     new_lboard_name = lboards_name_list[new_lboard_index]
 
@@ -492,6 +484,7 @@ def submit_match():
 
     return json.dumps(new_ladder)
 
+
 @app.route("/create-leaderboard", methods=["POST"])
 def create_leaderboard():
     leaderboard_name = request.form.get("leaderboard_name")
@@ -500,8 +493,6 @@ def create_leaderboard():
     leaderboards[leaderboard_name] = []
 
     write_lboards_dict(leaderboards)
-
-    print leaderboard_name
 
     return leaderboard_name
 
