@@ -1,99 +1,159 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css"
-          integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
             integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
             crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"
             integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49"
             crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"
-            integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy"
-            crossorigin="anonymous"></script>
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300" rel="stylesheet">
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
-          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
-    <script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
-    <script type="text/javascript" language="javascript"
-            src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+    <link href="https://fonts.googleapis.com/css?family=Monoton" rel="stylesheet">
+
+
+
+
+	<script type="text/javascript" language="javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+    <style>
+
+        html,body {
+        height: 100%;
+
+        }
+        #main {
+        display:flex;
+        	min-height: 100%;
+        }
+
+        #sidebar {
+        flex: 4;
+        background-image: linear-gradient(rgb(255, 183, 0), rgb(255, 233, 145));
+        padding: 15px;
+        text-align: center;
+        min-height: 100%;
+
+        }
+
+        .leaderboard-content {
+            border: 1px solid #DCDCDC;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        #main-leaderboard {
+        flex:8;
+        padding: 15px;
+        }
+
+        #sidebar {
+
+        }
+
+        input {
+    width: 80%;
+    font-size: 14px;
+    padding: 10px;
+    border-radius: 50px;
+    border: 1px solid #DCDCDC;
+}
+
+        button {
+            padding: 10px;
+            font-size: 14px;
+            background-color: white;
+            border-radius: 50px;
+    border: 1px solid #DCDCDC;
+    margin: 9px;
+        }
+
+        table {
+        font-family: 'Montserrat', sans-serif;
+            text-align: center;
+            font-size: 22px;
+            border-collapse: collapse;
+            white-space: nowrap;
+        }
+
+
+        tr {
+            height: 45px;
+        }
+
+
+
+                thead {
+        background-color: white;
+            border-color: white;
+            height: 45px;
+        }
+    </style>
 
     <title>Team Gold - {{ leaderboard_name }}</title>
 </head>
 <body>
 {% include "navbar.html" %}
-<div id="wrapper-body" class="row">
-    <div id="wrapper-header" class="col-sm-12">
-        <h4><i>why use many words when few words does job</i></h4>
-    </div>
-    <div id="wrapper-leaderboard-all" class="col-sm-12" style="text-align: center">
-        <div id="wrapper-controls" class="col-sm-4">
-            <h4>Leaderboard Controls:</h4>
-            <div>
-                <h5>Player:</h5>
-                <div id="submit-match-control" class="col-sm-12">
-                    <input type="text" placeholder="Winner Name" id="winner_name"/><br/>
-                    <input style="margin-top: 0.5em; margin-right: 1.5em" type="text" placeholder="Loser Name"
-                           id="loser_name"/>
-                    <button class="btn-primary" onclick="submit_score()">Submit Match</button>
-                </div>
-                <div id="submit-add-player" class="col-sm-12">
-                    <input type="text" placeholder="Player Name" id="player_name"/><br/>
-                    <button class="btn-primary" onclick="submit_player()">Add Player</button>
-                </div>
+<div id="main">
+<div id="sidebar">
+     <center><div id="logo"><img src="{{ url_for('static', filename='images/team-gold-logo-brunton.png') }}" style="width: 130px; margin: 0 auto;"/></div></center>
+            <div id="submit-add-player" style="border: 1px solid grey; margin-bottom: 15px; padding: 10px; radius: 8px;">
+                <h3>Add Player</h3>
+                <input type="text" placeholder="Player Name" id="player_name" />
+                <button class="btn" onclick="submit_player();">Add Player</button>
             </div>
-            <div>
-                <h5>Leaderboard:</h5>
-                <div id="create-leaderboard-control" class="col-sm-12">
+
+            <div id="submit-match-control" style="border: 1px solid grey; margin-bottom: 15px; padding: 10px;">
+                <h3>Add Match</h3>
+                <input type="text" placeholder="Winner Name" id="winner_name" />
+                <input style="margin-top: 0.5em;" type="text" placeholder="Loser Name" id="loser_name"/>
+                <button class="btn" onclick="submit_score()">Submit Match</button>
+            </div>
+
+    <div id="create-leaderboard-control" style="border: 1px solid grey; margin-bottom: 15px; padding: 10px;" class="col-sm-12">
+        <h3>Add Leaderboard</h3>
                     <input type="text" placeholder="Leaderboard Name" id="leaderboard_name"/><br/>
                     <button class="btn-primary" onclick="create_leaderboard()">Create Leaderboard</button>
                 </div>
-            </div>
         </div>
 
-        <div id="wrapper-leaderboard" class="col-sm-8" style="text-align: center">
-            <div class="col-sm-10" style="width: 100%">
-                <div class="col-sm-10">
-                    <div id="left-button-wrapper" class="col-sm-2">
-                        <button type="button" class="btn btn-success" onclick="change_leaderboard(-1)"><<
-                        </button>
+
+        <div id="main-leaderboard" class="" style="text-align: center">
+            <center>
+            <div class="leaderboard-content" style="width: 90%">
+                    <div style="display: flex; align-content: center"  class="">
+                       <div style="flex: 1; font-size: 25px; cursor: pointer; vertical-align: middle; padding: 50px" onclick="change_leaderboard(-1)">&larr;</div> <p style="flex:1; font-family: 'Monoton', cursive; font-size: 38px; color: goldenrod" id="leaderboard_title">{{ leaderboard_name }}</p><div style="flex: 1; padding: 50px; font-size: 25px; cursor: pointer;" onclick="change_leaderboard(1)">&rarr;</div>
                     </div>
-                    <div style="align-content: center" id="leaderboard-title-wrapper" class="col-sm-8">
-                        <h3 id="leaderboard_title">{{ leaderboard_name }}</h3>
-                    </div>
-                    <div id="right-button-wrapper" class="col-sm-2">
-                        <button type="button" class="btn btn-success" onclick="change_leaderboard(1)">>>
-                        </button>
-                    </div>
-                </div>
-                <div class="col-sm-10">
+                <div class="">
+
                     <table class="table" id="leaderboard" style="width:100%">
                         <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Player</th>
-                        </tr>
+                            <tr class="hrow">
+                                <th>Rank</th>
+                                <th>Player</th>
+                            </tr>
                         </thead>
                         <tbody>
                         {% for player in players %}
-                        <tr>
-                            <td>{{ player[0] }}</td>
-                            <td>{{ player[1] }}</td>
-                        </tr>
+                            <tr class="row">
+                                <td>{{ player[0] }}</td>
+                                <td>{{ player[1] }}</td>
+                            </tr>
                         {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
+        </center>
         </div>
     </div>
-</div>
 </body>
 </html>
+
 
 <script type="application/javascript">
 
