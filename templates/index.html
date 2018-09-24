@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+    <head>
+            <link rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/animate.css@3.5.2/animate.min.css">
+  <!-- or -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css">
+
+            <link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
+
+            <script>
+                    window.onload = function() {
+                      var context = new AudioContext();
+                    }
+                    </script>
+
+        <style>
+
+        html, body {
+            margin: 0;
+            font-family: 'Quicksand', sans-serif;
+        }
+
+        #logo {
+            z-index: 200;
+            position: absolute;
+            margin:auto;
+        }
+
+#video {
+    z-index: 1;
+        position: fixed;
+    right: 0;
+    bottom: 0;
+    min-width: 100%; 
+    min-height: 100%;
+}
+
+.center {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+    height: 100%;
+}
+
+#nav {
+    display: flex;
+    background-color: white;
+    color: black;
+    border-bottom: 2px solid #DCDCDC;
+    font-size: 14px;
+    width: 100%;
+    position:fixed;
+    z-index: 209;
+}
+
+#links {
+    flex: 2;
+    text-align: center;
+    align-content: center;
+}
+
+#links ul {
+    display: flex;
+    list-style: none;
+    padding-left: 0;
+    padding-right: 2px;
+}
+
+#marquee {
+    flex: 6;
+}
+
+ul li {
+    display: inline;
+    margin-left: 13px;
+    margin-right: 10px;
+    text-align: center;
+    padding: 2px;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    width: 40%;
+}
+
+.main {
+    z-index: 200;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    color: white;
+    font-size: 30px;
+
+}
+        
+        </style>
+    </head>
+    
+    <body>
+
+<audio autoplay src="{{ url_for('static', filename='assets/gold_song.mp3') }}">
+<p>Audio not available</p>                
+</audio>
+
+<video autoplay muted loop id="video">
+        <source src="{{ url_for('static', filename='assets/bg.mp4') }}" type="video/mp4">
+      </video>
+
+{% include "navbar.html" %}
+<div style="background:url('static/images/team-gold-logo-brunton.png') no-repeat center center; background-size: 40%;" class="main animated infinite pulse slower">
+    <p style="position: absolute; bottom: 0; width: 100%;">Don't stop when you are tired, stop when you are done</p>
+    
+    
+</div>
+</body>
+</html>
