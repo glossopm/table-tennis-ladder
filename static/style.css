@@ -16,7 +16,7 @@ html, body {
     text-align: center;
     min-height: 100%;
     border-right: 1px solid grey;
-    margin-top: 98px;
+    margin-top: 133px;
     position: fixed;
 }
 
@@ -31,7 +31,7 @@ html, body {
     margin-left: 390px;
     flex: 8;
     padding: 15px;
-    margin-top: 97px;
+    margin-top: 127px;
 }
 
 input {
@@ -89,7 +89,7 @@ html, body {
     font-family: 'Open Sans', sans-serif;
 }
 
-#nav {
+#navi {
     display: flex;
     background-color: rgba(255,255,255,0.9);
     color: black;
