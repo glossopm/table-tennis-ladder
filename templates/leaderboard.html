@@ -1,7 +1,36 @@
+<style>
+    #video-leaderboard {
+        z-index: -1;
+        position: fixed;
+        min-width: 100%; 
+    min-height: 100%;
+    }
+
+    #main {
+        z-index: 1;
+        position: relative;
+    }
+
+    #nav {
+        position: fixed;
+        z-index: 200;
+    }
+
+    .leaderboard-content {
+        background-color: rgba(255,255,255,0.7)
+    }
+</style>
+
 {% include "header.html" %}
 <body>
+        <video autoplay muted loop id="video-leaderboard">
+                <source src="{{ url_for('static', filename='assets/bg.mp4') }}" type="video/mp4">
+              </video>
+
 {% include "navbar.html" %}
 <div id="main">
+
+    
     <div id="sidebar">
         <center>
             {% include "sidebar.html" %}
