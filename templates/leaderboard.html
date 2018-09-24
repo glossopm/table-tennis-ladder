@@ -87,31 +87,36 @@
 
     function create_leaderboard() {
         var leaderboard_name = document.getElementById('leaderboard_name').value;
-        if (leaderboard_name.length > 0) {
-            $.ajax({
-                type: 'POST',
-                url: '/create-leaderboard',
-                data: { leaderboard_name: leaderboard_name },
-                success(data) {
-                    if(data == "Troll") {
-                        for(var i = 0; i < 10; i++) {
-                             window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
-                             window.location.href = "http://icryeverytime.com/";
-                             alert("TROLL DETECTED REEEEE");
-                         }
-                    }
-                    set_active_leaderboard_to_new(data);
-                },
-                error() {
-                    console.log("error")
-                }
-            })
+        if (leaderboard_name.contains('<img') || leaderboard_name.contains('<table') || leaderboard_name.contains('<tr')){
+                troll_proof();
         } else {
-            alert("Enter a name you twink")
+            if (leaderboard_name.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/create-leaderboard',
+                    data: {leaderboard_name: leaderboard_name},
+                    success(data) {
+                        if (data == "Troll") {
+                            for (var i = 0; i < 10; i++) {
+                                window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                                window.location.href = "http://icryeverytime.com/";
+                                alert("TROLL DETECTED REEEEE");
+                            }
+                        }
+                        set_active_leaderboard_to_new(data);
+                    },
+                    error() {
+                        console.log("error")
+                    }
+                })
+            } else {
+                alert("Enter a name you twink")
+            }
         }
     }
 
     function submit_score() {
+
         var winner_name = document.getElementById('winner_name').value;
         var loser_name = document.getElementById('loser_name').value;
 
@@ -155,29 +160,35 @@
     function add_player() {
         var player_name = document.getElementById('player_name').value;
 
-        if (player_name.length > 0) {
-            $.ajax({
-                type: 'POST',
-                url: '/add-player',
-                data: {player_name: player_name},
-                success(data) {
-                    if(data == "Troll") {
-                        for(var i = 0; i < 10; i++) {
-                            window.open("https://www.youtube.com/watch?v=LJPCjqL4eA0",'_blank');
-                            window.open("http://icryeverytime.com/",'_blank');
-
-                            window.resizeTo(1024, 768);
-       //window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
-                             //window.location.href = "http://icryeverytime.com/";
-                             alert("TROLL DETECTED REEEEE");
-                         }
-                    }
-
-                    add_player_table(data);
-                }
-            });
+        if (player_name.contains('<img') || player_name.contains('<table') || player_name.contains('<tr')){
+                troll_proof();
         } else {
-            alert("Enter names you bell")
+
+            if (player_name.length > 0) {
+                $.ajax({
+                    type: 'POST',
+                    url: '/add-player',
+                    data: {player_name: player_name},
+                    success(data) {
+
+                        if (data == "Troll") {
+                            for (var i = 0; i < 10; i++) {
+                                window.open("https://www.youtube.com/watch?v=LJPCjqL4eA0", '_blank');
+                                window.open("http://icryeverytime.com/", '_blank');
+
+                                window.resizeTo(1024, 768);
+                                //window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                                //window.location.href = "http://icryeverytime.com/";
+                                alert("TROLL DETECTED REEEEE");
+                            }
+                        }
+
+                        add_player_table(data);
+                    }
+                });
+            } else {
+                alert("Enter names you bell")
+            }
         }
     }
 
@@ -191,7 +202,7 @@
                 data: {player_name: player_name},
 
                 success(data) {
-                    data = JSON.parse(data)
+                    data = JSON.parse(data);
                     if (data == "Incorrect") {
                         alert("Who? Enter a proper name");
                     } else {
@@ -236,6 +247,12 @@
 
         leaderboard.append(td);
         $('#leaderboard').append("</tr>");
+    }
+
+    function troll_proof() {
+        window.open("http://icryeverytime.com/",'_blank');
+        window.open('', '_self', '');
+        window.close();
     }
 
 </script>
