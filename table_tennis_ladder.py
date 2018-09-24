@@ -37,7 +37,7 @@ def write_string_file(filename, data):
 # read leaderboards order data from .txt file
 def get_leaderboards():
     lboard = get_list_file("default_lboard.txt")
-    new_lboard = lboard.strip()
+    new_lboard = lboard[0].strip()
     return new_lboard
 
 
