@@ -1,4 +1,5 @@
 import sys
+from prettytable import PrettyTable
 import csv
 from jinja2 import Template
 from flask import Flask, render_template, request
@@ -267,7 +268,13 @@ def view_leaderboard(lb_dict, default_lb_name, args):
     lboard_name = find_leaderboard_name(default_lb_name, args)
     ladder = lb_dict[lboard_name]
 
-    print ladder
+    table = PrettyTable()
+    table.field_names = ["Ranking", "Name"]
+
+    for i in ladder:
+        table.add_row([str(ladder.index(i) + 1), str(i)])
+    print "--- " + lboard_name.upper() + " ---"
+    print table
     exit()
 
 
