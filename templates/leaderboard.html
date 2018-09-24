@@ -62,7 +62,7 @@
             $.ajax({
                 type: 'POST',
                 url: '/create-leaderboard',
-                data: {leaderboard_name: leaderboard_name},
+                data: { leaderboard_name: leaderboard_name },
                 success(data) {
                     set_active_leaderboard_to_new(data);
                 },
@@ -134,7 +134,7 @@
     }
 
     function remove_player() {
-        var player_name = document.getElementById('player_name_remove').value;
+        var player_name = document.getElementById('player_name').value;
 
         if (player_name.length > 0) {
             $.ajax({
