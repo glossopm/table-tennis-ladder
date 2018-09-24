@@ -404,6 +404,11 @@ app = Flask(__name__)
 
 
 @app.route("/")
+def html_home():
+
+    return render_template("index.html")
+
+@app.route("/leaderboard")
 def html_leaderboard():
     default_lb, _, lboards_dict = get_data()
 
