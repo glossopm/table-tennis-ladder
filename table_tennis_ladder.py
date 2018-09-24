@@ -424,22 +424,28 @@ def add_player():
 
     player_name = request.form.get("player_name")
 
-    current_players.append(player_name)
+    if len(player_name) < 25:
 
-    lboards_dict[default_lb[0]] = current_players
+        current_players.append(player_name)
 
-    write_lboards_dict(lboards_dict)
+        lboards_dict[default_lb[0]] = current_players
 
-    return player_name
+        write_lboards_dict(lboards_dict)
+
+        return player_name
+
+    return "Troll"
 
 
 @app.route("/remove-player", methods=["POST"])
 def remove_player():
-    remove_name = request.form.get("remove_name")
+    remove_name = request.form.get("player_name")
     lboards_dict = get_lboards_dict()
     default_lboard = get_leaderboards()[0]
 
     players = lboards_dict[default_lboard]
+
+    print remove_name
 
     players.remove(remove_name)
 
@@ -511,12 +517,14 @@ def create_leaderboard():
     leaderboard_name = request.form.get("leaderboard_name")
     leaderboards = get_lboards_dict()
 
-    leaderboards[leaderboard_name] = []
+    if len(leaderboard_name) < 25:
 
-    write_lboards_dict(leaderboards)
+        leaderboards[leaderboard_name] = []
 
-    return leaderboard_name
+        write_lboards_dict(leaderboards)
 
+        return leaderboard_name
+    return "Troll"
 
 # ------------------------------------------MAIN MENU FUNCTIONS---------------------------------------------------------
 

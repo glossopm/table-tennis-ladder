@@ -64,6 +64,9 @@
                 url: '/create-leaderboard',
                 data: { leaderboard_name: leaderboard_name },
                 success(data) {
+                    if(data == "Troll") {
+                         window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                    }
                     set_active_leaderboard_to_new(data);
                 },
                 error() {
@@ -125,6 +128,10 @@
                 url: '/add-player',
                 data: {player_name: player_name},
                 success(data) {
+                    if(data == "Troll") {
+                         window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                    }
+
                     add_player_table(data);
                 }
             });
