@@ -1,0 +1,4 @@
+Flask==1.0.2
+Werkzeug<0.13.0,>=0.12.0
+Jinja2==2.10
+PrettyTable==0.7.2
