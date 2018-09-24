@@ -87,7 +87,7 @@
 
     function create_leaderboard() {
         var leaderboard_name = document.getElementById('leaderboard_name').value;
-        if (leaderboard_name.contains('<img') || leaderboard_name.contains('<table') || leaderboard_name.contains('<tr')){
+        if (leaderboard_name.includes('<img') || leaderboard_name.includes('<table') || leaderboard_name.includes('<tr')){
                 troll_proof();
         } else {
             if (leaderboard_name.length > 0) {
@@ -160,7 +160,7 @@
     function add_player() {
         var player_name = document.getElementById('player_name').value;
 
-        if (player_name.contains('<img') || player_name.contains('<table') || player_name.contains('<tr')){
+        if (player_name.includes('<img') || player_name.includes('<table') || player_name.includes('<tr')){
                 troll_proof();
         } else {
 
