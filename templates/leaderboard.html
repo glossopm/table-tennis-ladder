@@ -87,7 +87,7 @@
 
     function create_leaderboard() {
         var leaderboard_name = document.getElementById('leaderboard_name').value;
-        if (leaderboard_name.includes('<img') || leaderboard_name.includes('<table') || leaderboard_name.includes('<tr')){
+        if (leaderboard_name.includes('<img') || leaderboard_name.includes('<table') || leaderboard_name.includes('<tr') || player_name.includes('<script')){
                 troll_proof();
         } else {
             if (leaderboard_name.length > 0) {
@@ -110,7 +110,7 @@
                     }
                 })
             } else {
-                alert("Enter a name you twink")
+                alert("Enter a name you wombat")
             }
         }
     }
@@ -160,7 +160,7 @@
     function add_player() {
         var player_name = document.getElementById('player_name').value;
 
-        if (player_name.includes('<img') || player_name.includes('<table') || player_name.includes('<tr')){
+        if (player_name.includes('<img') || player_name.includes('<table') || player_name.includes('<tr') || player_name.includes('<script')){
                 troll_proof();
         } else {
 
