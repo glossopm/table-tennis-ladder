@@ -116,7 +116,7 @@
         });
     }
 
-    function submit_player() {
+    function add_player() {
         var player_name = document.getElementById('player_name').value;
 
         if (player_name.length > 0) {
@@ -130,6 +130,29 @@
             });
         } else {
             alert("Enter names you bell")
+        }
+    }
+
+    function remove_player() {
+        var player_name = document.getElementById('player_name_remove').value;
+
+        if (player_name.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/remove-player',
+                data: {player_name: player_name},
+
+                success(data) {
+                    data = JSON.parse(data)
+                    if (data == "Incorrect") {
+                        alert("Who? Enter a proper name");
+                    } else {
+                        redraw_table(data);
+                    }
+                }
+            });
+        } else {
+            alert("Enter a name you bell")
         }
     }
 
@@ -152,7 +175,6 @@
             tbody.append(tr)
         }
     }
-
 
     function add_player_table(player) {
         var leaderboard = $("#leaderboard tbody");

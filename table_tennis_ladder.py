@@ -425,7 +425,7 @@ def add_player():
 
     write_lboards_dict(lboards_dict)
 
-    return player_name \
+    return player_name
 
 
 @app.route("/remove-player", methods=["POST"])
