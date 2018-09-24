@@ -94,7 +94,11 @@
                 data: { leaderboard_name: leaderboard_name },
                 success(data) {
                     if(data == "Troll") {
-                         window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                        for(var i = 0; i < 10; i++) {
+                             window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                             window.location.href = "http://icryeverytime.com/";
+                             alert("TROLL DETECTED REEEEE");
+                         }
                     }
                     set_active_leaderboard_to_new(data);
                 },
@@ -158,7 +162,11 @@
                 data: {player_name: player_name},
                 success(data) {
                     if(data == "Troll") {
-                         window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                        for(var i = 0; i < 10; i++) {
+                             window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                             window.location.href = "http://icryeverytime.com/";
+                             alert("TROLL DETECTED REEEEE");
+                         }
                     }
 
                     add_player_table(data);
