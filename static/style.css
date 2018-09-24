@@ -11,7 +11,7 @@ html, body {
 
 #sidebar {
     flex: 4;
-    background-color: #fff066;
+    background-color: gold;
     padding: 15px;
     text-align: center;
     min-height: 100%;
