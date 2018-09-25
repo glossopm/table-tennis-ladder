@@ -406,6 +406,15 @@ def display_record_matches_menu():
 app = Flask(__name__)
 FIFTEEN_MINUTES = 900
 
+def validate(input):
+    if len(input) > 10:
+        return False
+
+    if not input.isalpha:
+        return False
+
+    return True
+
 
 @app.route("/")
 def html_home():
@@ -428,6 +437,9 @@ def add_player():
     current_players = lboards_dict[default_lb[0]]
 
     player_name = request.form.get("player_name")
+
+    if not validate(player_name):
+        return "Troll"
 
     if len(player_name) < 25:
 
@@ -524,6 +536,9 @@ def submit_match():
 def create_leaderboard():
     leaderboard_name = request.form.get("leaderboard_name")
     leaderboards = get_lboards_dict()
+
+    if not validate(leaderboard_name):
+        return "Troll"
 
     if len(leaderboard_name) < 25:
 
