@@ -8,7 +8,7 @@ from ratelimit import limits
 import requests
 
 
-# ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
+# ------------------------------------------READ/WRITE OPERATIONS---py---------------------------------------------------
 
 # function to get a list from a .txt file
 def get_list_file(filename):
@@ -440,6 +440,9 @@ def add_player():
 
     if not validate(player_name):
         return "Troll"
+
+    if player_name in current_players:
+        return json.dumps({'error':'User already exists'}), 400, {'ContentType':'application/json'}
 
     if len(player_name) < 25:
 
