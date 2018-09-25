@@ -544,6 +544,8 @@ def create_leaderboard():
 
         leaderboards[leaderboard_name] = []
 
+        write_lboards(leaderboard_name)
+
         write_lboards_dict(leaderboards)
 
         return leaderboard_name
