@@ -404,7 +404,7 @@ def display_record_matches_menu():
 # ------------------------------------------------ FLASK ---------------------------------------------------------------
 
 app = Flask(__name__)
-FIFTEEN_MINUTES = 900
+FIFTEEN_MINUTES = 15
 
 def validate(input):
     if len(input) > 10:
