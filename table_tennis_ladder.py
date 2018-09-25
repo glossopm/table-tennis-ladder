@@ -4,6 +4,8 @@ import csv
 from jinja2 import Template
 from flask import Flask, render_template, request
 import json
+from ratelimit import limits
+import requests
 
 
 # ------------------------------------------READ/WRITE OPERATIONS------------------------------------------------------
@@ -74,6 +76,7 @@ def get_lboards_dict():
 
 def write_lboards_dict(lboard_dict):
     w = csv.writer(open("leaderboards.csv", "w"))
+
 
     for key in lboard_dict:
         for i in lboard_dict[key]:
@@ -401,6 +404,7 @@ def display_record_matches_menu():
 # ------------------------------------------------ FLASK ---------------------------------------------------------------
 
 app = Flask(__name__)
+FIFTEEN_MINUTES = 900
 
 
 @app.route("/")
@@ -417,6 +421,7 @@ def html_leaderboard():
     return site
 
 
+@limits(calls=15, period=FIFTEEN_MINUTES)
 @app.route('/add-player', methods=['POST'])
 def add_player():
     default_lb, players, lboards_dict = get_data()
@@ -437,6 +442,7 @@ def add_player():
     return "Troll"
 
 
+@limits(calls=15, period=FIFTEEN_MINUTES)
 @app.route("/remove-player", methods=["POST"])
 def remove_player():
     remove_name = request.form.get("player_name")
@@ -497,6 +503,7 @@ def change_leaderboard():
     return json.dumps([players, new_lboard_name])
 
 
+@limits(calls=15, period=FIFTEEN_MINUTES)
 @app.route("/submit-match", methods=["POST"])
 def submit_match():
     winner_name = request.form.get("winner_name")
@@ -512,6 +519,7 @@ def submit_match():
     return json.dumps(new_ladder)
 
 
+@limits(calls=15, period=FIFTEEN_MINUTES)
 @app.route("/create-leaderboard", methods=["POST"])
 def create_leaderboard():
     leaderboard_name = request.form.get("leaderboard_name")
