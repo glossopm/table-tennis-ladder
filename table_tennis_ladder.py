@@ -545,7 +545,11 @@ def create_leaderboard():
 
     if len(leaderboard_name) < 25:
 
-        leaderboards[leaderboard_name] = []
+        print "Creating LB"
+
+        leaderboards[leaderboard_name] = ["Ben"]
+
+        print leaderboards[leaderboard_name]
 
         write_lboards(leaderboard_name)
 
