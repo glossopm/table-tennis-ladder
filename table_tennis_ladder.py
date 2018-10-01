@@ -466,8 +466,6 @@ def remove_player():
 
     players = lboards_dict[default_lboard]
 
-    print remove_name
-
     players.remove(remove_name)
 
     lboards_dict[default_lboard] = players
@@ -543,11 +541,7 @@ def create_leaderboard():
 
     if len(leaderboard_name) < 25:
 
-        print "Creating LB"
-
         leaderboards[leaderboard_name] = ["Ben"]
-
-        print leaderboards[leaderboard_name]
 
         write_lboards(leaderboard_name)
 
