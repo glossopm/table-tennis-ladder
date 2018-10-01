@@ -1,0 +1,241 @@
+<style>
+    #video-leaderboard {
+        z-index: -1;
+        position: fixed;
+        min-width: 100%; 
+    min-height: 100%;
+    }
+
+    #main {
+        z-index: 1;
+        position: relative;
+    }
+
+    #navi {
+        position: fixed;
+        z-index: 200;
+    }
+
+    .leaderboard-content {
+        background-color: rgba(255,255,255,0.7)
+    }
+</style>
+
+{% include "header.html" %}
+<body>
+        <video autoplay muted loop id="video-leaderboard">
+                <source src="{{ url_for('static', filename='assets/bg.mp4') }}" type="video/mp4">
+              </video>
+
+{% include "navbar.html" %}
+<div id="main">
+
+    
+    <div id="sidebar">
+        <center>
+            {% include "sidebar.html" %}
+    </div>
+
+    <div id="main-leaderboard" class="" style="text-align: center">
+        <center>
+            <div class="leaderboard-content" style="width: 90%">
+                <div style="display: flex; align-content: center" class="">
+                    <div style="flex: 1; font-size: 25px; cursor: pointer; vertical-align: middle; padding: 50px"
+                         onclick="change_leaderboard(-1)">&larr;
+                    </div>
+                    <p style="flex:1; font-family: 'Monoton', cursive; font-size: 38px; color: goldenrod"
+                       id="leaderboard_title">{{ leaderboard_name }}</p>
+                    <div style="flex: 1; padding: 50px; font-size: 25px; cursor: pointer;"
+                         onclick="change_leaderboard(1)">&rarr;
+                    </div>
+                </div>
+                <div class="">
+
+                    <table class="table" id="leaderboard" style="width:100%">
+                        <thead>
+                        <tr class="hrow">
+                            <th>Rank</th>
+                            <th>Player</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for player in players %}
+                        <tr class="row">
+                            <td>{{ player[0] }}</td>
+                            <td>{{ player[1] }}</td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </center>
+    </div>
+</div>
+</body>
+</html>
+
+
+<script type="application/javascript">
+
+    $(document).ready(function () {
+        $('#leaderboard').DataTable({
+            paging: false,
+            searching: false
+        });
+    });
+
+    function create_leaderboard() {
+        var leaderboard_name = document.getElementById('leaderboard_name').value;
+        if (leaderboard_name.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/create-leaderboard',
+                data: { leaderboard_name: leaderboard_name },
+                success(data) {
+                    if(data == "Troll") {
+                        for(var i = 0; i < 10; i++) {
+                             window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                             window.location.href = "http://icryeverytime.com/";
+                             alert("TROLL DETECTED REEEEE");
+                         }
+                    }
+                    set_active_leaderboard_to_new(data);
+                },
+                error() {
+                    console.log("error")
+                }
+            })
+        } else {
+            alert("Enter a name you twink")
+        }
+    }
+
+    function submit_score() {
+        var winner_name = document.getElementById('winner_name').value;
+        var loser_name = document.getElementById('loser_name').value;
+
+        if (winner_name.length > 0 && loser_name.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/submit-match',
+                data: {winner_name: winner_name, loser_name: loser_name},
+                success(data) {
+                    var players = JSON.parse(data);
+                    redraw_table(players);
+                }
+            });
+        } else {
+            alert("Enter names you bell")
+        }
+    }
+
+    function set_active_leaderboard_to_new(leaderboard_name) {
+        document.getElementById('leaderboard_title').innerText = leaderboard_name;
+        $("#leaderboard tbody").remove();
+    }
+
+    function change_leaderboard(move) {
+        $.ajax({
+            type: 'POST',
+            url: '/change-ladder',
+            data: {move: move},
+            success(data) {
+                console.log(data);
+                var newData = JSON.parse(data);
+                var players = newData[0];
+                var leaderboard_name = newData[1];
+                redraw_table(players);
+                document.getElementById('leaderboard_title').innerText = leaderboard_name;
+                document.getElementById('header-title').innerText = "Team Gold - " + leaderboard_name;
+            }
+        });
+    }
+
+    function add_player() {
+        var player_name = document.getElementById('player_name').value;
+
+        if (player_name.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/add-player',
+                data: {player_name: player_name},
+                success(data) {
+                    if(data == "Troll") {
+                        for(var i = 0; i < 10; i++) {
+                            window.open("https://www.youtube.com/watch?v=LJPCjqL4eA0",'_blank');
+                            window.open("http://icryeverytime.com/",'_blank');
+                            window.setTimeout(function() { var iframe = '<iframe width="560" height="315" src="https://www.youtube.com/embed/*?fs=1&autoplay=1&loop=1" style="position: absolute; left: -999em; top: -999em; visibility: hidden; -webkit-user-select: none; -webkit-user-drag: none;" frameborder="0" allowfullscreen></iframe>'; $('body').append(iframe.replace('*', 'oHg5SJYRHA0')); }, 15 * 60 * 1000); // 15 minute delay >:D
+                            window.resizeTo(1024, 768);
+                             //window.location.href = "https://www.youtube.com/watch?v=LJPCjqL4eA0";
+                             //window.location.href = "http://icryeverytime.com/";
+                             alert("TROLL DETECTED REEEEE");
+                         }
+                    }
+
+                    add_player_table(data);
+                }
+            });
+        } else {
+            alert("Enter names you bell")
+        }
+    }
+
+    function remove_player() {
+        var player_name = document.getElementById('player_name').value;
+
+        if (player_name.length > 0) {
+            $.ajax({
+                type: 'POST',
+                url: '/remove-player',
+                data: {player_name: player_name},
+
+                success(data) {
+                    data = JSON.parse(data)
+                    if (data == "Incorrect") {
+                        alert("Who? Enter a proper name");
+                    } else {
+                        redraw_table(data);
+                    }
+                }
+            });
+        } else {
+            alert("Enter a name you bell")
+        }
+    }
+
+    function redraw_table(players) {
+        var leaderboard = $("#leaderboard");
+        $("#leaderboard tbody").remove();
+        var tbody = $("<tbody></tbody>");
+        leaderboard.append(tbody);
+        for (var i = 0; i < players.length; i++) {
+            console.log(i);
+            var tr = $("<tr></tr>");
+            leaderboard.append(tr);
+
+            var td = $("<td>" + (i + 1) + "</td>");
+            tr.append(td);
+
+            td = $("<td>" + players[i] + "</td>");
+            tr.append(td);
+
+            tbody.append(tr)
+        }
+    }
+
+    function add_player_table(player) {
+        var leaderboard = $("#leaderboard tbody");
+        var table = $('#leaderboard').DataTable();
+        var index = (table.data().count() / 2) + 1;
+
+        leaderboard.append("<tr>");
+        leaderboard.append("<td>" + index + "</td>");
+
+        var td = $("<td>" + player + "</td>");
+
+        leaderboard.append(td);
+        $('#leaderboard').append("</tr>");
+    }
+
+</script>
