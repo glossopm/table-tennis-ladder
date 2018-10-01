@@ -203,7 +203,7 @@ def enter_matches(players, default_lboard, lboards_dict):
         elif user_choice == "2":
             main_menu()
         else:
-            print "Input not recognised. Please try again."
+            print "Input not recognised. Please try again. Please"
 
 
 # add a match for a leaderboard - "players" and "lboard" both list format
