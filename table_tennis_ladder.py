@@ -293,7 +293,7 @@ def view_players(players):
     table.field_names = ["Name"]
 
     for i in players:
-        if i.isspace() == False or i.isspace() != "":
+        if not i.isspace() or i.isspace() != "":
             table.add_row([i])
     print "--- PLAYERS ---"
     print table
@@ -408,20 +408,18 @@ def display_record_matches_menu():
 
 app = Flask(__name__)
 
-def validate(input):
-    if len(input) > 10:
+
+def validate(value):
+    if len(value) > 10:
         return False
 
-    if not input.isalpha:
-        return False
-
-    return True
+    return not value.isalpha
 
 
 @app.route("/")
 def html_home():
-
     return render_template("index.html")
+
 
 @app.route("/leaderboard")
 def html_leaderboard():
@@ -443,7 +441,7 @@ def add_player():
         return "Troll"
 
     if player_name in current_players:
-        return json.dumps({'error':'User already exists'}), 400, {'ContentType':'application/json'}
+        return json.dumps({'error' : 'User already exists'}), 400, {'ContentType' : 'application/json'}
 
     if len(player_name) < 25:
 
