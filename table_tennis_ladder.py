@@ -18,6 +18,13 @@ def get_list_file(filename):
     return list_name
 
 
+def get_single_val_file(filename):
+    f = open(filename, "r")
+    file_val = f.read()
+    f.close()
+    return file_val.strip()
+
+
 # function to write a list to a .txt file
 def write_list_file(filename, data):
     list_file = open(filename, "w")
@@ -37,7 +44,7 @@ def write_string_file(filename, data):
 
 # read leaderboards order data from .txt file
 def get_leaderboards():
-    return get_list_file("default_lboard.txt")
+    return get_single_val_file("default_lboard.txt")
 
 
 # read players data from .txt file, store and return "players" list
@@ -62,9 +69,7 @@ def get_lboards_dict():
     for row in reader:
         key, val = row
         if key not in mydict:
-            temp = []
-            temp.append(val)
-            mydict[key] = temp
+            mydict[key] = [val]
         else:
             temp = mydict[key]
             temp.append(val)
@@ -90,7 +95,7 @@ def get_data():
 
 def get_html_file(lboards_dict):
     # template = Template(open('templates/leaderboard.html', "rU"))
-    lboard_name = get_leaderboards()[0]
+    lboard_name = get_leaderboards()
     players_list = []
     for idx, player in enumerate(lboards_dict):
         players_list.append([str(idx + 1), str(player)])
@@ -302,7 +307,6 @@ def get_players_for_search(args, default_lboard):
     if len(args) == 0:
         print "No players specified."
         print_help()
-
     else:
         if args[0].startswith("--"):
             lboard_name = args[0][2:]
@@ -423,7 +427,7 @@ def html_home():
 def html_leaderboard():
     default_lb, _, lboards_dict = get_data()
 
-    site = get_html_file(lboards_dict[default_lb[0]])
+    site = get_html_file(lboards_dict[default_lb])
 
     return site
 
@@ -431,7 +435,7 @@ def html_leaderboard():
 @app.route('/add-player', methods=['POST'])
 def add_player():
     default_lb, players, lboards_dict = get_data()
-    current_players = lboards_dict[default_lb[0]]
+    current_players = lboards_dict[default_lb]
 
     player_name = request.form.get("player_name")
 
@@ -445,7 +449,7 @@ def add_player():
 
         current_players.append(player_name)
 
-        lboards_dict[default_lb[0]] = current_players
+        lboards_dict[default_lb] = current_players
 
         write_lboards_dict(lboards_dict)
 
@@ -458,7 +462,7 @@ def add_player():
 def remove_player():
     remove_name = request.form.get("player_name")
     lboards_dict = get_lboards_dict()
-    default_lboard = get_leaderboards()[0]
+    default_lboard = get_leaderboards()
 
     players = lboards_dict[default_lboard]
 
@@ -476,7 +480,7 @@ def remove_player():
 @app.route("/get-leaderboard-players", methods=["GET"])
 def get_leaderboard_players():
     lboards_dict = get_lboards_dict()
-    default_lboard = get_leaderboards()[0]
+    default_lboard = get_leaderboards()
 
     players = lboards_dict[default_lboard]
 
@@ -488,7 +492,7 @@ def change_leaderboard():
     pos = request.form.get("move")
 
     lboards_dict = get_lboards_dict()
-    lname = get_leaderboards()[0]
+    lname = get_leaderboards()
 
     lboards_name_list = lboards_dict.keys()
 
@@ -520,7 +524,7 @@ def submit_match():
     loser_name = request.form.get("loser_name")
 
     lboards_dict = get_lboards_dict()
-    default_lboard = get_leaderboards()[0]
+    default_lboard = get_leaderboards()
 
     new_ladder = match_played(winner_name, loser_name, lboards_dict[default_lboard])
     lboards_dict[default_lboard] = new_ladder
@@ -624,7 +628,7 @@ def main():
     # retrieve non-script arguments
     args = sys.argv[1:]
     default_lb, players, lboards_dict = get_data()
-    default_lb_name = default_lb[0]
+    default_lb_name = default_lb
 
     # if no arguments have been given, send user to prompts menu
     if args[0] == "--interactive":
